@@ -33,21 +33,23 @@ export default function Home() {
     <div className="flex min-h-dvh w-full flex-col bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-muted/80 px-4 py-3 backdrop-blur-lg sm:px-6">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <Link href="#" className="flex items-center gap-2">
-            <Package2 className="h-6 w-6" />
-            <span className="text-lg font-bold">Dev Basket 🧺</span>
-          </Link>
-          <div className="hidden flex-1 justify-center md:flex">
-            <nav className="flex items-center gap-6 text-sm">
-              <Link href="#tools" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
-                Tools
-              </Link>
-              <Link href="#suggest" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
-                Suggest a Tool
-              </Link>
-            </nav>
+          <div className="flex items-center gap-6">
+            <Link href="#" className="flex items-center gap-2">
+              <Package2 className="h-6 w-6" />
+              <span className="text-lg font-bold">Dev Basket 🧺</span>
+            </Link>
+            <div className="hidden md:flex">
+              <nav className="flex items-center gap-6 text-sm">
+                <Link href="#tools" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
+                  Tools
+                </Link>
+                <Link href="#suggest" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
+                  Suggest a Tool
+                </Link>
+              </nav>
+            </div>
           </div>
-          <div className="flex items-center justify-end gap-4 md:flex-1">
+          <div className="flex items-center justify-end gap-4">
             <ThemeToggle />
             <Sheet>
               <SheetTrigger asChild>
