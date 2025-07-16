@@ -53,12 +53,11 @@ export default function FontChanger() {
     textAlign: textAlign,
   };
 
-  const handleCopyCss = () => {
-    const css = `font-family: '${fontFamily}', sans-serif;\nfont-size: ${fontSize}px;\nfont-weight: ${fontWeight};\nline-height: ${lineHeight};\ntext-align: ${textAlign};`;
-    navigator.clipboard.writeText(css);
+  const handleCopyText = () => {
+    navigator.clipboard.writeText(text);
     toast({
-        title: "CSS Copied!",
-        description: "The font styles have been copied to your clipboard.",
+        title: "Text Copied!",
+        description: "The preview text has been copied to your clipboard.",
     });
   };
   
@@ -101,7 +100,9 @@ export default function FontChanger() {
                         <h3 className="text-xl font-semibold mb-4">Controls</h3>
                         <div className="space-y-6">
                             <div>
-                                <Label htmlFor="font-family">Font Family</Label>
+                                <div className="flex justify-between items-center mb-2">
+                                  <Label htmlFor="font-family">Font Family</Label>
+                                </div>
                                 <Select value={fontFamily} onValueChange={setFontFamily}>
                                     <SelectTrigger id="font-family">
                                         <SelectValue placeholder="Select a font" />
@@ -114,7 +115,9 @@ export default function FontChanger() {
                                 </Select>
                             </div>
                              <div>
-                                <Label htmlFor="font-weight">Font Weight</Label>
+                                <div className="flex justify-between items-center mb-2">
+                                  <Label htmlFor="font-weight">Font Weight</Label>
+                                </div>
                                 <Select value={String(fontWeight)} onValueChange={(val) => setFontWeight(Number(val))}>
                                     <SelectTrigger id="font-weight">
                                         <SelectValue placeholder="Select weight" />
@@ -135,7 +138,9 @@ export default function FontChanger() {
                                 <Slider id="line-height" min={0.8} max={3} step={0.1} value={[lineHeight]} onValueChange={(val) => setLineHeight(val[0])} />
                             </div>
                              <div>
-                                <Label className="mb-2 block">Text Align</Label>
+                                <div className="flex justify-between items-center mb-2">
+                                  <Label>Text Align</Label>
+                                </div>
                                 <ToggleGroup type="single" value={textAlign} onValueChange={(val: 'left' | 'center' | 'right') => val && setTextAlign(val)} className="w-full">
                                     <ToggleGroupItem value="left" aria-label="Align left" className="w-full"><AlignLeft /></ToggleGroupItem>
                                     <ToggleGroupItem value="center" aria-label="Align center" className="w-full"><AlignCenter /></ToggleGroupItem>
@@ -144,7 +149,7 @@ export default function FontChanger() {
                             </div>
                         </div>
                          <div className="flex flex-wrap gap-2 mt-8">
-                            <Button onClick={handleCopyCss} className="flex-1"><Copy className="mr-2 h-4 w-4" /> Copy CSS</Button>
+                            <Button onClick={handleCopyText} className="flex-1"><Copy className="mr-2 h-4 w-4" /> Copy Text</Button>
                             <Button onClick={handleReset} variant="outline" className="flex-1"><RefreshCw className="mr-2 h-4 w-4" /> Reset</Button>
                         </div>
                     </div>
