@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, Package2, Youtube, TextQuote, Rss, Send, ChevronDown } from 'lucide-react';
+import { Menu, Package2, Youtube, TextQuote, Rss, Send, ChevronDown, Type } from 'lucide-react';
 
 const tools = [
   {
@@ -18,6 +18,12 @@ const tools = [
     description: 'Count words, characters, and sentences in your text.',
     icon: <TextQuote className="h-8 w-8" />,
     href: '/word-counter',
+  },
+  {
+    name: 'Font Changer',
+    description: 'Preview and experiment with different web fonts and styles.',
+    icon: <Type className="h-8 w-8" />,
+    href: '/font-changer',
   },
   {
     name: 'Coming Soon',
