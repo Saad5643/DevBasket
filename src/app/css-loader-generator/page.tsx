@@ -9,27 +9,24 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
-import { ArrowLeft, Copy, Loader2 as LoaderIcon } from 'lucide-react';
+import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
+import { ArrowLeft, Copy, Loader2 as LoaderIcon, MoreVertical, Circle, Disc } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
-const SpinnerLoader = ({ color, size }: { color: string; size: number }) => {
-  const style = {
-    width: `${size}px`,
-    height: `${size}px`,
-    border: `4px solid ${color}33`, // 20% opacity
-    borderTopColor: color,
-    borderRadius: '50%',
-  };
-
-  return <div style={style} className="animate-spin"></div>;
-};
-
-export default function CssLoaderGenerator() {
-  const { toast } = useToast();
-  const [color, setColor] = useState('#A020F0');
-  const [size, setSize] = useState(48);
-
-  const cssCode = `
+const loaderTypes = {
+  spinner: {
+    name: 'Spinner',
+    icon: <LoaderIcon />,
+    component: ({ color, size }: { color: string; size: number }) => (
+      <div style={{
+        width: `${size}px`,
+        height: `${size}px`,
+        border: `4px solid ${color}33`,
+        borderTopColor: color,
+        borderRadius: '50%',
+      }} className="animate-spin"></div>
+    ),
+    getCss: (color: string, size: number) => `
 .spinner {
   width: ${size}px;
   height: ${size}px;
@@ -43,10 +40,92 @@ export default function CssLoaderGenerator() {
   to {
     transform: rotate(360deg);
   }
+}`.trim(),
+    getHtml: () => `<div class="spinner"></div>`,
+  },
+  dots: {
+    name: 'Bouncing Dots',
+    icon: <MoreVertical className="rotate-90" />,
+    component: ({ color, size }: { color: string; size: number }) => (
+      <div className="flex space-x-2" style={{ animation: 'dots-bounce 1s infinite' }}>
+        <div style={{ backgroundColor: color, width: size / 4, height: size / 4, borderRadius: '50%', animation: 'dot-bounce 1s infinite' }} />
+        <div style={{ backgroundColor: color, width: size / 4, height: size / 4, borderRadius: '50%', animation: 'dot-bounce 1s infinite .2s' }} />
+        <div style={{ backgroundColor: color, width: size / 4, height: size / 4, borderRadius: '50%', animation: 'dot-bounce 1s infinite .4s' }} />
+      </div>
+    ),
+    getCss: (color: string, size: number) => `
+.bouncing-dots {
+  display: flex;
+  gap: ${size/8}px;
 }
-  `.trim();
+.dot {
+  width: ${size / 4}px;
+  height: ${size / 4}px;
+  border-radius: 50%;
+  background-color: ${color};
+  animation: dot-bounce 1s infinite;
+}
+.dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+@keyframes dot-bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+  }
+  40% {
+    transform: scale(1);
+  }
+}`.trim(),
+    getHtml: () => `
+<div class="bouncing-dots">
+  <div class="dot"></div>
+  <div class="dot"></div>
+  <div class="dot"></div>
+</div>`.trim(),
+  },
+  pulse: {
+    name: 'Pulsing Circle',
+    icon: <Disc />,
+    component: ({ color, size }: { color: string; size: number }) => (
+       <div style={{ backgroundColor: color, width: size, height: size, borderRadius: '50%', animation: 'pulse 2s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955)' }} />
+    ),
+    getCss: (color: string, size: number) => `
+.pulsing-circle {
+  width: ${size}px;
+  height: ${size}px;
+  border-radius: 50%;
+  background-color: ${color};
+  animation: pulse 2s infinite cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
 
-  const htmlCode = `<div class="spinner"></div>`;
+@keyframes pulse {
+  0% {
+    transform: scale(0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0;
+  }
+}`.trim(),
+    getHtml: () => `<div class="pulsing-circle"></div>`,
+  }
+};
+
+type LoaderType = keyof typeof loaderTypes;
+
+export default function CssLoaderGenerator() {
+  const { toast } = useToast();
+  const [activeLoader, setActiveLoader] = useState<LoaderType>('spinner');
+  const [color, setColor] = useState('#A020F0');
+  const [size, setSize] = useState(48);
+
+  const selectedLoader = loaderTypes[activeLoader];
+  const cssCode = selectedLoader.getCss(color, size);
+  const htmlCode = selectedLoader.getHtml();
 
   const handleCopy = (code: string, type: string) => {
     navigator.clipboard.writeText(code);
@@ -82,11 +161,29 @@ export default function CssLoaderGenerator() {
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-              <div className="flex flex-col items-center justify-center space-y-6">
-                <h3 className="text-xl font-semibold">Preview</h3>
+              <div className="flex flex-col space-y-6">
+                
+                 <div className="w-full">
+                  <Label className="mb-2 block text-center font-semibold">Loader Type</Label>
+                  <ToggleGroup 
+                    type="single" 
+                    value={activeLoader} 
+                    onValueChange={(value: LoaderType) => value && setActiveLoader(value)}
+                    className="grid grid-cols-3 gap-2"
+                  >
+                    {Object.entries(loaderTypes).map(([key, loader]) => (
+                      <ToggleGroupItem key={key} value={key} className="flex-col h-auto py-2 gap-2 text-xs">
+                        {loader.icon}
+                        <span>{loader.name}</span>
+                      </ToggleGroupItem>
+                    ))}
+                  </ToggleGroup>
+                </div>
+                
                 <Card className="w-full h-64 flex items-center justify-center bg-muted/50 border-dashed">
-                  <SpinnerLoader color={color} size={size} />
+                  {selectedLoader.component({ color, size })}
                 </Card>
+                
                 <div className="w-full space-y-6">
                    <div>
                       <Label htmlFor="color-picker" className="mb-2 flex items-center justify-between">
@@ -121,7 +218,7 @@ export default function CssLoaderGenerator() {
                     </Card>
                   </TabsContent>
                   <TabsContent value="css">
-                     <Card className="relative bg-muted/50 font-mono text-sm">
+                     <Card className="relative bg-muted/50 font-mono text-sm max-h-96 overflow-y-auto">
                        <Button size="icon" variant="ghost" className="absolute top-2 right-2 h-7 w-7" onClick={() => handleCopy(cssCode, 'CSS')}>
                          <Copy className="h-4 w-4" />
                        </Button>
