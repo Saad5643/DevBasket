@@ -50,9 +50,6 @@ export default function Home() {
               <Link href="#tools" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
                 Tools
               </Link>
-              <Link href="#about" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
-                About
-              </Link>
               <Link href="#suggest" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
                 Suggest a Tool
               </Link>
@@ -75,9 +72,6 @@ export default function Home() {
                   </Link>
                   <Link href="#tools" className="text-muted-foreground hover:text-foreground">
                     Tools
-                  </Link>
-                  <Link href="#about" className="text-muted-foreground hover:text-foreground">
-                    About
                   </Link>
                   <Link href="#suggest" className="text-muted-foreground hover:text-foreground">
                     Suggest a Tool
@@ -143,17 +137,6 @@ export default function Home() {
                   </CardContent>
                 </Card>
               ))}
-            </div>
-          </div>
-        </section>
-
-        <section id="about" className="w-full py-12 md:py-24 lg:py-32">
-          <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
-            <div className="space-y-3">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">About Dev Basket</h2>
-              <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                Dev Basket is a personal project aimed at creating a curated collection of simple, fast, and free online tools. The goal is to build things that are genuinely useful, without the bloat.
-              </p>
             </div>
           </div>
         </section>
