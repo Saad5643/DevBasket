@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, Package2, Youtube, TextQuote, Link as LinkIcon, Rss, Send, ChevronDown } from 'lucide-react';
+import { Menu, Package2, Youtube, TextQuote, Rss, Send, ChevronDown } from 'lucide-react';
 
 const tools = [
   {
@@ -18,13 +18,6 @@ const tools = [
     description: 'Count words, characters, and sentences in your text.',
     icon: <TextQuote className="h-8 w-8" />,
     href: '/word-counter',
-  },
-  {
-    name: 'URL Shortener',
-    description: 'Create short, shareable links from long URLs.',
-    icon: <LinkIcon className="h-8 w-8" />,
-    href: '#',
-    comingSoon: true,
   },
   {
     name: 'Coming Soon',
