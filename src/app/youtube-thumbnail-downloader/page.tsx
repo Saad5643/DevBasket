@@ -4,9 +4,10 @@ import { useState } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Download, AlertCircle, RefreshCw, X } from 'lucide-react';
+import { Download, AlertCircle, RefreshCw, X, Youtube, ArrowLeft } from 'lucide-react';
+import Link from 'next/link';
 
 const thumbnailSizes = [
   { name: 'Max-Res Default', key: 'maxresdefault' },
@@ -30,12 +31,18 @@ export default function YoutubeThumbnailDownloader() {
 
   const handleShowThumbnail = () => {
     setError('');
+    setLoading(true);
     const id = extractVideoId(url);
     if (id) {
-      setVideoId(id);
+      // Simulate network delay for loading state
+      setTimeout(() => {
+        setVideoId(id);
+        setLoading(false);
+      }, 500);
     } else {
       setError('Invalid YouTube URL. Please enter a valid video URL.');
       setVideoId('');
+      setLoading(false);
     }
   };
 
@@ -47,33 +54,46 @@ export default function YoutubeThumbnailDownloader() {
 
   const handleDownload = async (thumbnailUrl: string, videoId: string, quality: string) => {
     try {
-      setLoading(true);
       const response = await fetch(thumbnailUrl);
       if (!response.ok) {
+        // This will be caught by the image's onError handler, but we can also handle it here.
         throw new Error('Network response was not ok');
       }
       const blob = await response.blob();
       const link = document.createElement('a');
       link.href = URL.createObjectURL(blob);
-      link.download = `thumbzilla_${videoId}_${quality}.jpg`;
+      link.download = `dev_basket_thumb_${videoId}_${quality}.jpg`;
       document.body.appendChild(link);
       link.click();
       document.body.removeChild(link);
     } catch (err) {
-      setError('Failed to download image. It may not exist for this video.');
-    } finally {
-      setLoading(false);
+      setError('Failed to download image. It may not exist for this video quality.');
     }
   };
 
   return (
     <div className="bg-background min-h-screen">
       <main className="container mx-auto px-4 py-8 md:py-12">
-        <Card className="max-w-4xl mx-auto shadow-lg">
+        <div className="mb-8">
+            <Button asChild variant="outline" size="sm">
+                <Link href="/">
+                    <ArrowLeft className="mr-2" />
+                    Back to Tools
+                </Link>
+            </Button>
+        </div>
+
+        <Card className="max-w-4xl mx-auto shadow-lg border-border/60">
           <CardHeader className="text-center">
+            <div className="mx-auto bg-gradient-to-br from-primary/20 to-accent/20 text-primary p-3 rounded-xl inline-block mb-4">
+              <Youtube className="h-8 w-8" />
+            </div>
             <CardTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
               YouTube Thumbnail Downloader
             </CardTitle>
+            <CardDescription>
+              Paste a YouTube video link below to grab all the available thumbnail resolutions.
+            </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="flex flex-col sm:flex-row gap-2 mb-4">
@@ -81,16 +101,17 @@ export default function YoutubeThumbnailDownloader() {
                 type="text"
                 value={url}
                 onChange={(e) => setUrl(e.target.value)}
-                placeholder="Paste YouTube video URL here..."
+                placeholder="https://www.youtube.com/watch?v=..."
                 className="flex-grow"
+                onKeyDown={(e) => e.key === 'Enter' && handleShowThumbnail()}
               />
               <Button onClick={handleShowThumbnail} disabled={loading || !url}>
-                {loading ? <RefreshCw className="animate-spin mr-2" /> : null}
-                Show Thumbnail
+                {loading ? <RefreshCw className="animate-spin" /> : null}
+                Get Thumbnails
               </Button>
               {(videoId || url) && (
                 <Button variant="outline" onClick={handleReset}>
-                  <X className="mr-2" /> Reset
+                  <X /> Reset
                 </Button>
               )}
             </div>
@@ -104,37 +125,46 @@ export default function YoutubeThumbnailDownloader() {
             )}
 
             {videoId && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 transition-all duration-500 ease-in-out">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8 transition-all duration-500 ease-in-out animate-in fade-in">
                 {thumbnailSizes.map((size) => {
                   const thumbnailUrl = `https://img.youtube.com/vi/${videoId}/${size.key}.jpg`;
                   return (
-                    <div key={size.key} className="group relative overflow-hidden rounded-lg shadow-md transform transition-transform hover:scale-105">
+                    <div key={size.key} className="group relative overflow-hidden rounded-xl border border-border/40 shadow-sm transform transition-transform hover:-translate-y-1">
                       <Image
                         src={thumbnailUrl}
                         alt={`${size.name} thumbnail`}
                         width={480}
                         height={360}
-                        className="object-cover w-full h-auto"
+                        className="object-cover w-full h-auto bg-muted/50"
                         unoptimized
                         onError={(e) => {
-                          e.currentTarget.style.display = 'none';
-                          const parent = e.currentTarget.parentElement;
+                          const target = e.currentTarget;
+                          target.style.display = 'none';
+                          const parent = target.parentElement;
                           if (parent) {
-                            const errorDiv = document.createElement('div');
-                            errorDiv.className = 'flex items-center justify-center h-full bg-muted text-muted-foreground p-4 text-center';
-                            errorDiv.innerText = `Thumbnail for ${size.name} not available.`;
-                            parent.appendChild(errorDiv);
+                            const errorDiv = parent.querySelector('.thumbnail-error');
+                            if (errorDiv) {
+                              errorDiv.classList.remove('hidden');
+                            }
                             const downloadButton = parent.querySelector('button');
-                            if(downloadButton) downloadButton.style.display = 'none';
+                            if(downloadButton) (downloadButton as HTMLButtonElement).disabled = true;
                           }
                         }}
                       />
-                      <div className="absolute inset-0 bg-black bg-opacity-50 flex flex-col items-center justify-center p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                        <h3 className="text-white font-bold text-lg text-center mb-2">{size.name}</h3>
-                        <Button onClick={() => handleDownload(thumbnailUrl, videoId, size.key)} size="sm" disabled={loading}>
-                          <Download className="mr-2 h-4 w-4" />
-                          Download
-                        </Button>
+                      <div className="thumbnail-error hidden flex items-center justify-center h-[200px] bg-muted text-muted-foreground p-4 text-center">
+                          Thumbnail for {size.name} not available.
+                      </div>
+
+                      <div className="absolute inset-x-0 bottom-0 bg-background/70 backdrop-blur p-3">
+                        <div className="flex justify-between items-center">
+                            <div>
+                                <h3 className="text-foreground font-semibold text-sm">{size.name}</h3>
+                            </div>
+                            <Button onClick={() => handleDownload(thumbnailUrl, videoId, size.key)} size="sm">
+                              <Download className="mr-2 h-4 w-4" />
+                              Download
+                            </Button>
+                        </div>
                       </div>
                     </div>
                   );

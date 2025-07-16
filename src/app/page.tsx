@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, Package2, Youtube, TextQuote, Link as LinkIcon, Rss, Code, Send } from 'lucide-react';
+import { Menu, Package2, Youtube, TextQuote, Link as LinkIcon, Rss, Send } from 'lucide-react';
 
 const tools = [
   {
@@ -96,7 +96,7 @@ export default function Home() {
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl xl:text-6xl/none bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">
+                <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl xl:text-6xl/none bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
                   Your Daily Developer Toolkit.
                 </h1>
                 <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl">
@@ -125,9 +125,9 @@ export default function Home() {
             </div>
             <div className="mx-auto grid grid-cols-1 gap-6 py-12 sm:grid-cols-2 md:grid-cols-3 lg:gap-8">
               {tools.map((tool) => (
-                <Card key={tool.name} className="flex flex-col justify-between transform-gpu transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                <Card key={tool.name} className="flex flex-col justify-between transform-gpu transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
                   <CardHeader className="flex flex-row items-center gap-4 pb-4">
-                    <div className="bg-primary/10 text-primary p-3 rounded-full">{tool.icon}</div>
+                    <div className="bg-gradient-to-br from-primary/20 to-accent/20 text-primary p-3 rounded-xl">{tool.icon}</div>
                     <div>
                       <CardTitle>{tool.name}</CardTitle>
                       <CardDescription>{tool.description}</CardDescription>
