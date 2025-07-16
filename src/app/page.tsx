@@ -92,8 +92,8 @@ export default function Home() {
         </div>
       </header>
       <main className="flex-1">
-        <section className="w-full py-24 md:py-32 lg:py-40 border-b">
-          <div className="container px-4 md:px-6">
+        <section className="w-full border-b">
+          <div className="container px-4 md:px-6 flex min-h-[calc(100vh-4rem)] items-center justify-center">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl xl:text-6xl/none bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
