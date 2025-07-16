@@ -12,19 +12,21 @@ const tools = [
     name: 'YouTube Thumbnail Downloader',
     description: 'Grab high-quality thumbnails from any YouTube video.',
     icon: <Youtube className="h-8 w-8" />,
-    href: '#',
+    href: '/youtube-thumbnail-downloader',
   },
   {
     name: 'Word Counter',
     description: 'Count words, characters, and sentences in your text.',
     icon: <TextQuote className="h-8 w-8" />,
     href: '#',
+    comingSoon: true,
   },
   {
     name: 'URL Shortener',
     description: 'Create short, shareable links from long URLs.',
     icon: <LinkIcon className="h-8 w-8" />,
     href: '#',
+    comingSoon: true,
   },
   {
     name: 'Coming Soon',
@@ -45,7 +47,7 @@ export default function Home() {
             <span className="sr-only">Dev Basket</span>
           </Link>
           <Link href="#" className="font-bold text-foreground">
-            Dev Basket
+            Dev Basket 🧺
           </Link>
           <Link href="#tools" className="text-muted-foreground transition-colors hover:text-foreground">
             Tools
@@ -71,7 +73,7 @@ export default function Home() {
                 <span className="sr-only">Dev Basket</span>
               </Link>
               <Link href="#" className="font-bold text-foreground text-xl">
-                Dev Basket
+                Dev Basket 🧺
               </Link>
               <Link href="#tools" className="text-muted-foreground hover:text-foreground">
                 Tools
@@ -103,7 +105,7 @@ export default function Home() {
                   </p>
                 </div>
                 <div className="flex flex-col gap-2 min-[400px]:flex-row">
-                  <Button asChild size="lg">
+                  <Button asChild size="lg" className="transform-gpu transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                     <Link href="#tools">Explore Tools</Link>
                   </Button>
                 </div>
@@ -135,7 +137,7 @@ export default function Home() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <Button asChild className="w-full" variant={tool.comingSoon ? "secondary" : "default"}>
+                    <Button asChild className="w-full" variant={tool.comingSoon ? "secondary" : "default"} disabled={tool.comingSoon}>
                       <Link href={tool.href}>{tool.comingSoon ? "Coming Soon" : "Open Tool"}</Link>
                     </Button>
                   </CardContent>
@@ -181,7 +183,7 @@ export default function Home() {
           <Link href="#" className="text-xs hover:underline underline-offset-4">
             Privacy
           </Link>
-          <Link href="#" className="text-xs hover:underline underline-offset-4">
+          <Link href="https://github.com/firebase/genkit/tree/main/studio" className="text-xs hover:underline underline-offset-4">
             GitHub
           </Link>
         </nav>
