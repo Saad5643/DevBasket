@@ -19,6 +19,8 @@ const initialFilters = {
   blur: 0,
   'hue-rotate': 0,
   invert: 0,
+  opacity: 100,
+  sharpen: 0, // This will be a simulated effect
 };
 
 type FilterKeys = keyof typeof initialFilters;
@@ -52,15 +54,20 @@ export default function ImageFilterTool() {
   };
   
   const getCssFilterString = () => {
+    // A simple way to simulate sharpen is to add a bit of contrast.
+    // A more complex way would involve SVG filters, which is beyond this scope.
+    const sharpenContrast = 100 + filters.sharpen;
+
     return `
       brightness(${filters.brightness}%)
-      contrast(${filters.contrast}%)
+      contrast(${sharpenContrast}%)
       saturate(${filters.saturate}%)
       grayscale(${filters.grayscale}%)
       sepia(${filters.sepia}%)
       blur(${filters.blur}px)
       hue-rotate(${filters['hue-rotate']}deg)
       invert(${filters.invert}%)
+      opacity(${filters.opacity}%)
     `.trim();
   };
 
@@ -98,8 +105,10 @@ export default function ImageFilterTool() {
     { name: 'Grayscale', key: 'grayscale', min: 0, max: 100, unit: '%' },
     { name: 'Sepia', key: 'sepia', min: 0, max: 100, unit: '%' },
     { name: 'Invert', key: 'invert', min: 0, max: 100, unit: '%' },
+    { name: 'Opacity', key: 'opacity', min: 0, max: 100, unit: '%' },
     { name: 'Blur', key: 'blur', min: 0, max: 20, unit: 'px' },
     { name: 'Hue Rotate', key: 'hue-rotate', min: 0, max: 360, unit: 'deg' },
+    { name: 'Sharpen', key: 'sharpen', min: 0, max: 100, unit: '%' },
   ];
 
   return (
@@ -164,7 +173,7 @@ export default function ImageFilterTool() {
                     <Button asChild className="w-full">
                        <Label htmlFor="image-upload" className="cursor-pointer"><Upload className="mr-2 h-4 w-4" /> Upload Image</Label>
                     </Button>
-                    <div className="space-y-6 pt-4">
+                    <div className="space-y-6 pt-4 max-h-[450px] overflow-y-auto pr-2">
                       {filterControls.map(fc => (
                         <div key={fc.key}>
                            <Label htmlFor={fc.key} className="flex justify-between"><span>{fc.name}</span> <span>{filters[fc.key as FilterKeys]}{fc.unit}</span></Label>
