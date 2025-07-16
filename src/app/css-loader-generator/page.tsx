@@ -9,8 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
-import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { ArrowLeft, Copy, Loader2 as LoaderIcon, MoreVertical, Circle, Disc } from 'lucide-react';
+import { ArrowLeft, Copy, Loader2 as LoaderIcon, MoreVertical, Disc, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 
 const loaderTypes = {
@@ -47,7 +46,7 @@ const loaderTypes = {
     name: 'Bouncing Dots',
     icon: <MoreVertical className="rotate-90" />,
     component: ({ color, size }: { color: string; size: number }) => (
-      <div className="flex space-x-2" style={{ animation: 'dots-bounce 1s infinite' }}>
+      <div className="flex space-x-2">
         <div style={{ backgroundColor: color, width: size / 4, height: size / 4, borderRadius: '50%', animation: 'dot-bounce 1s infinite' }} />
         <div style={{ backgroundColor: color, width: size / 4, height: size / 4, borderRadius: '50%', animation: 'dot-bounce 1s infinite .2s' }} />
         <div style={{ backgroundColor: color, width: size / 4, height: size / 4, borderRadius: '50%', animation: 'dot-bounce 1s infinite .4s' }} />
@@ -63,13 +62,13 @@ const loaderTypes = {
   height: ${size / 4}px;
   border-radius: 50%;
   background-color: ${color};
-  animation: dot-bounce 1s infinite;
+  animation: dot-bounce 1.4s infinite ease-in-out both;
+}
+.dot:nth-child(1) {
+  animation-delay: -0.32s;
 }
 .dot:nth-child(2) {
-  animation-delay: 0.2s;
-}
-.dot:nth-child(3) {
-  animation-delay: 0.4s;
+  animation-delay: -0.16s;
 }
 @keyframes dot-bounce {
   0%, 80%, 100% {
@@ -123,6 +122,7 @@ export default function CssLoaderGenerator() {
   const [color, setColor] = useState('#A020F0');
   const [size, setSize] = useState(48);
 
+  const loaderKeys = Object.keys(loaderTypes) as LoaderType[];
   const selectedLoader = loaderTypes[activeLoader];
   const cssCode = selectedLoader.getCss(color, size);
   const htmlCode = selectedLoader.getHtml();
@@ -133,6 +133,17 @@ export default function CssLoaderGenerator() {
       title: `${type} Copied!`,
       description: `The ${type.toLowerCase()} code has been copied to your clipboard.`,
     });
+  };
+
+  const cycleLoader = (direction: 'next' | 'prev') => {
+    const currentIndex = loaderKeys.indexOf(activeLoader);
+    let nextIndex;
+    if (direction === 'next') {
+      nextIndex = (currentIndex + 1) % loaderKeys.length;
+    } else {
+      nextIndex = (currentIndex - 1 + loaderKeys.length) % loaderKeys.length;
+    }
+    setActiveLoader(loaderKeys[nextIndex]);
   };
 
   return (
@@ -163,26 +174,23 @@ export default function CssLoaderGenerator() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
               <div className="flex flex-col space-y-6">
                 
-                 <div className="w-full">
-                  <Label className="mb-2 block text-center font-semibold">Loader Type</Label>
-                  <ToggleGroup 
-                    type="single" 
-                    value={activeLoader} 
-                    onValueChange={(value: LoaderType) => value && setActiveLoader(value)}
-                    className="grid grid-cols-3 gap-2"
-                  >
-                    {Object.entries(loaderTypes).map(([key, loader]) => (
-                      <ToggleGroupItem key={key} value={key} className="flex-col h-auto py-2 gap-2 text-xs">
-                        {loader.icon}
-                        <span>{loader.name}</span>
-                      </ToggleGroupItem>
-                    ))}
-                  </ToggleGroup>
+                <div className="w-full">
+                  <h3 className="text-lg font-semibold mb-2 text-center">{selectedLoader.name}</h3>
+                  <Card className="w-full h-64 flex items-center justify-center bg-muted/50 border-dashed">
+                    {selectedLoader.component({ color, size })}
+                  </Card>
+                   <div className="flex justify-center items-center gap-4 mt-4">
+                      <Button variant="outline" size="icon" onClick={() => cycleLoader('prev')}>
+                          <ChevronLeft className="h-4 w-4" />
+                          <span className="sr-only">Previous Loader</span>
+                      </Button>
+                      <span className="text-sm text-muted-foreground">{loaderKeys.indexOf(activeLoader) + 1} / {loaderKeys.length}</span>
+                      <Button variant="outline" size="icon" onClick={() => cycleLoader('next')}>
+                          <ChevronRight className="h-4 w-4" />
+                          <span className="sr-only">Next Loader</span>
+                      </Button>
+                   </div>
                 </div>
-                
-                <Card className="w-full h-64 flex items-center justify-center bg-muted/50 border-dashed">
-                  {selectedLoader.component({ color, size })}
-                </Card>
                 
                 <div className="w-full space-y-6">
                    <div>
@@ -218,7 +226,7 @@ export default function CssLoaderGenerator() {
                     </Card>
                   </TabsContent>
                   <TabsContent value="css">
-                     <Card className="relative bg-muted/50 font-mono text-sm max-h-96 overflow-y-auto">
+                     <Card className="relative bg-muted/50 font-mono text-sm max-h-[400px] overflow-y-auto">
                        <Button size="icon" variant="ghost" className="absolute top-2 right-2 h-7 w-7" onClick={() => handleCopy(cssCode, 'CSS')}>
                          <Copy className="h-4 w-4" />
                        </Button>
