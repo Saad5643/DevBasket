@@ -41,12 +41,10 @@ export default function Home() {
     <div className="flex min-h-dvh w-full flex-col bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-background/80 px-4 py-3 backdrop-blur sm:px-6">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <div className="flex items-center">
-            <Link href="#" className="flex items-center gap-2">
-              <Package2 className="h-6 w-6" />
-              <span className="font-bold">Dev Basket 🧺</span>
-            </Link>
-          </div>
+          <Link href="#" className="flex items-center gap-2">
+            <Package2 className="h-6 w-6" />
+            <span className="text-lg font-bold">Dev Basket 🧺</span>
+          </Link>
           <div className="hidden flex-1 justify-center md:flex">
             <nav className="flex items-center gap-6 text-sm">
               <Link href="#tools" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
@@ -99,15 +97,18 @@ export default function Home() {
                   Your Daily Developer Toolkit.
                 </h1>
                 <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl">
-                  All the handy tools, in one basket. From URL shorteners to thumbnail downloaders — everything in one place.
+                  From thumbnail grabbers to URL shorteners, find everything you need — fast and free.
                 </p>
               </div>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center pt-4">
+              <div className="flex flex-col gap-4 min-[400px]:flex-row justify-center pt-4">
                 <Button asChild size="lg" className="h-12 px-8 text-base transform-gpu transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                   <Link href="#tools">
                     Explore Tools
                     <ChevronDown className="ml-2 h-5 w-5" />
                   </Link>
+                </Button>
+                <Button asChild variant="outline" size="lg" className="h-12 px-8 text-base">
+                   <Link href="#suggest">Suggest a Tool</Link>
                 </Button>
               </div>
             </div>
