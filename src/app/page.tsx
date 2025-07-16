@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -6,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, Package2, Youtube, TextQuote, Rss, Send, ChevronDown, Type, Image as ImageIcon } from 'lucide-react';
+import { Menu, Package2, Youtube, TextQuote, Rss, Send, ChevronDown, Type, Image as ImageIcon, Loader2 } from 'lucide-react';
 
 const tools = [
   {
@@ -32,6 +33,12 @@ const tools = [
     description: 'Apply real-time filters to your images and download them.',
     icon: <ImageIcon className="h-8 w-8" />,
     href: '/image-filter',
+  },
+  {
+    name: 'CSS Loader Generator',
+    description: 'Create and customize simple CSS loading animations.',
+    icon: <Loader2 className="h-8 w-8" />,
+    href: '/css-loader-generator',
   },
   {
     name: 'Coming Soon',
