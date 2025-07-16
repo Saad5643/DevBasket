@@ -1,10 +1,12 @@
+'use client';
+
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, Package2, Youtube, TextQuote, Rss, Send, ChevronDown, Type } from 'lucide-react';
+import { Menu, Package2, Youtube, TextQuote, Rss, Send, ChevronDown, Type, Image as ImageIcon } from 'lucide-react';
 
 const tools = [
   {
@@ -26,6 +28,12 @@ const tools = [
     href: '/font-changer',
   },
   {
+    name: 'Image Filter',
+    description: 'Apply real-time filters to your images and download them.',
+    icon: <ImageIcon className="h-8 w-8" />,
+    href: '/image-filter',
+  },
+  {
     name: 'Coming Soon',
     description: 'More handy tools are on the way. Stay tuned!',
     icon: <Rss className="h-8 w-8" />,
@@ -44,16 +52,14 @@ export default function Home() {
               <Package2 className="h-6 w-6" />
               <span className="text-lg font-bold">Dev Basket 🧺</span>
             </Link>
-            <div className="hidden md:flex">
-              <nav className="flex items-center gap-6 text-sm">
-                <Link href="#tools" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
-                  Tools
-                </Link>
-                <Link href="#suggest" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
-                  Suggest a Tool
-                </Link>
-              </nav>
-            </div>
+            <nav className="hidden items-center gap-6 text-sm md:flex">
+              <Link href="#tools" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
+                Tools
+              </Link>
+              <Link href="#suggest" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
+                Suggest a Tool
+              </Link>
+            </nav>
           </div>
           <div className="flex items-center justify-end gap-4">
             <ThemeToggle />
@@ -84,18 +90,18 @@ export default function Home() {
       </header>
       <main className="flex-1">
         <section className="w-full border-b">
-          <div className="container px-4 md:px-6 flex min-h-[calc(100vh-5rem)] items-center justify-center">
+          <div className="container flex min-h-[calc(100vh-5rem)] items-center justify-center px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl xl:text-6xl/none bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
+                <h1 className="bg-gradient-to-r from-primary to-accent bg-clip-text text-4xl font-extrabold tracking-tighter text-transparent sm:text-5xl xl:text-6xl/none">
                   Your Daily Developer Toolkit.
                 </h1>
                 <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl">
                   From thumbnail grabbers to URL shorteners, find everything you need — fast and free.
                 </p>
               </div>
-              <div className="flex flex-col gap-4 min-[400px]:flex-row justify-center pt-4">
-                <Button asChild size="lg" className="h-12 px-8 text-base transform-gpu transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+              <div className="flex flex-col justify-center gap-4 pt-4 min-[400px]:flex-row">
+                <Button asChild size="lg" className="h-12 transform-gpu px-8 text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                   <Link href="#tools">
                     Explore Tools
                     <ChevronDown className="ml-2 h-5 w-5" />
@@ -109,7 +115,7 @@ export default function Home() {
           </div>
         </section>
         
-        <section id="tools" className="w-full py-12 md:py-24 lg:py-32 bg-muted/40">
+        <section id="tools" className="w-full bg-muted/40 py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
@@ -141,7 +147,7 @@ export default function Home() {
           </div>
         </section>
 
-        <section id="suggest" className="w-full py-12 md:py-24 lg:py-32 border-t">
+        <section id="suggest" className="w-full border-t py-12 md:py-24 lg:py-32">
           <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
             <div className="space-y-3">
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Have an Idea?</h2>
@@ -160,9 +166,9 @@ export default function Home() {
           </div>
         </section>
       </main>
-      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
+      <footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
         <p className="text-xs text-muted-foreground">&copy; 2024 Dev Basket. Made with ❤️</p>
-        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
+        <nav className="flex gap-4 sm:ml-auto sm:gap-6">
           <Link href="#" className="text-xs hover:underline underline-offset-4">
             Privacy
           </Link>
