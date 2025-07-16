@@ -7,8 +7,8 @@ import { ThemeProvider } from '@/components/theme-provider';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
-  title: 'Thumbzilla',
-  description: 'Download high-quality YouTube video thumbnails',
+  title: 'Dev Basket',
+  description: 'All the handy tools, in one basket.',
 };
 
 export default function RootLayout({

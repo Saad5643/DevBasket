@@ -1,13 +1,191 @@
-import { ThumbnailDownloader } from '@/components/features/thumbnail-downloader';
+import Link from 'next/link';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Menu, Package2, Youtube, TextQuote, Link as LinkIcon, Rss, Code, Send } from 'lucide-react';
+
+const tools = [
+  {
+    name: 'YouTube Thumbnail Downloader',
+    description: 'Grab high-quality thumbnails from any YouTube video.',
+    icon: <Youtube className="h-8 w-8" />,
+    href: '#',
+  },
+  {
+    name: 'Word Counter',
+    description: 'Count words, characters, and sentences in your text.',
+    icon: <TextQuote className="h-8 w-8" />,
+    href: '#',
+  },
+  {
+    name: 'URL Shortener',
+    description: 'Create short, shareable links from long URLs.',
+    icon: <LinkIcon className="h-8 w-8" />,
+    href: '#',
+  },
+  {
+    name: 'Coming Soon',
+    description: 'More handy tools are on the way. Stay tuned!',
+    icon: <Rss className="h-8 w-8" />,
+    href: '#',
+    comingSoon: true,
+  },
+];
 
 export default function Home() {
   return (
-    <main className="flex min-h-dvh w-full flex-col items-center justify-center bg-background p-4 sm:p-6 md:p-8">
-      <div className="absolute top-4 right-4">
-        <ThemeToggle />
-      </div>
-      <ThumbnailDownloader />
-    </main>
+    <div className="flex min-h-dvh w-full flex-col bg-background">
+      <header className="sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur md:px-6">
+        <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
+          <Link href="#" className="flex items-center gap-2 text-lg font-semibold md:text-base">
+            <Package2 className="h-6 w-6" />
+            <span className="sr-only">Dev Basket</span>
+          </Link>
+          <Link href="#" className="font-bold text-foreground">
+            Dev Basket
+          </Link>
+          <Link href="#tools" className="text-muted-foreground transition-colors hover:text-foreground">
+            Tools
+          </Link>
+          <Link href="#about" className="text-muted-foreground transition-colors hover:text-foreground">
+            About
+          </Link>
+          <Link href="#suggest" className="text-muted-foreground transition-colors hover:text-foreground">
+            Suggest a Tool
+          </Link>
+        </nav>
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="outline" size="icon" className="shrink-0 md:hidden">
+              <Menu className="h-5 w-5" />
+              <span className="sr-only">Toggle navigation menu</span>
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="left">
+            <nav className="grid gap-6 text-lg font-medium">
+              <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
+                <Package2 className="h-6 w-6" />
+                <span className="sr-only">Dev Basket</span>
+              </Link>
+              <Link href="#" className="font-bold text-foreground text-xl">
+                Dev Basket
+              </Link>
+              <Link href="#tools" className="text-muted-foreground hover:text-foreground">
+                Tools
+              </Link>
+              <Link href="#about" className="text-muted-foreground hover:text-foreground">
+                About
+              </Link>
+              <Link href="#suggest" className="text-muted-foreground hover:text-foreground">
+                Suggest a Tool
+              </Link>
+            </nav>
+          </SheetContent>
+        </Sheet>
+        <div className="flex w-full items-center justify-end gap-4 md:ml-auto md:gap-2 lg:gap-4">
+          <ThemeToggle />
+        </div>
+      </header>
+      <main className="flex-1">
+        <section className="w-full py-24 md:py-32 lg:py-40 border-b">
+          <div className="container px-4 md:px-6">
+            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
+               <div className="flex flex-col justify-center space-y-4">
+                <div className="space-y-2">
+                  <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl xl:text-6xl/none bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">
+                    Your Daily Developer Toolkit.
+                  </h1>
+                  <p className="max-w-[600px] text-muted-foreground md:text-xl">
+                    All the handy tools, in one basket. From URL shorteners to thumbnail downloaders — everything in one place.
+                  </p>
+                </div>
+                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                  <Button asChild size="lg">
+                    <Link href="#tools">Explore Tools</Link>
+                  </Button>
+                </div>
+              </div>
+              <Code className="mx-auto aspect-square h-48 w-48 sm:h-64 sm:w-64 lg:h-auto lg:w-auto text-primary opacity-10" />
+            </div>
+          </div>
+        </section>
+        
+        <section id="tools" className="w-full py-12 md:py-24 lg:py-32 bg-muted/40">
+          <div className="container px-4 md:px-6">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+              <div className="space-y-2">
+                <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Featured Tools</div>
+                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">A Growing Collection</h2>
+                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                  Here are some of the free and useful online tools available in the basket. More are being added all the time.
+                </p>
+              </div>
+            </div>
+            <div className="mx-auto grid grid-cols-1 gap-6 py-12 sm:grid-cols-2 md:grid-cols-3 lg:gap-8">
+              {tools.map((tool) => (
+                <Card key={tool.name} className="flex flex-col justify-between transform-gpu transition-all duration-300 hover:-translate-y-2 hover:shadow-xl">
+                  <CardHeader className="flex flex-row items-center gap-4 pb-4">
+                    <div className="bg-primary/10 text-primary p-3 rounded-full">{tool.icon}</div>
+                    <div>
+                      <CardTitle>{tool.name}</CardTitle>
+                      <CardDescription>{tool.description}</CardDescription>
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <Button asChild className="w-full" variant={tool.comingSoon ? "secondary" : "default"}>
+                      <Link href={tool.href}>{tool.comingSoon ? "Coming Soon" : "Open Tool"}</Link>
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section id="about" className="w-full py-12 md:py-24 lg:py-32">
+          <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
+            <div className="space-y-3">
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">About Dev Basket</h2>
+              <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                Dev Basket is a personal project aimed at creating a curated collection of simple, fast, and free online tools. The goal is to build things that are genuinely useful, without the bloat.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <section id="suggest" className="w-full py-12 md:py-24 lg:py-32 border-t">
+          <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
+            <div className="space-y-3">
+              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Have an Idea?</h2>
+              <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
+                If there's a tool you'd love to see in the basket, feel free to suggest it.
+              </p>
+            </div>
+            <div className="mx-auto w-full max-w-sm space-y-2">
+              <form className="flex flex-col gap-2">
+                <Textarea placeholder="Describe your tool idea..." />
+                <Button type="submit">
+                  <Send className="mr-2 h-4 w-4" /> Suggest Tool
+                </Button>
+              </form>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer className="flex flex-col gap-2 sm:flex-row py-6 w-full shrink-0 items-center px-4 md:px-6 border-t">
+        <p className="text-xs text-muted-foreground">&copy; 2024 Dev Basket. Made with ❤️</p>
+        <nav className="sm:ml-auto flex gap-4 sm:gap-6">
+          <Link href="#" className="text-xs hover:underline underline-offset-4">
+            Privacy
+          </Link>
+          <Link href="#" className="text-xs hover:underline underline-offset-4">
+            GitHub
+          </Link>
+        </nav>
+      </footer>
+    </div>
   );
 }
