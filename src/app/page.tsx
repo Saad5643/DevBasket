@@ -3,9 +3,8 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, Package2, Youtube, TextQuote, Link as LinkIcon, Rss, Send } from 'lucide-react';
+import { Menu, Package2, Youtube, TextQuote, Link as LinkIcon, Rss, Send, ChevronDown } from 'lucide-react';
 
 const tools = [
   {
@@ -40,8 +39,8 @@ const tools = [
 export default function Home() {
   return (
     <div className="flex min-h-dvh w-full flex-col bg-background">
-      <header className="sticky top-0 z-50 w-full border-b bg-background/80 px-4 py-2 backdrop-blur sm:px-6">
-        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/80 px-4 py-3 backdrop-blur sm:px-6">
+        <div className="mx-auto flex max-w-7xl items-center justify-between">
           <div className="flex items-center">
             <Link href="#" className="flex items-center gap-2">
               <Package2 className="h-6 w-6" />
@@ -93,7 +92,7 @@ export default function Home() {
       </header>
       <main className="flex-1">
         <section className="w-full border-b">
-          <div className="container px-4 md:px-6 flex min-h-[calc(100vh-4rem)] items-center justify-center">
+          <div className="container px-4 md:px-6 flex min-h-[calc(100vh-5rem)] items-center justify-center">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl xl:text-6xl/none bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -103,9 +102,12 @@ export default function Home() {
                   All the handy tools, in one basket. From URL shorteners to thumbnail downloaders — everything in one place.
                 </p>
               </div>
-              <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center">
-                <Button asChild size="lg" className="transform-gpu transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
-                  <Link href="#tools">Explore Tools</Link>
+              <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center pt-4">
+                <Button asChild size="lg" className="h-12 px-8 text-base transform-gpu transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                  <Link href="#tools">
+                    Explore Tools
+                    <ChevronDown className="ml-2 h-5 w-5" />
+                  </Link>
                 </Button>
               </div>
             </div>
