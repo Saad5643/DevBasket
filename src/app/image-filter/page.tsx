@@ -174,7 +174,7 @@ export default function ImageFilterTool() {
                     <div className="space-y-6 pt-4 max-h-[450px] overflow-y-auto pr-2">
                       {filterControls.map(fc => (
                         <div key={fc.key}>
-                           <Label htmlFor={fc.key} className="flex justify-between"><span>{fc.name}</span> <span>{filters[fc.key as FilterKeys]}{fc.unit}</span></Label>
+                           <Label htmlFor={fc.key} className="flex justify-between mb-2"><span>{fc.name}</span> <span>{filters[fc.key as FilterKeys]}{fc.unit}</span></Label>
                            <Slider id={fc.key} min={fc.min} max={fc.max} step={1} value={[filters[fc.key as FilterKeys]]} onValueChange={(val) => handleFilterChange(fc.key as FilterKeys, val[0])} disabled={!imageSrc} />
                         </div>
                       ))}
