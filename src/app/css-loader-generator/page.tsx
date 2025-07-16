@@ -23,7 +23,8 @@ const loaderTypes = {
         border: `4px solid ${color}33`,
         borderTopColor: color,
         borderRadius: '50%',
-      }} className="animate-spin"></div>
+        animation: 'spin 1s linear infinite'
+      }} />
     ),
     getCss: (color: string, size: number) => `
 .spinner {
@@ -46,10 +47,10 @@ const loaderTypes = {
     name: 'Bouncing Dots',
     icon: <MoreVertical className="rotate-90" />,
     component: ({ color, size }: { color: string; size: number }) => (
-      <div className="flex space-x-2">
+      <div className="flex" style={{ gap: `${size / 8}px` }}>
         <div style={{ backgroundColor: color, width: size / 4, height: size / 4, borderRadius: '50%', animation: 'dot-bounce 1.4s infinite ease-in-out both' }} />
-        <div style={{ backgroundColor: color, width: size / 4, height: size / 4, borderRadius: '50%', animation: 'dot-bounce 1.4s infinite ease-in-out both .16s' }} />
-        <div style={{ backgroundColor: color, width: size / 4, height: size / 4, borderRadius: '50%', animation: 'dot-bounce 1.4s infinite ease-in-out both .32s' }} />
+        <div style={{ backgroundColor: color, width: size / 4, height: size / 4, borderRadius: '50%', animation: 'dot-bounce 1.4s infinite ease-in-out both', animationDelay: '-0.16s' }} />
+        <div style={{ backgroundColor: color, width: size / 4, height: size / 4, borderRadius: '50%', animation: 'dot-bounce 1.4s infinite ease-in-out both', animationDelay: '-0.32s' }} />
       </div>
     ),
     getCss: (color: string, size: number) => `
@@ -118,8 +119,8 @@ const loaderTypes = {
     component: ({ color, size }: { color: string; size: number }) => (
       <div className="flex items-end justify-center" style={{gap: `${size/8}px`, height: `${size}px`, width: `${size}px`}}>
         <div style={{ backgroundColor: color, width: size / 5, height: size, animation: 'slide-up-down 1.2s infinite ease-in-out' }} />
-        <div style={{ backgroundColor: color, width: size / 5, height: size, animation: 'slide-up-down 1.2s infinite ease-in-out .2s' }} />
-        <div style={{ backgroundColor: color, width: size / 5, height: size, animation: 'slide-up-down 1.2s infinite ease-in-out .4s' }} />
+        <div style={{ backgroundColor: color, width: size / 5, height: size, animation: 'slide-up-down 1.2s infinite ease-in-out', animationDelay: '0.2s' }} />
+        <div style={{ backgroundColor: color, width: size / 5, height: size, animation: 'slide-up-down 1.2s infinite ease-in-out', animationDelay: '0.4s' }} />
       </div>
     ),
     getCss: (color: string, size: number) => `
@@ -162,8 +163,8 @@ const loaderTypes = {
     name: 'Wave',
     icon: <Waves />,
     component: ({ color, size }: { color: string; size: number }) => (
-       <div style={{ width: size, height: size, border: `3px solid ${color}`, borderRadius: '50%', position: 'relative' }}>
-          <div style={{ position: 'absolute', top: '50%', left: '50%', width: '100%', height: '100%', borderRadius: '50%', backgroundColor: `${color}4D`, transform: 'translate(-50%, -50%)', animation: 'wave-anim 2s infinite linear' }} />
+       <div style={{ width: size, height: size, border: `3px solid ${color}`, borderRadius: '50%', position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', top: '50%', left: '50%', width: size*2, height: size*2, backgroundColor: `${color}4D`, borderRadius: '40%', animation: 'wave-anim 3s infinite linear' }} />
        </div>
     ),
     getCss: (color: string, size: number) => `
@@ -175,7 +176,7 @@ const loaderTypes = {
   position: relative;
   overflow: hidden;
 }
-.wave-loader:before {
+.wave-loader::before {
   content: '';
   position: absolute;
   top: 50%;
@@ -184,15 +185,14 @@ const loaderTypes = {
   height: ${size * 2}px;
   background-color: ${color}4D;
   border-radius: 40%;
-  transform: translate(-50%, -50%);
   animation: wave-anim 3s infinite linear;
 }
 @keyframes wave-anim {
   0% {
-    transform: translate(-50%,-50%) rotate(0deg);
+    transform: translate(-50%, -50%) rotate(0deg);
   }
   100% {
-    transform: translate(-50%,-50%) rotate(360deg);
+    transform: translate(-50%, -50%) rotate(360deg);
   }
 }`.trim(),
     getHtml: () => `<div class="wave-loader"></div>`,
@@ -201,10 +201,10 @@ const loaderTypes = {
     name: 'Fading Dots',
     icon: <MoreVertical className="rotate-90" />,
     component: ({ color, size }: { color: string; size: number }) => (
-      <div className="flex space-x-2">
-        <div style={{ backgroundColor: color, width: size / 4, height: size / 4, borderRadius: '50%', animation: 'fade-in-out 1.2s infinite ease-in-out' }} />
-        <div style={{ backgroundColor: color, width: size / 4, height: size / 4, borderRadius: '50%', animation: 'fade-in-out 1.2s infinite ease-in-out .3s' }} />
-        <div style={{ backgroundColor: color, width: size / 4, height: size / 4, borderRadius: '50%', animation: 'fade-in-out 1.2s infinite ease-in-out .6s' }} />
+      <div className="flex" style={{ gap: `${size / 8}px` }}>
+        <div style={{ backgroundColor: color, width: size / 4, height: size / 4, borderRadius: '50%', animation: 'fade-in-out 1.2s infinite ease-in-out both' }} />
+        <div style={{ backgroundColor: color, width: size / 4, height: size / 4, borderRadius: '50%', animation: 'fade-in-out 1.2s infinite ease-in-out both', animationDelay: '0.3s' }} />
+        <div style={{ backgroundColor: color, width: size / 4, height: size / 4, borderRadius: '50%', animation: 'fade-in-out 1.2s infinite ease-in-out both', animationDelay: '0.6s' }} />
       </div>
     ),
     getCss: (color: string, size: number) => `
@@ -217,7 +217,7 @@ const loaderTypes = {
   height: ${size / 4}px;
   border-radius: 50%;
   background-color: ${color};
-  animation: fade-in-out 1.2s infinite ease-in-out;
+  animation: fade-in-out 1.2s infinite ease-in-out both;
 }
 .fade-dot:nth-child(2) {
   animation-delay: 0.3s;
@@ -245,7 +245,7 @@ const loaderTypes = {
     icon: <Disc />,
     component: ({ color, size }: { color: string; size: number }) => (
       <div style={{ width: size, height: size, border: `2px solid ${color}33`, borderRadius: '50%', position: 'relative', animation: 'spin 2s linear infinite' }}>
-        <div style={{ position: 'absolute', top: '-5px', left: '50%', transform: 'translateX(-50%)', width: '10px', height: '10px', backgroundColor: color, borderRadius: '50%' }} />
+        <div style={{ position: 'absolute', top: `-${size/10}px`, left: '50%', transform: 'translateX(-50%)', width: `${size/5}px`, height: `${size/5}px`, backgroundColor: color, borderRadius: '50%' }} />
       </div>
     ),
     getCss: (color: string, size: number) => `
@@ -280,8 +280,8 @@ const loaderTypes = {
     icon: <Disc />,
     component: ({ color, size }: { color: string; size: number }) => (
       <div style={{ position: 'relative', width: size, height: size }}>
-        <div style={{ position: 'absolute', border: `4px solid ${color}`, borderRadius: '50%', animation: 'ripple-anim 1s cubic-bezier(0, 0.2, 0.8, 1) infinite', opacity: 1}} />
-        <div style={{ position: 'absolute', border: `4px solid ${color}`, borderRadius: '50%', animation: 'ripple-anim 1s cubic-bezier(0, 0.2, 0.8, 1) infinite', opacity: 1, animationDelay: '-0.5s'}} />
+        <div style={{ position: 'absolute', border: `4px solid ${color}`, borderRadius: '50%', animation: 'ripple-anim 1.2s cubic-bezier(0, 0.2, 0.8, 1) infinite', opacity: 1}} />
+        <div style={{ position: 'absolute', border: `4px solid ${color}`, borderRadius: '50%', animation: 'ripple-anim 1.2s cubic-bezier(0, 0.2, 0.8, 1) infinite', opacity: 1, animationDelay: '-0.6s'}} />
       </div>
     ),
     getCss: (color: string, size: number) => `
@@ -357,10 +357,10 @@ const loaderTypes = {
     name: 'Typing',
     icon: <MoreVertical className="rotate-90" />,
     component: ({ color, size }: { color: string; size: number }) => (
-      <div className="flex space-x-2">
+      <div className="flex" style={{gap: `${size/10}px`}}>
         <div style={{ backgroundColor: color, width: size / 5, height: size / 5, borderRadius: '50%', animation: 'typing-anim 1.4s infinite both' }} />
-        <div style={{ backgroundColor: color, width: size / 5, height: size / 5, borderRadius: '50%', animation: 'typing-anim 1.4s infinite both .2s' }} />
-        <div style={{ backgroundColor: color, width: size / 5, height: size / 5, borderRadius: '50%', animation: 'typing-anim 1.4s infinite both .4s' }} />
+        <div style={{ backgroundColor: color, width: size / 5, height: size / 5, borderRadius: '50%', animation: 'typing-anim 1.4s infinite both', animationDelay: '.2s' }} />
+        <div style={{ backgroundColor: color, width: size / 5, height: size / 5, borderRadius: '50%', animation: 'typing-anim 1.4s infinite both', animationDelay: '.4s' }} />
       </div>
     ),
     getCss: (color: string, size: number) => `
@@ -411,9 +411,38 @@ export default function CssLoaderGenerator() {
 
   const loaderKeys = Object.keys(loaderTypes) as LoaderType[];
   const selectedLoader = loaderTypes[activeLoader];
+
+  // This is a workaround for a hydration mismatch issue with animations
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(true);
+    const styleSheet = document.createElement("style");
+    styleSheet.type = "text/css";
+    styleSheet.innerText = Object.values(loaderTypes).map(l => l.getCss('#000', 48)).join('\n\n');
+    document.head.appendChild(styleSheet);
+
+    const keyframes = `
+      @keyframes spin { to { transform: rotate(360deg); } }
+      @keyframes dot-bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1); } }
+      @keyframes pulse { 0% { transform: scale(0); opacity: 1; } 100% { transform: scale(1); opacity: 0; } }
+      @keyframes slide-up-down { 0%, 40%, 100% { transform: scaleY(0.4); } 20% { transform: scaleY(1.0); } }
+      @keyframes wave-anim { 0% { transform: translate(-50%, -50%) rotate(0deg); } 100% { transform: translate(-50%, -50%) rotate(360deg); } }
+      @keyframes fade-in-out { 0%, 100% { opacity: 0.3; } 50% { opacity: 1; } }
+      @keyframes ripple-anim { 0% { top: 50%; left: 50%; width: 0; height: 0; opacity: 0; } 5% { top: 50%; left: 50%; width: 0; height: 0; opacity: 1; } 100% { top: 0px; left: 0px; width: 100%; height: 100%; opacity: 0; } }
+      @keyframes flip-anim { 0% { transform: perspective(120px) rotateX(0deg) rotateY(0deg); } 50% { transform: perspective(120px) rotateX(-180.1deg) rotateY(0deg); } 100% { transform: perspective(120px) rotateX(-180deg) rotateY(-179.9deg); } }
+      @keyframes typing-anim { 0% { transform: translateY(0); } 20% { transform: translateY(-${size/5}px); } 40%, 100% { transform: translateY(0); } }
+    `;
+
+    const keyframeSheet = document.createElement("style");
+    keyframeSheet.innerText = keyframes;
+    document.head.appendChild(keyframeSheet);
+
+
+  }, [size]);
+
   const cssCode = selectedLoader.getCss(color, size);
   const htmlCode = selectedLoader.getHtml();
-
+  
   const handleCopy = (code: string, type: string) => {
     navigator.clipboard.writeText(code);
     toast({
@@ -464,7 +493,7 @@ export default function CssLoaderGenerator() {
                 <div className="w-full">
                   <h3 className="text-lg font-semibold mb-2 text-center">{selectedLoader.name}</h3>
                   <Card className="w-full h-64 flex items-center justify-center bg-muted/50 border-dashed">
-                    {selectedLoader.component({ color, size })}
+                    {isClient && selectedLoader.component({ color, size })}
                   </Card>
                    <div className="flex justify-center items-center gap-4 mt-4">
                       <Button variant="outline" size="icon" onClick={() => cycleLoader('prev')}>
