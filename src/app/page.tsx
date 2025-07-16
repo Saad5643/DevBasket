@@ -94,8 +94,8 @@ export default function Home() {
       <main className="flex-1">
         <section className="w-full py-24 md:py-32 lg:py-40 border-b">
           <div className="container px-4 md:px-6">
-            <div className="grid gap-6 lg:grid-cols-[1fr_400px] lg:gap-12 xl:grid-cols-[1fr_600px]">
-               <div className="flex flex-col justify-center space-y-4">
+            <div className="flex flex-col items-center gap-6 text-center">
+              <div className="flex flex-col justify-center space-y-4">
                 <div className="space-y-2">
                   <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl xl:text-6xl/none bg-gradient-to-r from-primary to-blue-400 bg-clip-text text-transparent">
                     Your Daily Developer Toolkit.
@@ -104,7 +104,7 @@ export default function Home() {
                     All the handy tools, in one basket. From URL shorteners to thumbnail downloaders — everything in one place.
                   </p>
                 </div>
-                <div className="flex flex-col gap-2 min-[400px]:flex-row">
+                <div className="flex flex-col gap-2 min-[400px]:flex-row justify-center">
                   <Button asChild size="lg" className="transform-gpu transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
                     <Link href="#tools">Explore Tools</Link>
                   </Button>

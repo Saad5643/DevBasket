@@ -70,8 +70,8 @@ export default function YoutubeThumbnailDownloader() {
     <div className="bg-background min-h-screen">
       <main className="container mx-auto px-4 py-8 md:py-12">
         <Card className="max-w-4xl mx-auto shadow-lg">
-          <CardHeader>
-            <CardTitle className="text-3xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
+          <CardHeader className="text-center">
+            <CardTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
               YouTube Thumbnail Downloader
             </CardTitle>
           </CardHeader>
