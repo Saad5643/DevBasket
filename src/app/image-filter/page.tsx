@@ -20,7 +20,7 @@ const initialFilters = {
   'hue-rotate': 0,
   invert: 0,
   opacity: 100,
-  sharpen: 0, // This will be a simulated effect
+  sharpen: 0,
 };
 
 type FilterKeys = keyof typeof initialFilters;
@@ -54,14 +54,6 @@ export default function ImageFilterTool() {
   };
   
   const getCssFilterString = () => {
-    // A simple way to simulate sharpen is by manipulating contrast, but it's not a true sharpen.
-    // For a real sharpen, canvas-based pixel manipulation would be needed.
-    // This uses an SVG filter definition for a more convincing sharpen effect.
-    // However, for direct application, we will stick to a simpler CSS combination.
-    // The canvas download will use the CSS filter string.
-    
-    // A simple trick for a sharpen-like effect with CSS filters.
-    // It is not perfect. A more advanced sharpen would use SVG filters or canvas.
     const sharpenContrast = 100 + filters.sharpen / 2;
 
     return `
@@ -114,7 +106,7 @@ export default function ImageFilterTool() {
     { name: 'Opacity', key: 'opacity', min: 0, max: 100, unit: '%' },
     { name: 'Blur', key: 'blur', min: 0, max: 20, unit: 'px' },
     { name: 'Hue Rotate', key: 'hue-rotate', min: 0, max: 360, unit: 'deg' },
-    { name: 'Sharpen', key: 'sharpen', min: 0, max: 100, unit: '%' },
+    { name: 'Sharpen (simulated)', key: 'sharpen', min: 0, max: 100, unit: '%' },
   ];
 
   return (
