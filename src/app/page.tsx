@@ -40,49 +40,55 @@ const tools = [
 export default function Home() {
   return (
     <div className="flex min-h-dvh w-full flex-col bg-background">
-      <header className="sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background/80 px-4 backdrop-blur md:px-6">
-        <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
-          <Link href="#" className="flex items-center gap-2 text-lg font-semibold md:text-base">
-            <Package2 className="h-6 w-6" />
-            <span className="font-bold text-foreground">Dev Basket 🧺</span>
-          </Link>
-          <Link href="#tools" className="text-muted-foreground transition-colors hover:text-foreground">
-            Tools
-          </Link>
-          <Link href="#about" className="text-muted-foreground transition-colors hover:text-foreground">
-            About
-          </Link>
-          <Link href="#suggest" className="text-muted-foreground transition-colors hover:text-foreground">
-            Suggest a Tool
-          </Link>
-        </nav>
-        <Sheet>
-          <SheetTrigger asChild>
-            <Button variant="outline" size="icon" className="shrink-0 md:hidden">
-              <Menu className="h-5 w-5" />
-              <span className="sr-only">Toggle navigation menu</span>
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="left">
-            <nav className="grid gap-6 text-lg font-medium">
-              <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
-                <Package2 className="h-6 w-6" />
-                 <span className="font-bold text-foreground">Dev Basket 🧺</span>
-              </Link>
-              <Link href="#tools" className="text-muted-foreground hover:text-foreground">
+      <header className="sticky top-0 z-50 w-full border-b bg-background/80 px-4 py-2 backdrop-blur sm:px-6">
+        <div className="mx-auto flex h-14 max-w-7xl items-center justify-between">
+          <div className="flex items-center">
+            <Link href="#" className="flex items-center gap-2">
+              <Package2 className="h-6 w-6" />
+              <span className="font-bold">Dev Basket 🧺</span>
+            </Link>
+          </div>
+          <div className="hidden flex-1 justify-center md:flex">
+            <nav className="flex items-center gap-6 text-sm">
+              <Link href="#tools" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
                 Tools
               </Link>
-              <Link href="#about" className="text-muted-foreground hover:text-foreground">
+              <Link href="#about" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
                 About
               </Link>
-              <Link href="#suggest" className="text-muted-foreground hover:text-foreground">
+              <Link href="#suggest" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
                 Suggest a Tool
               </Link>
             </nav>
-          </SheetContent>
-        </Sheet>
-        <div className="flex w-full items-center justify-end gap-4 md:ml-auto md:gap-2 lg:gap-4">
-          <ThemeToggle />
+          </div>
+          <div className="flex items-center justify-end gap-4 md:flex-1">
+            <ThemeToggle />
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="icon" className="shrink-0 md:hidden">
+                  <Menu className="h-5 w-5" />
+                  <span className="sr-only">Toggle navigation menu</span>
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="left">
+                <nav className="grid gap-6 text-lg font-medium">
+                  <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
+                    <Package2 className="h-6 w-6" />
+                    <span className="font-bold text-foreground">Dev Basket 🧺</span>
+                  </Link>
+                  <Link href="#tools" className="text-muted-foreground hover:text-foreground">
+                    Tools
+                  </Link>
+                  <Link href="#about" className="text-muted-foreground hover:text-foreground">
+                    About
+                  </Link>
+                  <Link href="#suggest" className="text-muted-foreground hover:text-foreground">
+                    Suggest a Tool
+                  </Link>
+                </nav>
+              </SheetContent>
+            </Sheet>
+          </div>
         </div>
       </header>
       <main className="flex-1">
