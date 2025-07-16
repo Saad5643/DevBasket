@@ -17,8 +17,7 @@ const tools = [
     name: 'Word Counter',
     description: 'Count words, characters, and sentences in your text.',
     icon: <TextQuote className="h-8 w-8" />,
-    href: '#',
-    comingSoon: true,
+    href: '/word-counter',
   },
   {
     name: 'URL Shortener',
