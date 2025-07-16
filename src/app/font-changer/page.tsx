@@ -135,7 +135,7 @@ export default function FontChanger() {
                                 <Slider id="line-height" min={0.8} max={3} step={0.1} value={[lineHeight]} onValueChange={(val) => setLineHeight(val[0])} />
                             </div>
                              <div>
-                                <Label className="flex justify-between"><span>Text Align</span></Label>
+                                <Label className="mb-2 block">Text Align</Label>
                                 <ToggleGroup type="single" value={textAlign} onValueChange={(val: 'left' | 'center' | 'right') => val && setTextAlign(val)} className="w-full">
                                     <ToggleGroupItem value="left" aria-label="Align left" className="w-full"><AlignLeft /></ToggleGroupItem>
                                     <ToggleGroupItem value="center" aria-label="Align center" className="w-full"><AlignCenter /></ToggleGroupItem>
