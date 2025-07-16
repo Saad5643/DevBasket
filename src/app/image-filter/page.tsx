@@ -54,9 +54,15 @@ export default function ImageFilterTool() {
   };
   
   const getCssFilterString = () => {
-    // A simple way to simulate sharpen is to add a bit of contrast.
-    // A more complex way would involve SVG filters, which is beyond this scope.
-    const sharpenContrast = 100 + filters.sharpen;
+    // A simple way to simulate sharpen is by manipulating contrast, but it's not a true sharpen.
+    // For a real sharpen, canvas-based pixel manipulation would be needed.
+    // This uses an SVG filter definition for a more convincing sharpen effect.
+    // However, for direct application, we will stick to a simpler CSS combination.
+    // The canvas download will use the CSS filter string.
+    
+    // A simple trick for a sharpen-like effect with CSS filters.
+    // It is not perfect. A more advanced sharpen would use SVG filters or canvas.
+    const sharpenContrast = 100 + filters.sharpen / 2;
 
     return `
       brightness(${filters.brightness}%)
