@@ -48,7 +48,7 @@ const IMessageHeader = ({ name, pfp }: { name: string; pfp: string }) => (
   </div>
 );
 
-const WhatsAppHeader = ({ name, pfp }: { name:string, pfp: string }) => (
+const WhatsAppHeader = ({ name, pfp, status }: { name: string, pfp: string, status: string }) => (
     <div className="flex items-center justify-between p-2 bg-[#008069] dark:bg-[#202c33] text-white">
         <div className="flex items-center gap-3">
             <ArrowLeft size={22} />
@@ -58,7 +58,7 @@ const WhatsAppHeader = ({ name, pfp }: { name:string, pfp: string }) => (
             </Avatar>
             <div>
                 <h3 className="font-semibold">{name}</h3>
-                <p className="text-xs text-white/90">online</p>
+                <p className="text-xs text-white/90">{status}</p>
             </div>
         </div>
         <div className="flex items-center gap-4">
@@ -69,7 +69,7 @@ const WhatsAppHeader = ({ name, pfp }: { name:string, pfp: string }) => (
     </div>
 );
 
-const InstagramHeader = ({ name, pfp }: { name: string; pfp: string }) => (
+const InstagramHeader = ({ name, pfp, status }: { name: string; pfp: string, status: string }) => (
   <div className="flex items-center justify-between p-3 border-b border-border/70 bg-white dark:bg-black">
       <div className="flex items-center gap-3">
           <ArrowLeft size={24} />
@@ -79,7 +79,7 @@ const InstagramHeader = ({ name, pfp }: { name: string; pfp: string }) => (
           </Avatar>
           <div>
               <h3 className="font-semibold">{name}</h3>
-              <p className="text-xs text-muted-foreground">Active now</p>
+              <p className="text-xs text-muted-foreground">{status}</p>
           </div>
       </div>
       <div className="flex items-center gap-5">
@@ -90,7 +90,7 @@ const InstagramHeader = ({ name, pfp }: { name: string; pfp: string }) => (
   </div>
 );
 
-const TelegramHeader = ({ name, pfp }: { name: string; pfp: string }) => (
+const TelegramHeader = ({ name, pfp, status }: { name: string; pfp: string, status: string }) => (
   <div className="flex items-center justify-between p-2 bg-[#527da3] dark:bg-[#212d3b] text-white">
       <div className="flex items-center gap-3">
           <ArrowLeft size={22} />
@@ -100,7 +100,7 @@ const TelegramHeader = ({ name, pfp }: { name: string; pfp: string }) => (
           </Avatar>
           <div>
               <h3 className="font-semibold">{name}</h3>
-              <p className="text-xs text-white/90">typing...</p>
+              <p className="text-xs text-white/90">{status}</p>
           </div>
       </div>
       <div className="flex items-center gap-4">
@@ -126,10 +126,10 @@ const ReadStatusIcon = ({ status, platform }: { status: Message['status'], platf
 }
 
 const platforms = {
-    imessage: { name: "iMessage" },
-    whatsapp: { name: "WhatsApp" },
-    instagram: { name: "Instagram" },
-    telegram: { name: "Telegram" },
+    imessage: { name: "iMessage", defaultStatus: "FaceTime" },
+    whatsapp: { name: "WhatsApp", defaultStatus: "online" },
+    instagram: { name: "Instagram", defaultStatus: "Active now" },
+    telegram: { name: "Telegram", defaultStatus: "typing..." },
 }
 
 export default function ChatGenerator() {
@@ -139,6 +139,7 @@ export default function ChatGenerator() {
 
   const [receiverName, setReceiverName] = useState('Sarah');
   const [receiverPfp, setReceiverPfp] = useState('https://placehold.co/128x128.png?text=S');
+  const [receiverStatus, setReceiverStatus] = useState(platforms.imessage.defaultStatus);
   
   const [senderName, setSenderName] = useState('Me');
   const [senderPfp, setSenderPfp] = useState('https://placehold.co/128x128.png?text=M');
@@ -150,6 +151,11 @@ export default function ChatGenerator() {
   ]);
 
   const [newMessage, setNewMessage] = useState('');
+
+  const handlePlatformChange = (value: Platform) => {
+    setPlatform(value);
+    setReceiverStatus(platforms[value].defaultStatus);
+  }
   
   const handlePfpUpload = (event: React.ChangeEvent<HTMLInputElement>, user: 'sender' | 'receiver') => {
     const file = event.target.files?.[0];
@@ -187,6 +193,7 @@ export default function ChatGenerator() {
     setPlatform('imessage');
     setReceiverName('Sarah');
     setReceiverPfp('https://placehold.co/128x128.png?text=S');
+    setReceiverStatus(platforms.imessage.defaultStatus);
     setSenderName('Me');
     setSenderPfp('https://placehold.co/128x128.png?text=M');
     setMessages([
@@ -245,7 +252,7 @@ export default function ChatGenerator() {
                     <CardContent className="space-y-4">
                         <div>
                             <Label htmlFor="platform-select">Platform</Label>
-                             <Select value={platform} onValueChange={(value) => setPlatform(value as Platform)}>
+                             <Select value={platform} onValueChange={(value) => handlePlatformChange(value as Platform)}>
                                 <SelectTrigger id="platform-select">
                                     <SelectValue placeholder="Select a platform" />
                                 </SelectTrigger>
@@ -277,6 +284,9 @@ export default function ChatGenerator() {
                              </Button>
                            </div>
                            <Input id="receiver-name" value={receiverName} onChange={e => setReceiverName(e.target.value)} placeholder="Receiver's Name" />
+                           {platform !== 'imessage' && (
+                              <Input id="receiver-status" value={receiverStatus} onChange={e => setReceiverStatus(e.target.value)} placeholder="Status, last seen, etc." />
+                           )}
                         </div>
                         <Separator />
                         {/* Sender */}
@@ -292,7 +302,7 @@ export default function ChatGenerator() {
                                 <Label htmlFor="sender-pfp-upload" className="cursor-pointer">Upload</Label>
                              </Button>
                            </div>
-                           {/* Sender name is not editable as it's usually "Me" or not shown */}
+                           <Input id="sender-name" value={senderName} onChange={e => setSenderName(e.target.value)} placeholder="Your Name" />
                         </div>
                     </CardContent>
                 </Card>
@@ -317,7 +327,7 @@ export default function ChatGenerator() {
                        <Label htmlFor="new-message">New Message</Label>
                        <Textarea id="new-message" value={newMessage} onChange={e => setNewMessage(e.target.value)} placeholder="Type your message..." />
                        <div className="flex gap-2">
-                         <Button onClick={() => handleAddMessage('me')} className="flex-1">Send as Me</Button>
+                         <Button onClick={() => handleAddMessage('me')} className="flex-1">Send as {senderName}</Button>
                          <Button onClick={() => handleAddMessage('other')} variant="secondary" className="flex-1">Send as {receiverName}</Button>
                        </div>
                      </div>
@@ -339,9 +349,9 @@ export default function ChatGenerator() {
                         )}>
                         <div className="w-full h-full flex flex-col bg-white dark:bg-black">
                            {platform === 'imessage' && <IMessageHeader name={receiverName} pfp={receiverPfp} />}
-                           {platform === 'whatsapp' && <WhatsAppHeader name={receiverName} pfp={receiverPfp} />}
-                           {platform === 'instagram' && <InstagramHeader name={receiverName} pfp={receiverPfp} />}
-                           {platform === 'telegram' && <TelegramHeader name={receiverName} pfp={receiverPfp} />}
+                           {platform === 'whatsapp' && <WhatsAppHeader name={receiverName} pfp={receiverPfp} status={receiverStatus} />}
+                           {platform === 'instagram' && <InstagramHeader name={receiverName} pfp={receiverPfp} status={receiverStatus} />}
+                           {platform === 'telegram' && <TelegramHeader name={receiverName} pfp={receiverPfp} status={receiverStatus} />}
                            
                            <div className={cn("flex-1 p-4 space-y-2 overflow-y-auto",
                             platform === 'imessage' ? 'bg-white dark:bg-black' : 
@@ -409,5 +419,3 @@ export default function ChatGenerator() {
     </div>
   );
 }
-
-    
