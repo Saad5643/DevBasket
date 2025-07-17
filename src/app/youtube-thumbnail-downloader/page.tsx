@@ -78,7 +78,7 @@ export default function YoutubeThumbnailDownloader() {
         <div className="mb-8">
             <Button asChild variant="outline" size="sm">
                 <Link href="/">
-                    <ArrowLeft className="mr-2" />
+                    <ArrowLeft className="mr-2 h-4 w-4" />
                     Back to Tools
                 </Link>
             </Button>
@@ -107,12 +107,12 @@ export default function YoutubeThumbnailDownloader() {
                 onKeyDown={(e) => e.key === 'Enter' && handleShowThumbnail()}
               />
               <Button onClick={handleShowThumbnail} disabled={loading || !url}>
-                {loading ? <RefreshCw className="animate-spin" /> : null}
+                {loading ? <RefreshCw className="animate-spin mr-2 h-4 w-4" /> : null}
                 Get Thumbnails
               </Button>
               {(videoId || url) && (
                 <Button variant="outline" onClick={handleReset}>
-                  <X /> Reset
+                  <X className="mr-2 h-4 w-4" /> Reset
                 </Button>
               )}
             </div>
