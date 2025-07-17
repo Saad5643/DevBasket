@@ -11,6 +11,12 @@ import { Menu, Package2, Youtube, TextQuote, Rss, Send, ChevronDown, Type, Image
 
 const tools = [
   {
+    name: 'YouTube Thumbnail Downloader',
+    description: 'Grab all available thumbnail resolutions from a YouTube video.',
+    icon: <Youtube className="h-8 w-8" />,
+    href: '/youtube-thumbnail-downloader',
+  },
+  {
     name: 'Word Counter',
     description: 'Count words, characters, and sentences in your text.',
     icon: <TextQuote className="h-8 w-8" />,
@@ -56,7 +62,7 @@ export default function Home() {
           <div className="flex items-center gap-6">
             <Link href="#" className="flex items-center gap-2">
               <Package2 className="h-6 w-6" />
-              <span className="text-lg font-bold">Dev Basket 🧺</span>
+              <span className="text-lg font-bold">Thumbzilla</span>
             </Link>
             <nav className="hidden items-center gap-6 text-sm md:flex">
               <Link href="#tools" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
@@ -80,7 +86,7 @@ export default function Home() {
                 <nav className="grid gap-6 text-lg font-medium">
                   <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
                     <Package2 className="h-6 w-6" />
-                    <span className="font-bold text-foreground">Dev Basket 🧺</span>
+                    <span className="font-bold text-foreground">Thumbzilla</span>
                   </Link>
                   <Link href="#tools" className="text-muted-foreground hover:text-foreground">
                     Tools
@@ -100,7 +106,7 @@ export default function Home() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                  <span className="inline-block bg-gradient-to-r from-primary to-accent bg-[200%_auto] bg-clip-text text-transparent animate-gradient">
+                  <span className="inline-block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-gradient">
                     Your Daily Developer Toolkit.
                   </span>
                 </h1>
@@ -175,7 +181,7 @@ export default function Home() {
         </section>
       </main>
       <footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
-        <p className="text-xs text-muted-foreground">&copy; 2024 Dev Basket. Made with ❤️</p>
+        <p className="text-xs text-muted-foreground">&copy; 2024 Thumbzilla. Made with ❤️</p>
         <nav className="flex gap-4 sm:ml-auto sm:gap-6">
           <Link href="#" className="text-xs hover:underline underline-offset-4">
             Privacy
