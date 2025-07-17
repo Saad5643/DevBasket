@@ -105,8 +105,10 @@ export default function Home() {
           <div className="container flex min-h-[calc(100vh-5rem)] items-center justify-center px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h1 className="text-4xl font-extrabold tracking-tighter text-foreground sm:text-5xl xl:text-6xl/none">
-                  Your Daily Developer Toolkit.
+                <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl xl:text-6xl/none">
+                  <span className="inline-block bg-gradient-to-r from-primary to-accent bg-[200%_auto] bg-clip-text text-transparent animate-gradient">
+                    Your Daily Developer Toolkit.
+                  </span>
                 </h1>
                 <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl">
                   From thumbnail grabbers to URL shorteners, find everything you need — fast and free.
