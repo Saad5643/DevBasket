@@ -11,12 +11,6 @@ import { Menu, Package2, Youtube, TextQuote, Rss, Send, ChevronDown, Type, Image
 
 const tools = [
   {
-    name: 'YouTube Thumbnail Downloader',
-    description: 'Grab high-quality thumbnails from any YouTube video.',
-    icon: <Youtube className="h-8 w-8" />,
-    href: '/youtube-thumbnail-downloader',
-  },
-  {
     name: 'Word Counter',
     description: 'Count words, characters, and sentences in your text.',
     icon: <TextQuote className="h-8 w-8" />,
