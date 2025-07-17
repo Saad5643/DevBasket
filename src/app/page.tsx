@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, Package2, Youtube, TextQuote, Rss, Send, ChevronDown, Type, Image as ImageIcon, Loader2 } from 'lucide-react';
+import { Menu, Package2, Youtube, TextQuote, Rss, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare } from 'lucide-react';
 
 const tools = [
   {
@@ -40,12 +40,11 @@ const tools = [
     icon: <Loader2 className="h-8 w-8" />,
     href: '/css-loader-generator',
   },
-  {
-    name: 'Coming Soon',
-    description: 'More handy tools are on the way. Stay tuned!',
-    icon: <Rss className="h-8 w-8" />,
-    href: '#',
-    comingSoon: true,
+    {
+    name: 'Tweet Generator',
+    description: 'Create and download realistic mockups of tweets.',
+    icon: <MessageSquare className="h-8 w-8" />,
+    href: '/tweet-generator',
   },
 ];
 
