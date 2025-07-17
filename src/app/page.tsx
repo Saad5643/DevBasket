@@ -17,12 +17,6 @@ const tools = [
     href: '/youtube-thumbnail-downloader',
   },
   {
-    name: 'YouTube Video Downloader',
-    description: 'Download YouTube videos and audio (UI Prototype).',
-    icon: <DownloadIcon className="h-8 w-8" />,
-    href: '/youtube-downloader',
-  },
-  {
     name: 'Word Counter',
     description: 'Count words, characters, and sentences in your text.',
     icon: <TextQuote className="h-8 w-8" />,
