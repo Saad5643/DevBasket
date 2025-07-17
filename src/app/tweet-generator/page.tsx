@@ -43,6 +43,7 @@ export default function TweetGenerator() {
   const [date, setDate] = useState<Date | undefined>();
 
   useEffect(() => {
+    // Set date only on the client to avoid hydration mismatch
     setDate(new Date());
   }, []);
 
@@ -262,5 +263,4 @@ export default function TweetGenerator() {
       </main>
     </div>
   );
-
-    
+}
