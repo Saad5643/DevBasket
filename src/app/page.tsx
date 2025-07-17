@@ -7,14 +7,20 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, Package2, Youtube, TextQuote, Rss, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare, MessagesSquare, Download as DownloadIcon } from 'lucide-react';
+import { Menu, Package2, TextQuote, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare, MessagesSquare, Captions, ImageDown } from 'lucide-react';
 
 const tools = [
   {
     name: 'YouTube Thumbnail Downloader',
     description: 'Grab all available thumbnail resolutions from a YouTube video.',
-    icon: <Youtube className="h-8 w-8" />,
+    icon: <ImageDown className="h-8 w-8" />,
     href: '/youtube-thumbnail-downloader',
+  },
+  {
+    name: 'Image Caption Generator',
+    description: 'Generate AI-powered captions for your images in various styles.',
+    icon: <Captions className="h-8 w-8" />,
+    href: '/image-caption-generator',
   },
   {
     name: 'Word Counter',
