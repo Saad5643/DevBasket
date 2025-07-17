@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, Package2, Youtube, TextQuote, Rss, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare, MessagesSquare } from 'lucide-react';
+import { Menu, Package2, Youtube, TextQuote, Rss, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare, MessagesSquare, Download as DownloadIcon } from 'lucide-react';
 
 const tools = [
   {
@@ -15,6 +15,12 @@ const tools = [
     description: 'Grab high-quality thumbnails from any YouTube video.',
     icon: <Youtube className="h-8 w-8" />,
     href: '/youtube-thumbnail-downloader',
+  },
+  {
+    name: 'YouTube Video Downloader',
+    description: 'Download YouTube videos and audio (UI Prototype).',
+    icon: <DownloadIcon className="h-8 w-8" />,
+    href: '/youtube-downloader',
   },
   {
     name: 'Word Counter',
