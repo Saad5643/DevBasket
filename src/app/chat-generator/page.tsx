@@ -10,27 +10,24 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, MessagesSquare, Download, Upload, RefreshCw, Trash2, Send, ChevronLeft, Video, Phone } from 'lucide-react';
+import { ArrowLeft, MessagesSquare, Download, Upload, RefreshCw, Trash2, Send, ChevronLeft, Video, Phone, MoreVertical, Search, Check, CheckCheck } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Separator } from '@/components/ui/separator';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { cn } from '@/lib/utils';
+
 
 type Message = {
   id: number;
   text: string;
   sender: 'me' | 'other';
+  status?: 'sent' | 'delivered' | 'read';
+  time: string;
 };
 
-const TopBar = () => (
-  <div className="w-full h-6 bg-muted dark:bg-zinc-800 rounded-t-lg flex items-center px-2">
-    <div className="flex gap-1">
-      <div className="w-3 h-3 rounded-full bg-red-500"></div>
-      <div className="w-3 h-3 rounded-full bg-yellow-500"></div>
-      <div className="w-3 h-3 rounded-full bg-green-500"></div>
-    </div>
-  </div>
-);
+type Platform = 'imessage' | 'whatsapp';
 
-const ChatHeader = ({ name, pfp }: { name: string; pfp: string }) => (
+const IMessageHeader = ({ name, pfp }: { name: string; pfp: string }) => (
   <div className="flex flex-col items-center justify-center p-3 bg-muted/50 dark:bg-zinc-800/50 border-b border-border/50">
      <Avatar className="h-16 w-16 mb-2">
         <AvatarImage src={pfp} alt={name} />
@@ -51,9 +48,43 @@ const ChatHeader = ({ name, pfp }: { name: string; pfp: string }) => (
   </div>
 );
 
+const WhatsAppHeader = ({ name, pfp }: { name: string; pfp: string }) => (
+    <div className="flex items-center justify-between p-2 bg-[#008069] dark:bg-[#202c33] text-white">
+        <div className="flex items-center gap-3">
+            <ArrowLeft size={22} />
+            <Avatar className="h-10 w-10">
+                <AvatarImage src={pfp} alt={name} />
+                <AvatarFallback>{name.charAt(0)}</AvatarFallback>
+            </Avatar>
+            <div>
+                <h3 className="font-semibold">{name}</h3>
+                <p className="text-xs text-white/90">online</p>
+            </div>
+        </div>
+        <div className="flex items-center gap-4">
+            <Video size={22} />
+            <Phone size={20} />
+            <MoreVertical size={22} />
+        </div>
+    </div>
+);
+
+const ReadStatusIcon = ({ status }: { status: Message['status'] }) => {
+    if (status === 'sent') return <Check size={16} className="text-gray-400" />;
+    if (status === 'delivered') return <CheckCheck size={16} className="text-gray-400" />;
+    if (status === 'read') return <CheckCheck size={16} className="text-blue-500" />;
+    return null;
+}
+
+const platforms = {
+    imessage: { name: "iMessage" },
+    whatsapp: { name: "WhatsApp" },
+}
+
 export default function ChatGenerator() {
   const { toast } = useToast();
   const chatRef = useRef<HTMLDivElement>(null);
+  const [platform, setPlatform] = useState<Platform>('imessage');
 
   const [receiverName, setReceiverName] = useState('Sarah');
   const [receiverPfp, setReceiverPfp] = useState('https://placehold.co/128x128/E0E0E0/7F7F7F.png?text=S');
@@ -62,9 +93,9 @@ export default function ChatGenerator() {
   const [senderPfp, setSenderPfp] = useState('https://placehold.co/128x128/A0E0A0/7F7F7F.png?text=M');
 
   const [messages, setMessages] = useState<Message[]>([
-    { id: 1, text: 'Hey, are you free this weekend?', sender: 'other' },
-    { id: 2, text: 'Yeah, I think so! What do you have in mind?', sender: 'me' },
-    { id: 3, text: 'Fancy a hike? The weather is supposed to be amazing.', sender: 'other' },
+    { id: 1, text: 'Hey, are you free this weekend?', sender: 'other', time: '10:30 AM', status: 'read' },
+    { id: 2, text: 'Yeah, I think so! What do you have in mind?', sender: 'me', time: '10:31 AM', status: 'read' },
+    { id: 3, text: 'Fancy a hike? The weather is supposed to be amazing.', sender: 'other', time: '10:31 AM', status: 'read' },
   ]);
 
   const [newMessage, setNewMessage] = useState('');
@@ -102,14 +133,15 @@ export default function ChatGenerator() {
   }, [chatRef, toast]);
   
   const resetAll = () => {
+    setPlatform('imessage');
     setReceiverName('Sarah');
     setReceiverPfp('https://placehold.co/128x128/E0E0E0/7F7F7F.png?text=S');
     setSenderName('Me');
     setSenderPfp('https://placehold.co/128x128/A0E0A0/7F7F7F.png?text=M');
     setMessages([
-        { id: 1, text: 'Hey, are you free this weekend?', sender: 'other' },
-        { id: 2, text: 'Yeah, I think so! What do you have in mind?', sender: 'me' },
-        { id: 3, text: 'Fancy a hike? The weather is supposed to be amazing.', sender: 'other' },
+        { id: 1, text: 'Hey, are you free this weekend?', sender: 'other', time: '10:30 AM', status: 'read' },
+        { id: 2, text: 'Yeah, I think so! What do you have in mind?', sender: 'me', time: '10:31 AM', status: 'read' },
+        { id: 3, text: 'Fancy a hike? The weather is supposed to be amazing.', sender: 'other', time: '10:31 AM', status: 'read' },
     ]);
     setNewMessage('');
     toast({ title: "Fields have been reset!" });
@@ -117,7 +149,9 @@ export default function ChatGenerator() {
   
   const handleAddMessage = (sender: 'me' | 'other') => {
       if(!newMessage.trim()) return;
-      setMessages([...messages, { id: Date.now(), text: newMessage, sender }]);
+      const now = new Date();
+      const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      setMessages([...messages, { id: Date.now(), text: newMessage, sender, time, status: 'sent' }]);
       setNewMessage('');
   };
   
@@ -146,13 +180,33 @@ export default function ChatGenerator() {
               Chat Screenshot Generator
             </CardTitle>
             <CardDescription>
-              Create realistic iMessage-style chat mockups and download them as an image.
+              Create realistic chat mockups for different platforms and download them as an image.
             </CardDescription>
           </CardHeader>
           <CardContent>
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
               {/* Controls */}
               <div className="lg:col-span-1 space-y-6">
+                <Card>
+                    <CardHeader>
+                        <CardTitle className="text-xl">Settings</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                        <div>
+                            <Label htmlFor="platform-select">Platform</Label>
+                             <Select value={platform} onValueChange={(value) => setPlatform(value as Platform)}>
+                                <SelectTrigger id="platform-select">
+                                    <SelectValue placeholder="Select a platform" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    {Object.entries(platforms).map(([key, value]) => (
+                                        <SelectItem key={key} value={key}>{value.name}</SelectItem>
+                                    ))}
+                                </SelectContent>
+                            </Select>
+                        </div>
+                    </CardContent>
+                </Card>
                 <Card>
                     <CardHeader>
                         <CardTitle className="text-xl">Participants</CardTitle>
@@ -187,7 +241,7 @@ export default function ChatGenerator() {
                                 <Label htmlFor="sender-pfp-upload" className="cursor-pointer">Upload</Label>
                              </Button>
                            </div>
-                           <Input id="sender-name" value={senderName} onChange={e => setSenderName(e.target.value)} placeholder="Your Name" />
+                           {/* Sender name is not editable as it's usually "Me" or not shown */}
                         </div>
                     </CardContent>
                 </Card>
@@ -228,26 +282,54 @@ export default function ChatGenerator() {
               <div className="lg:col-span-2 flex flex-col items-center justify-start">
                  <h3 className="text-xl font-semibold mb-4 text-center">Preview</h3>
                 <div className="w-full max-w-md">
-                    <div ref={chatRef} className="bg-background dark:bg-black rounded-xl border-8 border-muted dark:border-zinc-800 shadow-2xl">
+                    <div ref={chatRef} className={cn(
+                        "rounded-xl border-8 border-muted dark:border-zinc-800 shadow-2xl",
+                         platform === 'whatsapp' && 'border-none'
+                        )}>
                         <div className="w-full h-full flex flex-col">
-                           {/*<TopBar />*/}
-                           <ChatHeader name={receiverName} pfp={receiverPfp} />
-                           <div className="flex-1 p-4 space-y-4 overflow-y-auto bg-white dark:bg-black">
+                           {platform === 'imessage' && <IMessageHeader name={receiverName} pfp={receiverPfp} />}
+                           {platform === 'whatsapp' && <WhatsAppHeader name={receiverName} pfp={receiverPfp} />}
+                           
+                           <div className={cn("flex-1 p-4 space-y-2 overflow-y-auto",
+                            platform === 'imessage' ? 'bg-white dark:bg-black' : 'bg-[#E5DDD5] dark:bg-[#0b141a]'
+                           )}>
                              {messages.map((msg, index) => (
-                               <div key={msg.id} className={`flex items-end gap-2 ${msg.sender === 'me' ? 'justify-end' : 'justify-start'}`}>
-                                 {msg.sender === 'other' && (
+                               <div key={msg.id} className={cn('flex items-end gap-2', msg.sender === 'me' ? 'justify-end' : 'justify-start')}>
+                                 {msg.sender === 'other' && platform === 'imessage' && (
                                      <Avatar className="h-6 w-6">
                                         <AvatarImage src={receiverPfp} alt={receiverName} />
                                         <AvatarFallback>{receiverName.charAt(0)}</AvatarFallback>
                                      </Avatar>
                                  )}
-                                  <div className={`max-w-xs md:max-w-md rounded-2xl px-3 py-2 text-white ${msg.sender === 'me' ? 'bg-blue-500 rounded-br-lg' : 'bg-gray-500 dark:bg-zinc-700 rounded-bl-lg'}`}>
-                                    <p className="text-sm">{msg.text}</p>
+                                  <div className={cn(
+                                    'max-w-[80%] rounded-2xl px-3 py-1.5 text-sm md:text-base relative',
+                                    {
+                                        // iMessage styles
+                                        'bg-blue-500 text-white rounded-br-lg': platform === 'imessage' && msg.sender === 'me',
+                                        'bg-gray-200 dark:bg-zinc-700 text-black dark:text-white rounded-bl-lg': platform === 'imessage' && msg.sender === 'other',
+                                        // WhatsApp styles
+                                        'bg-[#dcf8c6] dark:bg-[#005c4b] text-black dark:text-white rounded-tr-none shadow-sm': platform === 'whatsapp' && msg.sender === 'me',
+                                        'bg-white dark:bg-[#202c33] text-black dark:text-white rounded-tl-none shadow-sm': platform === 'whatsapp' && msg.sender === 'other',
+                                    }
+                                   )}>
+                                    <p className="break-words pr-12">{msg.text}</p>
+                                    <span className={cn(
+                                        'absolute bottom-1 right-2 text-[10px]',
+                                        platform === 'imessage' ? 'hidden' : 'inline-flex items-center gap-1',
+                                        platform === 'whatsapp' && msg.sender === 'me' ? 'text-gray-500 dark:text-gray-400' : 'text-gray-500 dark:text-gray-400'
+                                        )}>
+                                        {msg.time}
+                                        {msg.sender === 'me' && <ReadStatusIcon status={msg.status} />}
+                                    </span>
                                  </div>
                                </div>
                              ))}
                            </div>
-                           <div className="p-2 border-t border-border/50 bg-muted/30 dark:bg-zinc-900/50 flex items-center gap-2">
+                           
+                           <div className={cn(
+                               "p-2 border-t border-border/50 bg-muted/30 dark:bg-zinc-900/50 flex items-center gap-2",
+                                platform === 'whatsapp' && 'hidden' // Hide for WhatsApp
+                            )}>
                                 <div className="flex-1 h-9 bg-gray-200 dark:bg-zinc-700 rounded-full px-4 text-muted-foreground text-sm flex items-center">iMessage</div>
                                 <Send className="text-blue-500" />
                            </div>
@@ -262,3 +344,5 @@ export default function ChatGenerator() {
     </div>
   );
 }
+
+    
