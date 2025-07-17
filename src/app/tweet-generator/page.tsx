@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useRef, useCallback } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { toPng } from 'html-to-image';
@@ -40,7 +40,11 @@ export default function TweetGenerator() {
   const [retweets, setRetweets] = useState('450');
   const [quotes, setQuotes] = useState('88');
   const [isVerified, setIsVerified] = useState(true);
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  const [date, setDate] = useState<Date | undefined>();
+
+  useEffect(() => {
+    setDate(new Date());
+  }, []);
 
   const handlePfpUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -258,4 +262,5 @@ export default function TweetGenerator() {
       </main>
     </div>
   );
-}
+
+    
