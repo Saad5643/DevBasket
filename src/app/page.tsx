@@ -105,7 +105,7 @@ export default function Home() {
           <div className="container flex min-h-[calc(100vh-5rem)] items-center justify-center px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <h1 className="bg-gradient-to-r from-primary to-accent bg-clip-text text-4xl font-extrabold tracking-tighter text-transparent sm:text-5xl xl:text-6xl/none">
+                <h1 className="text-4xl font-extrabold tracking-tighter text-foreground sm:text-5xl xl:text-6xl/none">
                   Your Daily Developer Toolkit.
                 </h1>
                 <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl">
