@@ -17,11 +17,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { cn } from '@/lib/utils';
 
 
+type MessageStatus = 'sent' | 'delivered' | 'read';
+
 type Message = {
   id: number;
   text: string;
   sender: 'me' | 'other';
-  status?: 'sent' | 'delivered' | 'read';
+  status?: MessageStatus;
   time: string;
 };
 
@@ -216,6 +218,10 @@ export default function ChatGenerator() {
   const deleteMessage = (id: number) => {
       setMessages(messages.filter(msg => msg.id !== id));
   };
+  
+  const updateMessageStatus = (id: number, status: MessageStatus) => {
+      setMessages(messages.map(msg => msg.id === id ? { ...msg, status } : msg));
+  };
 
   return (
     <div className="bg-background min-h-screen">
@@ -314,9 +320,23 @@ export default function ChatGenerator() {
                   <CardContent className="space-y-4">
                     <div className="max-h-60 overflow-y-auto pr-2 space-y-2">
                       {messages.map(msg => (
-                        <div key={msg.id} className="flex items-center gap-2 bg-muted/50 p-2 rounded-md">
+                        <div key={msg.id} className="grid grid-cols-[auto,1fr,auto,auto] items-center gap-2 bg-muted/50 p-2 rounded-md">
                           <span className={`text-xs font-semibold ${msg.sender === 'me' ? 'text-primary' : 'text-accent'}`}>{msg.sender === 'me' ? senderName : receiverName}:</span>
                           <p className="text-sm truncate flex-1">{msg.text}</p>
+                          
+                           {platform === 'whatsapp' && msg.sender === 'me' && (
+                            <Select value={msg.status} onValueChange={(value) => updateMessageStatus(msg.id, value as MessageStatus)}>
+                              <SelectTrigger className="h-7 w-[90px] text-xs">
+                                <SelectValue placeholder="Status" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="sent">Sent</SelectItem>
+                                <SelectItem value="delivered">Delivered</SelectItem>
+                                <SelectItem value="read">Read</SelectItem>
+                              </SelectContent>
+                            </Select>
+                          )}
+                          
                           <Button variant="ghost" size="icon" className="h-6 w-6" onClick={() => deleteMessage(msg.id)}>
                             <Trash2 className="h-4 w-4 text-destructive" />
                           </Button>
@@ -361,42 +381,47 @@ export default function ChatGenerator() {
                             'bg-white dark:bg-black'
                            )}>
                              {messages.map((msg, index) => (
-                               <div key={msg.id} className={cn('flex items-end gap-2', msg.sender === 'me' ? 'justify-end' : 'justify-start')}>
-                                 {msg.sender === 'other' && (platform === 'imessage' || platform === 'instagram') && (
-                                     <Avatar className="h-6 w-6">
-                                        <AvatarImage src={receiverPfp} alt={receiverName} />
-                                        <AvatarFallback>{receiverName.charAt(0)}</AvatarFallback>
-                                     </Avatar>
+                               <div key={msg.id} className={cn('flex flex-col', msg.sender === 'me' ? 'items-end' : 'items-start')}>
+                                <div className={cn('flex items-end gap-2', msg.sender === 'me' ? 'justify-end' : 'justify-start')}>
+                                  {msg.sender === 'other' && (platform === 'imessage' || platform === 'instagram') && (
+                                      <Avatar className="h-6 w-6">
+                                         <AvatarImage src={receiverPfp} alt={receiverName} />
+                                         <AvatarFallback>{receiverName.charAt(0)}</AvatarFallback>
+                                      </Avatar>
+                                  )}
+                                   <div className={cn(
+                                     'max-w-[80%] rounded-2xl px-3 py-1.5 text-base relative',
+                                     {
+                                         // iMessage styles
+                                         'bg-blue-500 text-white rounded-br-lg': platform === 'imessage' && msg.sender === 'me',
+                                         'bg-gray-200 dark:bg-zinc-700 text-black dark:text-white rounded-bl-lg': platform === 'imessage' && msg.sender === 'other',
+                                         // WhatsApp styles
+                                         'bg-[#dcf8c6] dark:bg-[#005c4b] text-black dark:text-white !rounded-tr-none shadow-sm': platform === 'whatsapp' && msg.sender === 'me',
+                                         'bg-white dark:bg-[#202c33] text-black dark:text-white !rounded-tl-none shadow-sm': platform === 'whatsapp' && msg.sender === 'other',
+                                         // Instagram styles
+                                         'bg-[#3797F0] text-white rounded-br-lg': platform === 'instagram' && msg.sender === 'me',
+                                         'bg-gray-100 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-black dark:text-white rounded-bl-lg': platform === 'instagram' && msg.sender === 'other',
+                                         // Telegram styles
+                                         'bg-[#e1ffc7] dark:bg-[#344558] text-black dark:text-white !rounded-br-none': platform === 'telegram' && msg.sender === 'me',
+                                         'bg-white dark:bg-[#212d3b] text-black dark:text-white !rounded-bl-none': platform === 'telegram' && msg.sender === 'other',
+                                     }
+                                    )}>
+                                     <p className="break-words pr-12">{msg.text}</p>
+                                     <span className={cn(
+                                         'absolute bottom-1 right-2 text-[10px] flex items-center gap-1',
+                                         platform === 'imessage' && 'hidden',
+                                         platform === 'instagram' && 'hidden',
+                                         platform === 'whatsapp' && msg.sender === 'me' ? 'text-gray-500 dark:text-gray-400' : 'text-gray-500 dark:text-gray-400',
+                                         platform === 'telegram' && msg.sender === 'me' ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'
+                                         )}>
+                                         {msg.time}
+                                         {msg.sender === 'me' && <ReadStatusIcon status={msg.status} platform={platform} />}
+                                     </span>
+                                  </div>
+                                </div>
+                                 {platform === 'instagram' && index === messages.length - 1 && (
+                                    <p className="text-xs text-muted-foreground mt-1 pr-2">Seen</p>
                                  )}
-                                  <div className={cn(
-                                    'max-w-[80%] rounded-2xl px-3 py-1.5 text-base relative',
-                                    {
-                                        // iMessage styles
-                                        'bg-blue-500 text-white rounded-br-lg': platform === 'imessage' && msg.sender === 'me',
-                                        'bg-gray-200 dark:bg-zinc-700 text-black dark:text-white rounded-bl-lg': platform === 'imessage' && msg.sender === 'other',
-                                        // WhatsApp styles
-                                        'bg-[#dcf8c6] dark:bg-[#005c4b] text-black dark:text-white !rounded-tr-none shadow-sm': platform === 'whatsapp' && msg.sender === 'me',
-                                        'bg-white dark:bg-[#202c33] text-black dark:text-white !rounded-tl-none shadow-sm': platform === 'whatsapp' && msg.sender === 'other',
-                                        // Instagram styles
-                                        'bg-[#3797F0] text-white rounded-br-lg': platform === 'instagram' && msg.sender === 'me',
-                                        'bg-gray-100 dark:bg-zinc-800 border border-gray-200 dark:border-zinc-700 text-black dark:text-white rounded-bl-lg': platform === 'instagram' && msg.sender === 'other',
-                                        // Telegram styles
-                                        'bg-[#e1ffc7] dark:bg-[#344558] text-black dark:text-white !rounded-br-none': platform === 'telegram' && msg.sender === 'me',
-                                        'bg-white dark:bg-[#212d3b] text-black dark:text-white !rounded-bl-none': platform === 'telegram' && msg.sender === 'other',
-                                    }
-                                   )}>
-                                    <p className="break-words pr-12">{msg.text}</p>
-                                    <span className={cn(
-                                        'absolute bottom-1 right-2 text-[10px] flex items-center gap-1',
-                                        platform === 'imessage' && 'hidden',
-                                        platform === 'instagram' && 'hidden',
-                                        platform === 'whatsapp' && msg.sender === 'me' ? 'text-gray-500 dark:text-gray-400' : 'text-gray-500 dark:text-gray-400',
-                                        platform === 'telegram' && msg.sender === 'me' ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'
-                                        )}>
-                                        {msg.time}
-                                        {msg.sender === 'me' && <ReadStatusIcon status={msg.status} platform={platform} />}
-                                    </span>
-                                 </div>
                                </div>
                              ))}
                            </div>
