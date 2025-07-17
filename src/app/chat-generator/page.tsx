@@ -48,7 +48,7 @@ const IMessageHeader = ({ name, pfp }: { name: string; pfp: string }) => (
   </div>
 );
 
-const WhatsAppHeader = ({ name, pfp }: { name: string; pfp: string }) => (
+const WhatsAppHeader = ({ name, pfp }: { name:string, pfp: string }) => (
     <div className="flex items-center justify-between p-2 bg-[#008069] dark:bg-[#202c33] text-white">
         <div className="flex items-center gap-3">
             <ArrowLeft size={22} />
@@ -112,6 +112,7 @@ const TelegramHeader = ({ name, pfp }: { name: string; pfp: string }) => (
 
 
 const ReadStatusIcon = ({ status, platform }: { status: Message['status'], platform: Platform }) => {
+    if (!status) return null;
     if (platform === 'whatsapp') {
       if (status === 'sent') return <Check size={16} className="text-gray-500 dark:text-gray-400" />;
       if (status === 'delivered') return <CheckCheck size={16} className="text-gray-500 dark:text-gray-400" />;
@@ -137,10 +138,10 @@ export default function ChatGenerator() {
   const [platform, setPlatform] = useState<Platform>('imessage');
 
   const [receiverName, setReceiverName] = useState('Sarah');
-  const [receiverPfp, setReceiverPfp] = useState('https://placehold.co/128x128/E0E0E0/7F7F7F.png?text=S');
+  const [receiverPfp, setReceiverPfp] = useState('https://placehold.co/128x128.png?text=S');
   
   const [senderName, setSenderName] = useState('Me');
-  const [senderPfp, setSenderPfp] = useState('https://placehold.co/128x128/A0E0A0/7F7F7F.png?text=M');
+  const [senderPfp, setSenderPfp] = useState('https://placehold.co/128x128.png?text=M');
 
   const [messages, setMessages] = useState<Message[]>([
     { id: 1, text: 'Hey, are you free this weekend?', sender: 'other', time: '10:30 AM', status: 'read' },
@@ -172,7 +173,7 @@ export default function ChatGenerator() {
     toPng(chatRef.current, { cacheBust: true, pixelRatio: 2 })
       .then((dataUrl) => {
         const link = document.createElement('a');
-        link.download = 'chat-by-dev-basket.png';
+        link.download = `chat-by-thumbzilla-${platform}.png`;
         link.href = dataUrl;
         link.click();
         toast({ title: "Chat image downloading!" });
@@ -180,14 +181,14 @@ export default function ChatGenerator() {
       .catch((err) => {
         toast({ variant: "destructive", title: "Oops!", description: "Something went wrong while generating the image."});
       });
-  }, [chatRef, toast]);
+  }, [chatRef, toast, platform]);
   
   const resetAll = () => {
     setPlatform('imessage');
     setReceiverName('Sarah');
-    setReceiverPfp('https://placehold.co/128x128/E0E0E0/7F7F7F.png?text=S');
+    setReceiverPfp('https://placehold.co/128x128.png?text=S');
     setSenderName('Me');
-    setSenderPfp('https://placehold.co/128x128/A0E0A0/7F7F7F.png?text=M');
+    setSenderPfp('https://placehold.co/128x128.png?text=M');
     setMessages([
         { id: 1, text: 'Hey, are you free this weekend?', sender: 'other', time: '10:30 AM', status: 'read' },
         { id: 2, text: 'Yeah, I think so! What do you have in mind?', sender: 'me', time: '10:31 AM', status: 'read' },
@@ -376,13 +377,11 @@ export default function ChatGenerator() {
                                    )}>
                                     <p className="break-words pr-12">{msg.text}</p>
                                     <span className={cn(
-                                        'absolute bottom-1 right-2 text-[10px]',
+                                        'absolute bottom-1 right-2 text-[10px] flex items-center gap-1',
                                         platform === 'imessage' && 'hidden',
                                         platform === 'instagram' && 'hidden',
                                         platform === 'whatsapp' && msg.sender === 'me' ? 'text-gray-500 dark:text-gray-400' : 'text-gray-500 dark:text-gray-400',
-                                        platform === 'telegram' && msg.sender === 'me' ? 'text-gray-500 dark:text-gray-400' : 'text-gray-500 dark:text-gray-400',
-                                        (platform === 'telegram' || platform === 'whatsapp') && 'inline-flex items-center gap-1',
-
+                                        platform === 'telegram' && msg.sender === 'me' ? 'text-green-600 dark:text-green-400' : 'text-gray-500 dark:text-gray-400'
                                         )}>
                                         {msg.time}
                                         {msg.sender === 'me' && <ReadStatusIcon status={msg.status} platform={platform} />}
