@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, Package2, Youtube, TextQuote, Rss, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare } from 'lucide-react';
+import { Menu, Package2, Youtube, TextQuote, Rss, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare, MessagesSquare } from 'lucide-react';
 
 const tools = [
   {
@@ -40,11 +40,17 @@ const tools = [
     icon: <Loader2 className="h-8 w-8" />,
     href: '/css-loader-generator',
   },
-    {
+  {
     name: 'Tweet Generator',
     description: 'Create and download realistic mockups of tweets.',
     icon: <MessageSquare className="h-8 w-8" />,
     href: '/tweet-generator',
+  },
+  {
+    name: 'Chat Screenshot Generator',
+    description: 'Craft and download realistic fake chat conversations.',
+    icon: <MessagesSquare className="h-8 w-8" />,
+    href: '/chat-generator',
   },
 ];
 
@@ -143,8 +149,8 @@ export default function Home() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <Button asChild className="w-full" variant={tool.comingSoon ? "secondary" : "default"} disabled={tool.comingSoon}>
-                      <Link href={tool.href}>{tool.comingSoon ? "Coming Soon" : "Open Tool"}</Link>
+                    <Button asChild className="w-full">
+                      <Link href={tool.href}>Open Tool</Link>
                     </Button>
                   </CardContent>
                 </Card>
