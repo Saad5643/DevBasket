@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, Package2, TextQuote, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown } from 'lucide-react';
+import { Menu, Package2, TextQuote, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Video } from 'lucide-react';
 
 const tools = [
   {
@@ -27,6 +27,12 @@ const tools = [
     description: 'Create unique images from text prompts using generative AI.',
     icon: <Sparkles className="h-8 w-8" />,
     href: '/ai-image-generator',
+  },
+  {
+    name: 'AI Video Generator',
+    description: 'Create stunning videos from text, images, or voice.',
+    icon: <Video className="h-8 w-8" />,
+    href: '/video-generator',
   },
   {
     name: 'Word Counter',
