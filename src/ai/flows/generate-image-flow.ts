@@ -43,9 +43,9 @@ const generateImageFlow = ai.defineFlow(
     }
      if (orientation) {
         if (orientation === 'portrait') {
-            enhancedPrompt = `${enhancedPrompt}, 9:16 aspect ratio`;
+            enhancedPrompt = `${enhancedPrompt}, portrait orientation, 9:16 aspect ratio`;
         } else if (orientation === 'landscape') {
-            enhancedPrompt = `${enhancedPrompt}, 16:9 aspect ratio`;
+            enhancedPrompt = `${enhancedPrompt}, landscape orientation, 16:9 aspect ratio`;
         }
     }
     if (quality === 'hd') {
