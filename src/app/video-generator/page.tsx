@@ -61,7 +61,7 @@ export default function VideoGeneratorPage() {
                 <Card className="max-w-7xl mx-auto shadow-lg border-border/60">
                     <CardHeader className="text-center">
                         <div className="mx-auto bg-gradient-to-br from-primary/20 to-accent/20 text-primary p-3 rounded-xl inline-block mb-4">
-                            <Video className="h-8 w-8" />
+                            <Film className="h-8 w-8" />
                         </div>
                         <CardTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
                             AI Video Generator
