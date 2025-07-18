@@ -22,6 +22,8 @@ const imageStyles = [
     { value: 'anime', label: 'Anime' },
     { value: 'watercolor', label: 'Watercolor' },
     { value: '3d-render', label: '3D Render' },
+    { value: 'vector', label: 'Vector' },
+    { value: 'illustration', label: 'Illustration' },
     { value: 'pixel-art', label: 'Pixel Art' },
     { value: 'cyberpunk', label: 'Cyberpunk' },
     { value: 'sketch', label: 'Pencil Sketch' },
