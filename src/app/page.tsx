@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, Package2, TextQuote, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film } from 'lucide-react';
+import { Menu, Package2, TextQuote, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature } from 'lucide-react';
 
 const toolCategories = [
   {
@@ -70,6 +70,12 @@ const toolCategories = [
         description: 'Create and customize simple CSS loading animations.',
         icon: <Loader2 className="h-8 w-8" />,
         href: '/css-loader-generator',
+      },
+       {
+        name: 'PDF to Word Converter',
+        description: 'Convert PDF files to editable Word documents with optional OCR.',
+        icon: <FileSignature className="h-8 w-8" />,
+        href: '/pdf-to-word',
       },
     ]
   },
@@ -188,7 +194,7 @@ export default function Home() {
                       <Card key={tool.name} className="flex h-full flex-col justify-between transform-gpu transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
                         <CardHeader className="flex flex-row items-start gap-4 pb-4">
                            <div className="bg-gradient-to-br from-primary/20 to-accent/20 text-primary p-3 rounded-xl">{tool.icon}</div>
-                           <div className="flex-1">
+                           <div>
                              <CardTitle>{tool.name}</CardTitle>
                              <CardDescription className="mt-1">{tool.description}</CardDescription>
                            </div>
