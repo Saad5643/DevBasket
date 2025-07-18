@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, Package2, TextQuote, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare, MessagesSquare, Captions, ImageDown } from 'lucide-react';
+import { Menu, Package2, TextQuote, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown } from 'lucide-react';
 
 const tools = [
   {
@@ -17,10 +17,16 @@ const tools = [
     href: '/youtube-thumbnail-downloader',
   },
   {
-    name: 'Image Caption Generator',
+    name: 'AI Image Caption Generator',
     description: 'Generate AI-powered captions for your images in various styles.',
     icon: <Captions className="h-8 w-8" />,
     href: '/image-caption-generator',
+  },
+   {
+    name: 'AI Image Generator',
+    description: 'Create unique images from text prompts using generative AI.',
+    icon: <Sparkles className="h-8 w-8" />,
+    href: '/ai-image-generator',
   },
   {
     name: 'Word Counter',
