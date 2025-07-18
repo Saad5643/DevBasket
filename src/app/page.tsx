@@ -71,13 +71,18 @@ const toolCategories = [
         icon: <Loader2 className="h-8 w-8" />,
         href: '/css-loader-generator',
       },
-       {
+    ]
+  },
+  {
+    category: 'PDF Tools',
+    tools: [
+      {
         name: 'PDF to Word Converter',
         description: 'Convert PDF files to editable Word documents with optional OCR.',
         icon: <FileSignature className="h-8 w-8" />,
         href: '/pdf-to-word',
       },
-    ]
+    ],
   },
   {
     category: 'Social Media',
