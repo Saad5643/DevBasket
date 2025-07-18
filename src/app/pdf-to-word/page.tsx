@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useMemo, useEffect } from 'react';
 import Link from 'next/link';
 import { useDropzone } from 'react-dropzone';
 import { Button } from '@/components/ui/button';
@@ -24,14 +24,23 @@ export default function PdfToWordConverter() {
   const [useOcr, setUseOcr] = useState(false);
   const [status, setStatus] = useState<ConversionStatus>('idle');
   const [progress, setProgress] = useState(0);
+  const [dropError, setDropError] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (dropError) {
+      toast({ variant: 'destructive', title: 'File Error', description: dropError });
+      setDropError(null);
+    }
+  }, [dropError, toast]);
 
   const onDrop = useCallback((acceptedFiles: File[], fileRejections: any[]) => {
+    setDropError(null);
     if (fileRejections.length > 0) {
       const error = fileRejections[0].errors[0];
       if (error.code === 'file-too-large') {
-        toast({ variant: 'destructive', title: 'File too large', description: `Please upload a file smaller than ${MAX_SIZE_MB}MB.` });
+        setDropError(`Please upload a file smaller than ${MAX_SIZE_MB}MB.`);
       } else {
-        toast({ variant: 'destructive', title: 'Invalid file', description: 'Please upload a valid PDF file.' });
+        setDropError('Please upload a valid PDF file.');
       }
       return;
     }
