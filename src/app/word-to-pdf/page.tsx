@@ -34,7 +34,7 @@ export default function WordToPdfConverter() {
       toast({ variant: 'destructive', title: 'File Error', description: dropError });
       setDropError(null);
     }
-  }, [dropError, toast]);
+  }, [dropError]);
 
   const onDrop = useCallback((acceptedFiles: File[], fileRejections: any[]) => {
     setDropError(null);
