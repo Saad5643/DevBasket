@@ -68,13 +68,14 @@ export default function PdfToWordConverter() {
     multiple: false,
   });
 
-  const handleDownload = (fileName: string) => {
+  const handleDownload = () => {
+    if (!file) return;
     // In a real app, this would be the blob from the API response
     const placeholderBlob = new Blob(["This is a placeholder DOCX file."], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
     const url = URL.createObjectURL(placeholderBlob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = fileName;
+    a.download = `${file.name.replace(/\.pdf$/, '')}.docx`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -96,8 +97,6 @@ export default function PdfToWordConverter() {
           clearInterval(interval);
           setStatus('success');
           setToastInfo({ title: "Conversion Complete!", description: "Your DOCX file is ready." });
-          const newFileName = `${file.name.replace(/\.pdf$/, '')}.docx`;
-          handleDownload(newFileName);
           return 100;
         }
         return nextProgress;
@@ -188,6 +187,9 @@ export default function PdfToWordConverter() {
                 
                 {status === 'success' && (
                    <div className="flex flex-col sm:flex-row gap-4">
+                       <Button onClick={handleDownload} size="lg" className="w-full">
+                          <Download className="mr-2 h-5 w-5" /> Download DOCX
+                      </Button>
                       <Button onClick={handleReset} variant="outline" size="lg" className="w-full">
                           <RefreshCw className="mr-2 h-5 w-5" /> Convert Another File
                       </Button>
