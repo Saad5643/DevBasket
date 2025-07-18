@@ -13,6 +13,7 @@ import { z } from 'zod';
 
 const GenerateImageInputSchema = z.object({
   prompt: z.string().describe("The user's text prompt for the image."),
+  style: z.string().describe("The desired artistic style for the image (e.g., Cinematic, Anime)."),
   quality: z.enum(['standard', 'hd']).describe("The desired quality for the image."),
 });
 export type GenerateImageInput = z.infer<typeof GenerateImageInputSchema>;
@@ -33,10 +34,14 @@ const generateImageFlow = ai.defineFlow(
     inputSchema: GenerateImageInputSchema,
     outputSchema: GenerateImageOutputSchema,
   },
-  async ({ prompt, quality }) => {
+  async ({ prompt, quality, style }) => {
+    
     let enhancedPrompt = prompt;
+    if (style && style !== 'none') {
+      enhancedPrompt = `${prompt}, ${style} style`;
+    }
     if (quality === 'hd') {
-      enhancedPrompt = `${prompt}, 4k, photorealistic, ultra detailed, high quality`;
+      enhancedPrompt = `${enhancedPrompt}, 4k, photorealistic, ultra detailed, high quality`;
     }
     
     const { media } = await ai.generate({

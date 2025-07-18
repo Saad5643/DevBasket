@@ -15,10 +15,23 @@ import { generateImage, GenerateImageInput } from '@/ai/flows/generate-image-flo
 
 type Quality = 'standard' | 'hd';
 
+const imageStyles = [
+    { value: 'none', label: 'No Specific Style' },
+    { value: 'photorealistic', label: 'Photorealistic' },
+    { value: 'cinematic', label: 'Cinematic' },
+    { value: 'anime', label: 'Anime' },
+    { value: 'watercolor', label: 'Watercolor' },
+    { value: '3d-render', label: '3D Render' },
+    { value: 'pixel-art', label: 'Pixel Art' },
+    { value: 'cyberpunk', label: 'Cyberpunk' },
+    { value: 'sketch', label: 'Pencil Sketch' },
+];
+
 export default function AiImageGenerator() {
   const { toast } = useToast();
   const [prompt, setPrompt] = useState<string>('A photorealistic portrait of a husky wearing sunglasses, cinematic lighting');
   const [quality, setQuality] = useState<Quality>('standard');
+  const [style, setStyle] = useState<string>('photorealistic');
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -32,7 +45,7 @@ export default function AiImageGenerator() {
     setImageUrl(null);
 
     try {
-      const input: GenerateImageInput = { prompt, quality };
+      const input: GenerateImageInput = { prompt, quality, style };
       const result = await generateImage(input);
       if (result.imageUrl) {
         setImageUrl(result.imageUrl);
@@ -95,17 +108,32 @@ export default function AiImageGenerator() {
                     rows={3}
                   />
                 </div>
-                 <div>
-                    <Label htmlFor="quality-select" className="mb-2 block font-medium">Quality</Label>
-                    <Select value={quality} onValueChange={(value) => setQuality(value as Quality)}>
-                        <SelectTrigger id="quality-select" className="w-full">
-                            <SelectValue placeholder="Select image quality" />
-                        </SelectTrigger>
-                        <SelectContent>
-                            <SelectItem value="standard">Standard</SelectItem>
-                            <SelectItem value="hd">High</SelectItem>
-                        </SelectContent>
-                    </Select>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <Label htmlFor="style-select" className="mb-2 block font-medium">Style</Label>
+                        <Select value={style} onValueChange={setStyle}>
+                            <SelectTrigger id="style-select">
+                                <SelectValue placeholder="Select image style" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {imageStyles.map((s) => (
+                                    <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div>
+                        <Label htmlFor="quality-select" className="mb-2 block font-medium">Quality</Label>
+                        <Select value={quality} onValueChange={(value) => setQuality(value as Quality)}>
+                            <SelectTrigger id="quality-select">
+                                <SelectValue placeholder="Select image quality" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="standard">Standard</SelectItem>
+                                <SelectItem value="hd">High</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
                  </div>
                 <Button onClick={handleGenerateImage} disabled={isLoading} size="lg">
                     {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
