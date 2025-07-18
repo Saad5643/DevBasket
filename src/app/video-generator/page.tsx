@@ -40,7 +40,7 @@ export default function VideoGeneratorPage() {
         // Simulate AI generation
         setTimeout(() => {
             // In a real app, this would be the URL of the generated video
-            setVideoUrl('https://placehold.co/1280x720.mp4'); 
+            setVideoUrl('https://placehold.co/1280x720.mp4/000000/ffffff?text=Video+Preview'); 
             setIsLoading(false);
             toast({ title: 'Video Generated!', description: 'Your AI video is ready for preview.'});
         }, 4000);
