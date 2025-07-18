@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, Package2, TextQuote, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput, Pencil } from 'lucide-react';
+import { Menu, Package2, TextQuote, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput, Pencil, FileImage } from 'lucide-react';
 
 const toolCategories = [
   {
@@ -76,6 +76,12 @@ const toolCategories = [
   {
     category: 'PDF Tools',
     tools: [
+      {
+        name: 'PDF to PNG Converter',
+        description: 'Convert each page of a PDF file into separate PNG images.',
+        icon: <FileImage className="h-8 w-8" />,
+        href: '/pdf-to-png',
+      },
       {
         name: 'PDF to Word Converter',
         description: 'Convert PDF files to editable Word documents with optional OCR.',
