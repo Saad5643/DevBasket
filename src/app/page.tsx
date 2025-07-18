@@ -74,7 +74,7 @@ export default function Home() {
           <div className="flex items-center gap-6">
             <Link href="#" className="flex items-center gap-2">
               <Package2 className="h-6 w-6" />
-              <span className="text-lg font-bold">Thumbzilla</span>
+              <span className="text-lg font-bold">Devbasket</span>
             </Link>
             <nav className="hidden items-center gap-6 text-sm md:flex">
               <Link href="#tools" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
@@ -98,7 +98,7 @@ export default function Home() {
                 <nav className="grid gap-6 text-lg font-medium">
                   <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
                     <Package2 className="h-6 w-6" />
-                    <span className="font-bold text-foreground">Thumbzilla</span>
+                    <span className="font-bold text-foreground">Devbasket</span>
                   </Link>
                   <Link href="#tools" className="text-muted-foreground hover:text-foreground">
                     Tools
@@ -193,7 +193,7 @@ export default function Home() {
         </section>
       </main>
       <footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
-        <p className="text-xs text-muted-foreground">&copy; 2024 Thumbzilla. Made with ❤️</p>
+        <p className="text-xs text-muted-foreground">&copy; 2024 Devbasket. Made with ❤️</p>
         <nav className="flex gap-4 sm:ml-auto sm:gap-6">
           <Link href="#" className="text-xs hover:underline underline-offset-4">
             Privacy

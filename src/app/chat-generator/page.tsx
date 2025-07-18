@@ -181,7 +181,7 @@ export default function ChatGenerator() {
     toPng(chatRef.current, { cacheBust: true, pixelRatio: 2 })
       .then((dataUrl) => {
         const link = document.createElement('a');
-        link.download = `chat-by-thumbzilla-${platform}.png`;
+        link.download = `chat-by-devbasket-${platform}.png`;
         link.href = dataUrl;
         link.click();
         toast({ title: "Chat image downloading!" });
