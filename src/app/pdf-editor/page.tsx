@@ -68,7 +68,7 @@ export default function PdfEditorPage() {
     setIsLoading(false);
   }
 
-  const redrawAnnotations = (pageIndex: number) => {
+  const redrawAnnotations = useCallback((pageIndex: number) => {
     const canvas = annotationCanvasRefs.current[pageIndex];
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
@@ -88,7 +88,6 @@ export default function PdfEditorPage() {
         annotation.paths.forEach(path => {
           if (path.length === 0) return;
           if (path.length === 1) {
-             // Draw a dot for single clicks
              ctx.beginPath();
              ctx.arc(path[0].x, path[0].y, annotation.lineWidth / 2, 0, 2 * Math.PI);
              ctx.fillStyle = annotation.color;
@@ -104,7 +103,7 @@ export default function PdfEditorPage() {
         });
       }
     });
-  };
+  }, [annotations]);
 
   const renderPage = useCallback(async (pageNum: number, pdf: pdfjsLib.PDFDocumentProxy, currentZoom: number) => {
     try {
@@ -133,14 +132,14 @@ export default function PdfEditorPage() {
         console.error(`Failed to render page ${pageNum}`, e);
         setToastInfo({ variant: 'destructive', title: 'Error', description: `Failed to render page ${pageNum}`});
     }
-  }, [annotations]);
+  }, [redrawAnnotations]);
   
   const onDrop = useCallback(async (acceptedFiles: File[]) => {
     const selectedFile = acceptedFiles[0];
     if (selectedFile) {
       resetState();
-      setFile(selectedFile);
       setIsLoading(true);
+      setFile(selectedFile);
 
       try {
         const arrayBuffer = await selectedFile.arrayBuffer();
@@ -150,17 +149,7 @@ export default function PdfEditorPage() {
         setPdfDoc(pdf);
         setNumPages(pdf.numPages);
         setAnnotations(Array.from({ length: pdf.numPages }, () => []));
-
-        // Wait for state to update and canvases to be available
-        setTimeout(async () => {
-          const pagePromises = [];
-          for (let i = 1; i <= pdf.numPages; i++) {
-              pagePromises.push(renderPage(i, pdf, zoom));
-          }
-          await Promise.all(pagePromises);
-          setIsLoading(false);
-          setToastInfo({ title: 'PDF Loaded', description: 'Ready for editing.' });
-        }, 100);
+        setToastInfo({ title: 'PDF Loaded', description: 'Ready for editing.' });
 
       } catch (error) {
         console.error("Error loading PDF:", error);
@@ -168,7 +157,7 @@ export default function PdfEditorPage() {
         resetState();
       }
     }
-  }, [renderPage, zoom]);
+  }, []);
   
   useEffect(() => {
     if (pdfDoc) {
@@ -183,7 +172,7 @@ export default function PdfEditorPage() {
       };
       renderAllPages();
     }
-  }, [zoom, pdfDoc, numPages, renderPage]);
+  }, [pdfDoc, numPages, zoom, renderPage]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -215,12 +204,18 @@ export default function PdfEditorPage() {
     setAnnotations(prev => {
       const newAnnotations = [...prev];
       if (!newAnnotations[pageIndex]) newAnnotations[pageIndex] = [];
-      newAnnotations[pageIndex].push({
-        type: 'draw',
-        paths: [[coords]],
-        color: brushColor,
-        lineWidth: brushSize,
-      });
+      const currentAnnotation = newAnnotations[pageIndex].find(a => a.type === 'draw' && a.color === brushColor && a.lineWidth === brushSize);
+      
+      if(currentAnnotation) {
+        currentAnnotation.paths.push([coords]);
+      } else {
+        newAnnotations[pageIndex].push({
+          type: 'draw',
+          paths: [[coords]],
+          color: brushColor,
+          lineWidth: brushSize,
+        });
+      }
       return newAnnotations;
     });
   };
