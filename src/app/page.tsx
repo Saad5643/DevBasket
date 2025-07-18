@@ -82,12 +82,6 @@ const toolCategories = [
         icon: <FileSignature className="h-8 w-8" />,
         href: '/pdf-to-word',
       },
-      {
-        name: 'PDF Editor',
-        description: 'Highlight, annotate, and draw directly on your PDF files.',
-        icon: <Pencil className="h-8 w-8" />,
-        href: '/pdf-editor',
-      },
     ],
   },
   {
