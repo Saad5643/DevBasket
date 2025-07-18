@@ -1,66 +1,49 @@
 
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Label } from '@/components/ui/label';
-import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ArrowLeft, Video, Film, Type, Sprout, Wand2, Download, Play, Music, Settings } from 'lucide-react';
+import { Slider } from '@/components/ui/slider';
+import { ArrowLeft, Video, Wand2, Download, Play, Loader2, Sparkles, Film, AspectRatio, Camera } from 'lucide-react';
 import { useToast } from "@/hooks/use-toast";
 import { cn } from '@/lib/utils';
 
-const KineticAnimation = ({ text, color, font }: { text: string; color: string; font: string }) => {
-    const words = text.split(' ');
-
-    return (
-        <div className="w-full h-full flex items-center justify-center p-4" style={{ fontFamily: font }}>
-            <p className="text-4xl font-bold text-center" style={{ color: color }}>
-                {words.map((word, index) => (
-                    <span key={index} className="inline-block animate-fade-in-up" style={{ animationDelay: `${index * 0.2}s` }}>
-                        {word}&nbsp;
-                    </span>
-                ))}
-            </p>
-        </div>
-    );
+const aspectRatios = {
+  '16:9': 'aspect-video',
+  '9:16': 'aspect-[9/16]',
+  '1:1': 'aspect-square',
 };
+
+type AspectRatioKey = keyof typeof aspectRatios;
 
 export default function VideoGeneratorPage() {
     const { toast } = useToast();
-    const [activeTab, setActiveTab] = useState('kinetic');
-    
-    // Kinetic Typography State
-    const [kineticText, setKineticText] = useState('Create amazing videos with AI.');
-    const [kineticColor, setKineticColor] = useState('#FFFFFF');
-    const [kineticFont, setKineticFont] = useState('Inter');
-    const [kineticPreview, setKineticPreview] = useState(false);
+    const [prompt, setPrompt] = useState('A majestic lion surveying its kingdom from a high rock at sunrise, cinematic, epic');
+    const [style, setStyle] = useState('cinematic');
+    const [duration, setDuration] = useState(5);
+    const [aspectRatio, setAspectRatio] = useState<AspectRatioKey>('16:9');
+    const [isLoading, setIsLoading] = useState(false);
+    const [videoUrl, setVideoUrl] = useState<string | null>(null);
 
-    // This is needed to re-trigger animations
-    useEffect(() => {
-        if (kineticPreview) {
-            const timer = setTimeout(() => setKineticPreview(false), 500);
-            return () => clearTimeout(timer);
+    const handleGenerate = () => {
+        if (!prompt.trim()) {
+            toast({ variant: 'destructive', title: 'Prompt is empty' });
+            return;
         }
-    }, [kineticPreview]);
-
-    const handleGenerate = (type: string) => {
-        if (type === 'kinetic') {
-            if (!kineticText.trim()) {
-                toast({ variant: 'destructive', title: 'Text is empty' });
-                return;
-            }
-            setKineticPreview(true);
-        } else {
-             toast({
-                title: "Coming Soon!",
-                description: `The ${type} video generator is under construction.`,
-            });
-        }
+        setIsLoading(true);
+        setVideoUrl(null);
+        // Simulate AI generation
+        setTimeout(() => {
+            // In a real app, this would be the URL of the generated video
+            setVideoUrl('https://placehold.co/1280x720.mp4'); 
+            setIsLoading(false);
+            toast({ title: 'Video Generated!', description: 'Your AI video is ready for preview.'});
+        }, 4000);
     };
     
     return (
@@ -84,128 +67,114 @@ export default function VideoGeneratorPage() {
                             AI Video Generator
                         </CardTitle>
                         <CardDescription>
-                            Create professional videos from text, images, or AI avatars.
+                            Create cinematic video clips from text prompts, powered by generative AI.
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
-                        <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-                            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 gap-2 h-auto">
-                                <TabsTrigger value="kinetic" className="flex-col h-auto py-2 gap-1"><Type /> Kinetic Text</TabsTrigger>
-                                <TabsTrigger value="slideshow" className="flex-col h-auto py-2 gap-1"><Film /> Slideshow</TabsTrigger>
-                                <TabsTrigger value="avatar" className="flex-col h-auto py-2 gap-1"><Sprout /> AI Avatar</TabsTrigger>
-                                <TabsTrigger value="voice" className="flex-col h-auto py-2 gap-1"><Wand2 /> Voiceover</TabsTrigger>
-                            </TabsList>
-
-                            <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-8">
-                                {/* Controls Panel */}
-                                <div className="md:col-span-1 space-y-6">
-                                     <TabsContent value="kinetic">
-                                        <Card>
-                                            <CardHeader><CardTitle>Kinetic Text Settings</CardTitle></CardHeader>
-                                            <CardContent className="space-y-4">
-                                                <div>
-                                                    <Label htmlFor="kinetic-text">Text</Label>
-                                                    <Textarea id="kinetic-text" value={kineticText} onChange={e => setKineticText(e.target.value)} rows={4} />
-                                                </div>
-                                                <div className="grid grid-cols-2 gap-4">
-                                                    <div>
-                                                        <Label htmlFor="kinetic-color">Text Color</Label>
-                                                        <Input id="kinetic-color" type="color" value={kineticColor} onChange={e => setKineticColor(e.target.value)} className="p-1 h-10"/>
-                                                    </div>
-                                                    <div>
-                                                        <Label htmlFor="kinetic-font">Font</Label>
-                                                        <Select value={kineticFont} onValueChange={setKineticFont}>
-                                                            <SelectTrigger id="kinetic-font"><SelectValue /></SelectTrigger>
-                                                            <SelectContent>
-                                                                <SelectItem value="Inter">Inter</SelectItem>
-                                                                <SelectItem value="Poppins">Poppins</SelectItem>
-                                                                <SelectItem value="Roboto">Roboto</SelectItem>
-                                                                <SelectItem value="Montserrat">Montserrat</SelectItem>
-                                                            </SelectContent>
-                                                        </Select>
-                                                    </div>
-                                                </div>
-                                            </CardContent>
-                                        </Card>
-                                    </TabsContent>
-                                     <TabsContent value="slideshow">
-                                        <Card>
-                                            <CardHeader><CardTitle>Slideshow Settings</CardTitle></CardHeader>
-                                            <CardContent className="text-center text-muted-foreground">
-                                                <p>Slideshow generator coming soon!</p>
-                                            </CardContent>
-                                        </Card>
-                                    </TabsContent>
-                                     <TabsContent value="avatar">
-                                        <Card>
-                                            <CardHeader><CardTitle>AI Avatar Settings</CardTitle></CardHeader>
-                                            <CardContent className="text-center text-muted-foreground">
-                                                <p>AI Avatar generator coming soon!</p>
-                                            </CardContent>
-                                        </Card>
-                                    </TabsContent>
-                                     <TabsContent value="voice">
-                                        <Card>
-                                            <CardHeader><CardTitle>Voiceover Video Settings</CardTitle></CardHeader>
-                                            <CardContent className="text-center text-muted-foreground">
-                                                <p>Voiceover video generator coming soon!</p>
-                                            </CardContent>
-                                        </Card>
-                                    </TabsContent>
-                                    
-                                    <Card>
-                                        <CardHeader><CardTitle>General Settings</CardTitle></CardHeader>
-                                        <CardContent className="space-y-4">
-                                            <div>
-                                                <Label htmlFor="orientation">Orientation</Label>
-                                                <Select defaultValue="vertical">
-                                                    <SelectTrigger id="orientation"><SelectValue /></SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="vertical">Vertical (9:16)</SelectItem>
-                                                        <SelectItem value="square">Square (1:1)</SelectItem>
-                                                        <SelectItem value="horizontal">Horizontal (16:9)</SelectItem>
-                                                    </SelectContent>
-                                                </Select>
-                                            </div>
-                                            <div>
-                                                 <Button variant="outline" className="w-full justify-start"><Music className="mr-2"/> Add Background Music</Button>
-                                            </div>
-                                        </CardContent>
-                                    </Card>
-
-                                    <Button onClick={() => handleGenerate(activeTab)} size="lg" className="w-full">
-                                        <Play className="mr-2"/> Generate Video
-                                    </Button>
-                                </div>
-
-                                {/* Preview Panel */}
-                                <div className="md:col-span-2">
-                                     <h3 className="text-xl font-semibold mb-4 text-center">Preview</h3>
-                                     <Card className={cn(
-                                        "w-full bg-gray-900 aspect-video flex items-center justify-center shadow-inner",
-                                        activeTab === 'kinetic' && 'aspect-[9/16] max-w-sm mx-auto'
-                                     )}>
-                                         {activeTab === 'kinetic' && kineticPreview && (
-                                            <KineticAnimation text={kineticText} color={kineticColor} font={kineticFont} />
-                                         )}
-                                          {activeTab === 'kinetic' && !kineticPreview && (
-                                            <p className="text-muted-foreground">Preview will appear here</p>
-                                         )}
-                                         {activeTab !== 'kinetic' && (
-                                              <div className="text-center text-muted-foreground">
-                                                <Video className="h-16 w-16 mx-auto mb-4" />
-                                                <p>Video preview for {activeTab} will appear here.</p>
-                                            </div>
-                                         )}
-                                     </Card>
-                                     <div className="flex justify-center mt-4">
-                                         <Button variant="outline" disabled={activeTab === 'kinetic' && !kineticPreview}>
-                                             <Download className="mr-2"/> Download MP4
-                                         </Button>
-                                     </div>
-                                </div>
+                       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            {/* Controls Panel */}
+                            <div className="lg:col-span-1 space-y-6">
+                               <Card>
+                                  <CardHeader>
+                                    <CardTitle className="text-xl flex items-center gap-2"><Sparkles className="text-primary"/> Prompt</CardTitle>
+                                    <CardDescription>Describe the scene you want to create.</CardDescription>
+                                  </CardHeader>
+                                  <CardContent>
+                                    <Textarea 
+                                      value={prompt}
+                                      onChange={(e) => setPrompt(e.target.value)}
+                                      placeholder="e.g., An astronaut riding a horse on Mars"
+                                      rows={5}
+                                    />
+                                  </CardContent>
+                               </Card>
+                               <Card>
+                                 <CardHeader>
+                                  <CardTitle className="text-xl flex items-center gap-2"><Camera className="text-accent"/> Creative Controls</CardTitle>
+                                 </CardHeader>
+                                 <CardContent className="space-y-4">
+                                    <div>
+                                      <Label htmlFor="aspect-ratio">Aspect Ratio</Label>
+                                      <Select value={aspectRatio} onValueChange={(v) => setAspectRatio(v as AspectRatioKey)}>
+                                        <SelectTrigger id="aspect-ratio"><SelectValue /></SelectTrigger>
+                                        <SelectContent>
+                                          <SelectItem value="16:9">Landscape (16:9)</SelectItem>
+                                          <SelectItem value="9:16">Portrait (9:16)</SelectItem>
+                                          <SelectItem value="1:1">Square (1:1)</SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                    </div>
+                                    <div>
+                                      <Label htmlFor="style">Style</Label>
+                                      <Select value={style} onValueChange={setStyle}>
+                                        <SelectTrigger id="style"><SelectValue /></SelectTrigger>
+                                        <SelectContent>
+                                          <SelectItem value="cinematic">Cinematic</SelectItem>
+                                          <SelectItem value="anime">Anime</SelectItem>
+                                          <SelectItem value="photorealistic">Photorealistic</SelectItem>
+                                          <SelectItem value="watercolor">Watercolor</SelectItem>
+                                          <SelectItem value="claymation">Claymation</SelectItem>
+                                          <SelectItem value="low-poly">Low Poly</SelectItem>
+                                        </SelectContent>
+                                      </Select>
+                                    </div>
+                                     <div>
+                                      <Label htmlFor="duration" className="flex justify-between">
+                                        <span>Duration</span>
+                                        <span>{duration}s</span>
+                                      </Label>
+                                      <Slider id="duration" min={3} max={15} step={1} value={[duration]} onValueChange={(v) => setDuration(v[0])} />
+                                    </div>
+                                 </CardContent>
+                               </Card>
+                                <Button onClick={handleGenerate} size="lg" className="w-full" disabled={isLoading}>
+                                    {isLoading ? <Loader2 className="mr-2 animate-spin"/> : <Wand2 className="mr-2"/>}
+                                    {isLoading ? 'Generating Your Scene...' : 'Generate Video'}
+                                </Button>
                             </div>
-                        </Tabs>
+
+                            {/* Preview Panel */}
+                            <div className="lg:col-span-2">
+                                 <h3 className="text-xl font-semibold mb-4 text-center">Preview</h3>
+                                 <Card className={cn(
+                                    "w-full bg-gray-900 flex items-center justify-center shadow-inner mx-auto transition-all duration-300 ease-in-out",
+                                    aspectRatios[aspectRatio],
+                                    aspectRatio === '9:16' ? 'max-w-sm' : 'max-w-3xl'
+                                 )}>
+                                     {isLoading && (
+                                        <div className="text-center text-white p-4">
+                                            <Loader2 className="h-12 w-12 animate-spin mx-auto mb-4"/>
+                                            <p className="font-semibold">AI is dreaming up your video...</p>
+                                            <p className="text-sm text-white/70">This can take a moment.</p>
+                                        </div>
+                                     )}
+                                     {!isLoading && videoUrl && (
+                                        <video
+                                            key={videoUrl}
+                                            src={videoUrl}
+                                            controls
+                                            autoPlay
+                                            loop
+                                            muted
+                                            className="w-full h-full object-cover rounded-lg"
+                                        >
+                                            Your browser does not support the video tag.
+                                        </video>
+                                     )}
+                                     {!isLoading && !videoUrl && (
+                                          <div className="text-center text-muted-foreground p-4">
+                                            <Film className="h-16 w-16 mx-auto mb-4" />
+                                            <p>Your generated video will appear here.</p>
+                                        </div>
+                                     )}
+                                 </Card>
+                                 <div className="flex justify-center mt-4">
+                                     <Button variant="outline" disabled={!videoUrl || isLoading}>
+                                         <Download className="mr-2"/> Download MP4
+                                     </Button>
+                                 </div>
+                            </div>
+                        </div>
                     </CardContent>
                 </Card>
             </main>
