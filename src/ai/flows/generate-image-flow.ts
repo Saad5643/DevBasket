@@ -4,32 +4,44 @@
  * @fileOverview An AI flow to generate an image from a text prompt.
  *
  * - generateImage - A function that handles the image generation process.
+ * - GenerateImageInput - The input type for the generateImage function.
  * - GenerateImageOutput - The return type for the generateImage function.
  */
 
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 
-// No input schema needed for a simple string, but defining output schema.
+const GenerateImageInputSchema = z.object({
+  prompt: z.string().describe("The user's text prompt for the image."),
+  quality: z.enum(['standard', 'hd']).describe("The desired quality for the image."),
+});
+export type GenerateImageInput = z.infer<typeof GenerateImageInputSchema>;
+
+
 const GenerateImageOutputSchema = z.object({
   imageUrl: z.string().describe("The data URI of the generated image."),
 });
 export type GenerateImageOutput = z.infer<typeof GenerateImageOutputSchema>;
 
-export async function generateImage(promptText: string): Promise<GenerateImageOutput> {
-  return generateImageFlow(promptText);
+export async function generateImage(input: GenerateImageInput): Promise<GenerateImageOutput> {
+  return generateImageFlow(input);
 }
 
 const generateImageFlow = ai.defineFlow(
   {
     name: 'generateImageFlow',
-    inputSchema: z.string(),
+    inputSchema: GenerateImageInputSchema,
     outputSchema: GenerateImageOutputSchema,
   },
-  async (prompt) => {
+  async ({ prompt, quality }) => {
+    let enhancedPrompt = prompt;
+    if (quality === 'hd') {
+      enhancedPrompt = `${prompt}, 4k, photorealistic, ultra detailed, high quality`;
+    }
+    
     const { media } = await ai.generate({
       model: 'googleai/gemini-2.0-flash-preview-image-generation',
-      prompt: prompt,
+      prompt: enhancedPrompt,
       config: {
         responseModalities: ['IMAGE', 'TEXT'],
       },

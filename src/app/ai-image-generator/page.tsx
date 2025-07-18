@@ -6,14 +6,19 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Download, Loader2, Sparkles } from 'lucide-react';
-import { generateImage } from '@/ai/flows/generate-image-flow';
+import { ArrowLeft, Download, Loader2, Sparkles, Star } from 'lucide-react';
+import { generateImage, GenerateImageInput } from '@/ai/flows/generate-image-flow';
+
+type Quality = 'standard' | 'hd';
 
 export default function AiImageGenerator() {
   const { toast } = useToast();
   const [prompt, setPrompt] = useState<string>('A photorealistic portrait of a husky wearing sunglasses, cinematic lighting');
+  const [quality, setQuality] = useState<Quality>('standard');
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -27,7 +32,8 @@ export default function AiImageGenerator() {
     setImageUrl(null);
 
     try {
-      const result = await generateImage(prompt);
+      const input: GenerateImageInput = { prompt, quality };
+      const result = await generateImage(input);
       if (result.imageUrl) {
         setImageUrl(result.imageUrl);
       } else {
@@ -79,7 +85,9 @@ export default function AiImageGenerator() {
           <CardContent>
             <div className="flex flex-col gap-4">
                 <div>
+                  <Label htmlFor="prompt-input" className="mb-2 block font-medium">Your Prompt</Label>
                   <Textarea
+                    id="prompt-input"
                     value={prompt}
                     onChange={(e) => setPrompt(e.target.value)}
                     placeholder="e.g., A cute cat astronaut on the moon"
@@ -87,6 +95,18 @@ export default function AiImageGenerator() {
                     rows={3}
                   />
                 </div>
+                 <div>
+                    <Label htmlFor="quality-select" className="mb-2 block font-medium">Quality</Label>
+                    <Select value={quality} onValueChange={(value) => setQuality(value as Quality)}>
+                        <SelectTrigger id="quality-select" className="w-full">
+                            <SelectValue placeholder="Select image quality" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectItem value="standard">Standard</SelectItem>
+                            <SelectItem value="hd">High</SelectItem>
+                        </SelectContent>
+                    </Select>
+                 </div>
                 <Button onClick={handleGenerateImage} disabled={isLoading} size="lg">
                     {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
                     {isLoading ? 'Generating...' : 'Generate Image'}
@@ -119,7 +139,7 @@ export default function AiImageGenerator() {
                 )}
                 {!isLoading && !imageUrl && (
                     <div className="text-center text-muted-foreground">
-                        <Sparkles className="h-16 w-16 mx-auto mb-4" />
+                        <Star className="h-16 w-16 mx-auto mb-4" />
                         <p>Your generated image will appear here.</p>
                     </div>
                 )}
