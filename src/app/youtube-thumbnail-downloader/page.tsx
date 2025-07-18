@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -55,7 +55,7 @@ export default function YoutubeThumbnailDownloader() {
     setError('');
   };
 
-  const handleDownload = async (thumbnailUrl: string, quality: string) => {
+  const handleDownload = useCallback(async (thumbnailUrl: string, quality: string) => {
     toast({
       title: 'Downloading...',
       description: `Preparing the ${quality} thumbnail.`,
@@ -82,7 +82,7 @@ export default function YoutubeThumbnailDownloader() {
         description: 'This thumbnail quality may not exist for this video.',
       });
     }
-  };
+  }, [toast, videoId]);
 
   return (
     <div className="bg-background min-h-screen py-8 md:py-12">

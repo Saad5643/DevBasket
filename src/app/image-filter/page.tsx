@@ -1,6 +1,7 @@
+
 'use client';
 
-import { useState, useRef, ChangeEvent } from 'react';
+import { useState, useRef, ChangeEvent, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -48,10 +49,10 @@ export default function ImageFilterTool() {
     setFilters(prev => ({ ...prev, [filterName]: value }));
   };
 
-  const resetFilters = () => {
+  const resetFilters = useCallback(() => {
     setFilters(initialFilters);
     toast({ title: "Filters Reset", description: "All filter values have been reset to their defaults." });
-  };
+  }, [toast]);
   
   const getCssFilterString = () => {
     const sharpenContrast = 100 + filters.sharpen / 2;
@@ -69,7 +70,7 @@ export default function ImageFilterTool() {
     `.trim();
   };
 
-  const downloadImage = () => {
+  const downloadImage = useCallback(() => {
     if (!imageRef.current || !canvasRef.current) {
       toast({ variant: 'destructive', title: "Error", description: "Cannot download image. Please upload an image first." });
       return;
@@ -94,7 +95,8 @@ export default function ImageFilterTool() {
     link.href = canvas.toDataURL('image/png');
     link.click();
     toast({ title: "Image Downloading", description: "Your filtered image has started downloading." });
-  };
+  }, [getCssFilterString, toast]);
+
 
   const filterControls = [
     { name: 'Brightness', key: 'brightness', min: 0, max: 200, unit: '%' },
