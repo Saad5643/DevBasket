@@ -14,6 +14,7 @@ import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Slider } from '@/components/ui/slider';
+import { PDFDocument } from 'pdf-lib';
 
 // Setup worker
 pdfjsLib.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjsLib.version}/build/pdf.worker.min.mjs`;
@@ -115,12 +116,13 @@ export default function PdfEditorPage() {
                     viewport: viewport,
                 };
                 await page.render(renderContext).promise;
+                redrawAnnotations(pageNum - 1);
             }
         }
     } catch (e) {
         console.error(`Failed to render page ${pageNum}`, e);
     }
-  }, []);
+  }, [annotations]);
   
   useEffect(() => {
     if (pdfDoc) {
@@ -159,7 +161,7 @@ export default function PdfEditorPage() {
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>, pageIndex: number) => {
-    if (!activeTool) return;
+    if (!activeTool || activeTool !== 'pencil') return;
     setIsDrawing(true);
     const coords = getCanvasCoordinates(e, pageIndex);
     if (!coords) return;
@@ -178,7 +180,7 @@ export default function PdfEditorPage() {
   };
 
   const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement>, pageIndex: number) => {
-    if (!isDrawing || !activeTool) return;
+    if (!isDrawing || !activeTool || activeTool !== 'pencil') return;
     const coords = getCanvasCoordinates(e, pageIndex);
     if (!coords) return;
     
@@ -189,14 +191,16 @@ export default function PdfEditorPage() {
         if(lastAnnotation && lastAnnotation.type === 'draw') {
             const lastPath = lastAnnotation.paths[lastAnnotation.paths.length - 1];
             lastPath.push(coords);
-            redrawAnnotations(pageIndex);
         }
         return newAnnotations;
     });
+    redrawAnnotations(pageIndex);
   };
 
   const handleMouseUp = () => {
-    setIsDrawing(false);
+    if (isDrawing) {
+      setIsDrawing(false);
+    }
   };
 
   const redrawAnnotations = (pageIndex: number) => {
@@ -217,7 +221,14 @@ export default function PdfEditorPage() {
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
         annotation.paths.forEach(path => {
-          if (path.length < 2) return;
+          if (path.length < 2) {
+             // Draw a dot for single clicks
+             ctx.beginPath();
+             ctx.arc(path[0].x, path[0].y, annotation.lineWidth / 2, 0, 2 * Math.PI);
+             ctx.fillStyle = annotation.color;
+             ctx.fill();
+             return;
+          }
           ctx.beginPath();
           ctx.moveTo(path[0].x, path[0].y);
           for (let i = 1; i < path.length; i++) {
@@ -230,7 +241,7 @@ export default function PdfEditorPage() {
   };
 
   const handleDownload = async () => {
-    if (!pdfDoc) {
+    if (!pdfDoc || !file) {
       setToastInfo({ variant: "destructive", title: "No PDF loaded"});
       return;
     }
@@ -238,15 +249,14 @@ export default function PdfEditorPage() {
     setToastInfo({ title: "Preparing Download", description: "This might take a moment..."});
     
     try {
-       const { PDFDocument } = await import('pdf-lib');
-       const pdfBytes = await pdfDoc.getData();
-       const newPdfDoc = await PDFDocument.load(pdfBytes);
+       const existingPdfBytes = await file.arrayBuffer();
+       const newPdfDoc = await PDFDocument.load(existingPdfBytes);
        const pages = newPdfDoc.getPages();
 
        for(let i = 0; i < pages.length; i++) {
          const page = pages[i];
          const annotationCanvas = annotationCanvasRefs.current[i];
-         if(annotationCanvas) {
+         if(annotationCanvas && annotations[i]?.length > 0) {
             const pngImageBytes = await fetch(annotationCanvas.toDataURL("image/png")).then(res => res.arrayBuffer());
             const pngImage = await newPdfDoc.embedPng(pngImageBytes);
             page.drawImage(pngImage, {
@@ -378,7 +388,7 @@ export default function PdfEditorPage() {
                         />
                          <canvas
                             ref={el => { if (el) annotationCanvasRefs.current[index] = el; }}
-                            className="absolute top-0 left-0"
+                            className="absolute top-0 left-0 cursor-crosshair"
                             onMouseDown={(e) => handleMouseDown(e, index)}
                             onMouseMove={(e) => handleMouseMove(e, index)}
                             onMouseUp={handleMouseUp}
