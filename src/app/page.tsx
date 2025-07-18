@@ -116,7 +116,7 @@ export default function Home() {
         <section className="w-full border-b">
           <div className="container flex min-h-[calc(100vh-5rem)] items-center justify-center px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
+              <div className="space-y-2 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
                 <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl xl:text-6xl/none">
                   <span className="inline-block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-gradient">
                     Your Daily Developer Toolkit.
@@ -126,7 +126,7 @@ export default function Home() {
                   From thumbnail grabbers to URL shorteners, find everything you need — fast and free.
                 </p>
               </div>
-              <div className="flex flex-col justify-center gap-4 pt-4 min-[400px]:flex-row">
+              <div className="flex flex-col justify-center gap-4 pt-4 min-[400px]:flex-row animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
                 <Button asChild size="lg" className="h-12 transform-gpu px-8 text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-xl active:scale-95">
                   <Link href="#tools">
                     Explore Tools
@@ -143,7 +143,7 @@ export default function Home() {
         
         <section id="tools" className="w-full bg-muted/40 py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center animate-fade-in-up">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Featured Tools</div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">A Growing Collection</h2>
@@ -153,28 +153,30 @@ export default function Home() {
               </div>
             </div>
             <div className="mx-auto grid grid-cols-1 gap-6 py-12 sm:grid-cols-2 md:grid-cols-3 lg:gap-8">
-              {tools.map((tool) => (
-                <Card key={tool.name} className="flex flex-col justify-between transform-gpu transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
-                  <CardHeader className="flex flex-row items-center gap-4 pb-4">
-                    <div className="bg-gradient-to-br from-primary/20 to-accent/20 text-primary p-3 rounded-xl">{tool.icon}</div>
-                    <div>
-                      <CardTitle>{tool.name}</CardTitle>
-                      <CardDescription>{tool.description}</CardDescription>
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    <Button asChild className="w-full active:scale-95">
-                      <Link href={tool.href}>Open Tool</Link>
-                    </Button>
-                  </CardContent>
-                </Card>
+              {tools.map((tool, index) => (
+                <div key={tool.name} className="animate-fade-in-up" style={{ animationDelay: `${0.2 + index * 0.1}s`}}>
+                  <Card className="flex flex-col justify-between transform-gpu transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl h-full">
+                    <CardHeader className="flex flex-row items-center gap-4 pb-4">
+                      <div className="bg-gradient-to-br from-primary/20 to-accent/20 text-primary p-3 rounded-xl">{tool.icon}</div>
+                      <div>
+                        <CardTitle>{tool.name}</CardTitle>
+                        <CardDescription>{tool.description}</CardDescription>
+                      </div>
+                    </CardHeader>
+                    <CardContent className="mt-auto">
+                      <Button asChild className="w-full active:scale-95">
+                        <Link href={tool.href}>Open Tool</Link>
+                      </Button>
+                    </CardContent>
+                  </Card>
+                </div>
               ))}
             </div>
           </div>
         </section>
 
         <section id="suggest" className="w-full border-t py-12 md:py-24 lg:py-32">
-          <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6">
+          <div className="container grid items-center justify-center gap-4 px-4 text-center md:px-6 animate-fade-in-up">
             <div className="space-y-3">
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Have an Idea?</h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
