@@ -41,7 +41,7 @@ export default function PdfToWordConverter() {
       });
       setToastInfo(null);
     }
-  }, [toastInfo, toast]);
+  }, [toastInfo]);
 
   const onDrop = useCallback((acceptedFiles: File[], fileRejections: any[]) => {
     if (fileRejections.length > 0) {
@@ -68,6 +68,20 @@ export default function PdfToWordConverter() {
     multiple: false,
   });
 
+  const handleDownload = (fileName: string) => {
+    // In a real app, this would be the blob from the API response
+    const placeholderBlob = new Blob(["This is a placeholder DOCX file."], { type: "application/vnd.openxmlformats-officedocument.wordprocessingml.document" });
+    const url = URL.createObjectURL(placeholderBlob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    setToastInfo({ title: 'Download Started', description: 'Your converted file is downloading.' });
+  };
+  
   const handleConvert = () => {
     if (!file) return;
 
@@ -77,26 +91,18 @@ export default function PdfToWordConverter() {
     // Simulate conversion progress
     const interval = setInterval(() => {
       setProgress(prev => {
-        if (prev >= 90) {
+        const nextProgress = prev + 10;
+        if (nextProgress >= 100) {
           clearInterval(interval);
           setStatus('success');
-          setToastInfo({ title: "Conversion Complete!", description: "Your DOCX file is ready for download." });
+          setToastInfo({ title: "Conversion Complete!", description: "Your DOCX file is ready." });
+          const newFileName = `${file.name.replace(/\.pdf$/, '')}.docx`;
+          handleDownload(newFileName);
           return 100;
         }
-        return prev + 10;
+        return nextProgress;
       });
     }, 300);
-  };
-  
-  const handleDownload = () => {
-    // In a real app, this would trigger a download from a server URL
-    const link = document.createElement('a');
-    link.href = '#'; // Placeholder
-    link.download = `${file?.name.replace(/\.pdf$/, '') || 'document'}.docx`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    setToastInfo({ title: 'Download Started', description: 'This is a placeholder download.' });
   };
   
   const handleReset = () => {
@@ -164,48 +170,52 @@ export default function PdfToWordConverter() {
                                 <p className="text-sm text-muted-foreground">{fileSize}</p>
                             </div>
                         </div>
-                        <Button variant="ghost" size="icon" onClick={handleReset}>
+                         <Button variant="ghost" size="icon" onClick={handleReset} disabled={status === 'converting'}>
                             <XCircle className="h-6 w-6 text-destructive" />
                         </Button>
                     </div>
                 </Card>
             )}
-
-            <Card className="p-4" hidden={!file || status !== 'idle'}>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-3">
-                  <Label htmlFor="ocr-switch" className="font-semibold">Enable OCR</Label>
-                   <Switch id="ocr-switch" checked={useOcr} onCheckedChange={setUseOcr} />
-                </div>
-                 <p className="text-sm text-muted-foreground">For scanned documents or images in PDF</p>
+            
+            {status !== 'idle' && (
+               <div className="pt-4">
+                {status === 'converting' && (
+                  <div className="space-y-4 text-center">
+                    <Progress value={progress} className="w-full" />
+                    <p className="text-muted-foreground animate-pulse">Converting your document... {useOcr && '(with OCR)'}</p>
+                  </div>
+                )}
+                
+                {status === 'success' && (
+                   <div className="flex flex-col sm:flex-row gap-4">
+                      <Button onClick={handleReset} variant="outline" size="lg" className="w-full">
+                          <RefreshCw className="mr-2 h-5 w-5" /> Convert Another File
+                      </Button>
+                  </div>
+                )}
               </div>
-            </Card>
+            )}
 
-            <div className="pt-4">
-              {status === 'idle' && file && (
-                 <Button onClick={handleConvert} size="lg" className="w-full">
-                    <Wand2 className="mr-2 h-5 w-5" /> Convert to Word
-                </Button>
-              )}
-              
-              {status === 'converting' && (
-                <div className="space-y-4 text-center">
-                  <Progress value={progress} className="w-full" />
-                  <p className="text-muted-foreground animate-pulse">Converting your document... {useOcr && '(with OCR)'}</p>
+
+            {status === 'idle' && file && (
+              <>
+                <Card className="p-4">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <Label htmlFor="ocr-switch" className="font-semibold">Enable OCR</Label>
+                       <Switch id="ocr-switch" checked={useOcr} onCheckedChange={setUseOcr} />
+                    </div>
+                     <p className="text-sm text-muted-foreground">For scanned documents or images in PDF</p>
+                  </div>
+                </Card>
+
+                <div className="pt-4">
+                  <Button onClick={handleConvert} size="lg" className="w-full">
+                      <Wand2 className="mr-2 h-5 w-5" /> Convert to Word
+                  </Button>
                 </div>
-              )}
-              
-              {status === 'success' && (
-                 <div className="flex flex-col sm:flex-row gap-4">
-                    <Button onClick={handleDownload} size="lg" className="flex-1">
-                        <Download className="mr-2 h-5 w-5" /> Download DOCX
-                    </Button>
-                    <Button onClick={handleReset} variant="outline" size="lg" className="flex-1">
-                        <RefreshCw className="mr-2 h-5 w-5" /> Convert Another File
-                    </Button>
-                </div>
-              )}
-            </div>
+              </>
+            )}
 
           </CardContent>
         </Card>
