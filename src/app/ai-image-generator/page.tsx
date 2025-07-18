@@ -14,6 +14,7 @@ import { ArrowLeft, Download, Loader2, Sparkles, Star } from 'lucide-react';
 import { generateImage, GenerateImageInput } from '@/ai/flows/generate-image-flow';
 
 type Quality = 'standard' | 'hd';
+type Orientation = 'square' | 'portrait' | 'landscape';
 
 const imageStyles = [
     { value: 'none', label: 'No Specific Style' },
@@ -29,11 +30,18 @@ const imageStyles = [
     { value: 'sketch', label: 'Pencil Sketch' },
 ];
 
+const orientations = [
+    { value: 'square', label: 'Square (1:1)' },
+    { value: 'portrait', label: 'Portrait (9:16)' },
+    { value: 'landscape', label: 'Landscape (16:9)' },
+];
+
 export default function AiImageGenerator() {
   const { toast } = useToast();
   const [prompt, setPrompt] = useState<string>('A photorealistic portrait of a husky wearing sunglasses, cinematic lighting');
   const [quality, setQuality] = useState<Quality>('standard');
   const [style, setStyle] = useState<string>('photorealistic');
+  const [orientation, setOrientation] = useState<Orientation>('square');
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -47,7 +55,7 @@ export default function AiImageGenerator() {
     setImageUrl(null);
 
     try {
-      const input: GenerateImageInput = { prompt, quality, style };
+      const input: GenerateImageInput = { prompt, quality, style, orientation };
       const result = await generateImage(input);
       if (result.imageUrl) {
         setImageUrl(result.imageUrl);
@@ -110,7 +118,7 @@ export default function AiImageGenerator() {
                     rows={3}
                   />
                 </div>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                         <Label htmlFor="style-select" className="mb-2 block font-medium">Style</Label>
                         <Select value={style} onValueChange={setStyle}>
@@ -120,6 +128,19 @@ export default function AiImageGenerator() {
                             <SelectContent>
                                 {imageStyles.map((s) => (
                                     <SelectItem key={s.value} value={s.value}>{s.label}</SelectItem>
+                                ))}
+                            </SelectContent>
+                        </Select>
+                    </div>
+                    <div>
+                        <Label htmlFor="orientation-select" className="mb-2 block font-medium">Orientation</Label>
+                        <Select value={orientation} onValueChange={(value) => setOrientation(value as Orientation)}>
+                            <SelectTrigger id="orientation-select">
+                                <SelectValue placeholder="Select orientation" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                {orientations.map((o) => (
+                                    <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>

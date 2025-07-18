@@ -14,6 +14,7 @@ import { z } from 'zod';
 const GenerateImageInputSchema = z.object({
   prompt: z.string().describe("The user's text prompt for the image."),
   style: z.string().describe("The desired artistic style for the image (e.g., Cinematic, Anime)."),
+  orientation: z.enum(['square', 'portrait', 'landscape']).describe("The desired orientation for the image."),
   quality: z.enum(['standard', 'hd']).describe("The desired quality for the image."),
 });
 export type GenerateImageInput = z.infer<typeof GenerateImageInputSchema>;
@@ -34,11 +35,18 @@ const generateImageFlow = ai.defineFlow(
     inputSchema: GenerateImageInputSchema,
     outputSchema: GenerateImageOutputSchema,
   },
-  async ({ prompt, quality, style }) => {
+  async ({ prompt, quality, style, orientation }) => {
     
     let enhancedPrompt = prompt;
     if (style && style !== 'none') {
       enhancedPrompt = `${prompt}, ${style} style`;
+    }
+     if (orientation) {
+        if (orientation === 'portrait') {
+            enhancedPrompt = `${enhancedPrompt}, 9:16 aspect ratio`;
+        } else if (orientation === 'landscape') {
+            enhancedPrompt = `${enhancedPrompt}, 16:9 aspect ratio`;
+        }
     }
     if (quality === 'hd') {
       enhancedPrompt = `${enhancedPrompt}, 4k, photorealistic, ultra detailed, high quality`;
