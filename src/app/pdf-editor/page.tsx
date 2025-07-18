@@ -9,11 +9,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useToast } from "@/hooks/use-toast";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { ArrowLeft, UploadCloud, ZoomIn, ZoomOut, Highlighter, Pencil, MessageSquarePlus, Undo2, Redo2, Download, Eraser, FileText, Palette, Minus, Plus } from 'lucide-react';
+import { ArrowLeft, UploadCloud, ZoomIn, ZoomOut, Pencil, Download, FileText, Minus, Plus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Separator } from '@/components/ui/separator';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Slider } from '@/components/ui/slider';
 import { PDFDocument } from 'pdf-lib';
 
 // Setup worker
@@ -32,7 +30,7 @@ type Annotation = {
   lineWidth: number;
 };
 
-type Tool = 'pencil' | 'highlight' | 'note' | 'eraser' | null;
+type Tool = 'pencil' | null;
 
 export default function PdfEditorPage() {
   const { toast } = useToast();
@@ -70,32 +68,44 @@ export default function PdfEditorPage() {
     setIsLoading(false);
   }
 
-  const onDrop = useCallback(async (acceptedFiles: File[]) => {
-    const selectedFile = acceptedFiles[0];
-    if (selectedFile) {
-      resetState();
-      setFile(selectedFile);
-      setIsLoading(true);
-
-      try {
-        const arrayBuffer = await selectedFile.arrayBuffer();
-        const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
-        const pdf = await loadingTask.promise;
-        
-        setPdfDoc(pdf);
-        setNumPages(pdf.numPages);
-        setAnnotations(Array.from({ length: pdf.numPages }, () => []));
-        setToastInfo({ title: 'PDF Loaded', description: 'Ready for editing.' });
-      } catch (error) {
-        console.error("Error loading PDF:", error);
-        setToastInfo({ variant: 'destructive', title: 'Error', description: 'Failed to load PDF file.' });
-        setFile(null);
-      } finally {
-        setIsLoading(false);
+  const redrawAnnotations = (pageIndex: number) => {
+    const canvas = annotationCanvasRefs.current[pageIndex];
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    const pageAnnotations = annotations[pageIndex];
+    if (!pageAnnotations) return;
+    
+    pageAnnotations.forEach(annotation => {
+      if (annotation.type === 'draw') {
+        ctx.strokeStyle = annotation.color;
+        ctx.lineWidth = annotation.lineWidth;
+        ctx.lineCap = 'round';
+        ctx.lineJoin = 'round';
+        annotation.paths.forEach(path => {
+          if (path.length === 0) return;
+          if (path.length === 1) {
+             // Draw a dot for single clicks
+             ctx.beginPath();
+             ctx.arc(path[0].x, path[0].y, annotation.lineWidth / 2, 0, 2 * Math.PI);
+             ctx.fillStyle = annotation.color;
+             ctx.fill();
+             return;
+          }
+          ctx.beginPath();
+          ctx.moveTo(path[0].x, path[0].y);
+          for (let i = 1; i < path.length; i++) {
+            ctx.lineTo(path[i].x, path[i].y);
+          }
+          ctx.stroke();
+        });
       }
-    }
-  }, []);
-  
+    });
+  };
+
   const renderPage = useCallback(async (pageNum: number, pdf: pdfjsLib.PDFDocumentProxy, currentZoom: number) => {
     try {
         const page = await pdf.getPage(pageNum);
@@ -121,13 +131,49 @@ export default function PdfEditorPage() {
         }
     } catch (e) {
         console.error(`Failed to render page ${pageNum}`, e);
+        setToastInfo({ variant: 'destructive', title: 'Error', description: `Failed to render page ${pageNum}`});
     }
   }, [annotations]);
   
+  const onDrop = useCallback(async (acceptedFiles: File[]) => {
+    const selectedFile = acceptedFiles[0];
+    if (selectedFile) {
+      resetState();
+      setFile(selectedFile);
+      setIsLoading(true);
+
+      try {
+        const arrayBuffer = await selectedFile.arrayBuffer();
+        const loadingTask = pdfjsLib.getDocument({ data: arrayBuffer });
+        const pdf = await loadingTask.promise;
+        
+        setPdfDoc(pdf);
+        setNumPages(pdf.numPages);
+        setAnnotations(Array.from({ length: pdf.numPages }, () => []));
+
+        // Wait for state to update and canvases to be available
+        setTimeout(async () => {
+          const pagePromises = [];
+          for (let i = 1; i <= pdf.numPages; i++) {
+              pagePromises.push(renderPage(i, pdf, zoom));
+          }
+          await Promise.all(pagePromises);
+          setIsLoading(false);
+          setToastInfo({ title: 'PDF Loaded', description: 'Ready for editing.' });
+        }, 100);
+
+      } catch (error) {
+        console.error("Error loading PDF:", error);
+        setToastInfo({ variant: 'destructive', title: 'Error', description: 'Failed to load PDF file.' });
+        resetState();
+      }
+    }
+  }, [renderPage, zoom]);
+  
   useEffect(() => {
     if (pdfDoc) {
-      setIsLoading(true);
       const renderAllPages = async () => {
+          setIsLoading(true);
           const pagePromises = [];
           for (let i = 1; i <= numPages; i++) {
               pagePromises.push(renderPage(i, pdfDoc, zoom));
@@ -137,7 +183,7 @@ export default function PdfEditorPage() {
       };
       renderAllPages();
     }
-  }, [pdfDoc, numPages, zoom, renderPage]);
+  }, [zoom, pdfDoc, numPages, renderPage]);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -161,7 +207,7 @@ export default function PdfEditorPage() {
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLCanvasElement>, pageIndex: number) => {
-    if (!activeTool || activeTool !== 'pencil') return;
+    if (!activeTool || activeTool !== 'pencil' || isDrawing) return;
     setIsDrawing(true);
     const coords = getCanvasCoordinates(e, pageIndex);
     if (!coords) return;
@@ -190,7 +236,9 @@ export default function PdfEditorPage() {
         const lastAnnotation = currentPageAnnotations[currentPageAnnotations.length - 1];
         if(lastAnnotation && lastAnnotation.type === 'draw') {
             const lastPath = lastAnnotation.paths[lastAnnotation.paths.length - 1];
-            lastPath.push(coords);
+            if (lastPath) {
+                lastPath.push(coords);
+            }
         }
         return newAnnotations;
     });
@@ -203,42 +251,6 @@ export default function PdfEditorPage() {
     }
   };
 
-  const redrawAnnotations = (pageIndex: number) => {
-    const canvas = annotationCanvasRefs.current[pageIndex];
-    if (!canvas) return;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    const pageAnnotations = annotations[pageIndex];
-    if (!pageAnnotations) return;
-    
-    pageAnnotations.forEach(annotation => {
-      if (annotation.type === 'draw') {
-        ctx.strokeStyle = annotation.color;
-        ctx.lineWidth = annotation.lineWidth;
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
-        annotation.paths.forEach(path => {
-          if (path.length < 2) {
-             // Draw a dot for single clicks
-             ctx.beginPath();
-             ctx.arc(path[0].x, path[0].y, annotation.lineWidth / 2, 0, 2 * Math.PI);
-             ctx.fillStyle = annotation.color;
-             ctx.fill();
-             return;
-          }
-          ctx.beginPath();
-          ctx.moveTo(path[0].x, path[0].y);
-          for (let i = 1; i < path.length; i++) {
-            ctx.lineTo(path[i].x, path[i].y);
-          }
-          ctx.stroke();
-        });
-      }
-    });
-  };
 
   const handleDownload = async () => {
     if (!pdfDoc || !file) {
@@ -315,15 +327,7 @@ export default function PdfEditorPage() {
         </div>
         <div className="flex items-center gap-1">
           <TooltipProvider>
-            <Tooltip><TooltipTrigger asChild><Button variant={activeTool === 'highlight' ? 'secondary' : 'ghost'} size="icon" disabled><Highlighter /></Button></TooltipTrigger><TooltipContent><p>Highlight (coming soon)</p></TooltipContent></Tooltip>
             <Tooltip><TooltipTrigger asChild><Button variant={activeTool === 'pencil' ? 'secondary' : 'ghost'} size="icon" disabled={!pdfDoc} onClick={() => setActiveTool(activeTool === 'pencil' ? null : 'pencil')}><Pencil /></Button></TooltipTrigger><TooltipContent><p>Draw</p></TooltipContent></Tooltip>
-            <Tooltip><TooltipTrigger asChild><Button variant={activeTool === 'note' ? 'secondary' : 'ghost'} size="icon" disabled><MessageSquarePlus /></Button></TooltipTrigger><TooltipContent><p>Add Note (coming soon)</p></TooltipContent></Tooltip>
-            <Tooltip><TooltipTrigger asChild><Button variant={activeTool === 'eraser' ? 'secondary' : 'ghost'} size="icon" disabled><Eraser /></Button></TooltipTrigger><TooltipContent><p>Erase (coming soon)</p></TooltipContent></Tooltip>
-          </TooltipProvider>
-          <Separator orientation="vertical" className="h-8 mx-2" />
-           <TooltipProvider>
-            <Tooltip><TooltipTrigger asChild><Button variant="ghost" size="icon" disabled><Undo2 /></Button></TooltipTrigger><TooltipContent><p>Undo (coming soon)</p></TooltipContent></Tooltip>
-            <Tooltip><TooltipTrigger asChild><Button variant="ghost" size="icon" disabled><Redo2 /></Button></TooltipTrigger><TooltipContent><p>Redo (coming soon)</p></TooltipContent></Tooltip>
           </TooltipProvider>
         </div>
         <Button onClick={handleDownload} disabled={!pdfDoc}><Download className="mr-2 h-4 w-4" /> Save & Download</Button>
@@ -331,7 +335,7 @@ export default function PdfEditorPage() {
       {activeTool === 'pencil' && (
         <CardContent className="p-2 border-t flex items-center justify-center gap-4">
             <Label>Brush:</Label>
-            <input type="color" value={brushColor} onChange={(e) => setBrushColor(e.target.value)} className="w-8 h-8 p-1 border rounded-md" />
+            <input type="color" value={brushColor} onChange={(e) => setBrushColor(e.target.value)} className="w-8 h-8 p-1 border rounded-md cursor-pointer" />
              <div className="flex items-center gap-2">
                 <Button variant="ghost" size="icon" onClick={() => setBrushSize(s => Math.max(1, s - 1))}><Minus className="h-4 w-4"/></Button>
                 <span className="w-6 text-center">{brushSize}</span>
@@ -378,17 +382,18 @@ export default function PdfEditorPage() {
                 </CardContent>
             </Card>
         ) : (
-            <div className="w-full h-[calc(100vh-160px)] overflow-auto bg-background rounded-lg shadow-inner border p-4">
-                {isLoading && <div className="text-center">Rendering PDF...</div>}
+            <div className="w-full h-full overflow-auto bg-background rounded-lg shadow-inner border p-4">
+                {isLoading && <div className="text-center p-8">Rendering PDF...</div>}
                 <div className={cn('space-y-4', isLoading ? 'hidden' : 'block')}>
                 {Array.from(new Array(numPages), (el, index) => (
-                    <div key={`page_${index + 1}`} className="relative mx-auto" style={{ width: canvasRefs.current[index]?.width }}>
+                    <div key={`page_${index + 1}`} className="relative mx-auto shadow-lg" style={{ width: canvasRefs.current[index]?.width ?? 'auto' }}>
                         <canvas
                             ref={el => { if (el) canvasRefs.current[index] = el; }}
                         />
                          <canvas
                             ref={el => { if (el) annotationCanvasRefs.current[index] = el; }}
-                            className="absolute top-0 left-0 cursor-crosshair"
+                            className="absolute top-0 left-0"
+                            style={{cursor: activeTool === 'pencil' ? 'crosshair' : 'default'}}
                             onMouseDown={(e) => handleMouseDown(e, index)}
                             onMouseMove={(e) => handleMouseMove(e, index)}
                             onMouseUp={handleMouseUp}
@@ -403,5 +408,3 @@ export default function PdfEditorPage() {
     </div>
   );
 }
-
-    
