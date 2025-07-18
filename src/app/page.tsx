@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, Package2, TextQuote, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput } from 'lucide-react';
+import { Menu, Package2, TextQuote, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput, Pencil } from 'lucide-react';
 
 const toolCategories = [
   {
@@ -81,6 +81,12 @@ const toolCategories = [
         description: 'Convert PDF files to editable Word documents with optional OCR.',
         icon: <FileSignature className="h-8 w-8" />,
         href: '/pdf-to-word',
+      },
+      {
+        name: 'PDF Editor',
+        description: 'Highlight, annotate, and draw directly on your PDF files.',
+        icon: <Pencil className="h-8 w-8" />,
+        href: '/pdf-editor',
       },
     ],
   },
@@ -251,5 +257,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
