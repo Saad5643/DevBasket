@@ -40,12 +40,12 @@ export default function VideoGeneratorPage() {
         // Simulate AI generation
         setTimeout(() => {
             // In a real app, this would be the URL of the generated video
-            setVideoUrl('https://placehold.co/1280x720.mp4/000000/ffffff?text=Video+Preview'); 
+            setVideoUrl('https://placehold.co/1280x720.mp4/000000/ffffff?text=Video+Preview');
             setIsLoading(false);
             toast({ title: 'Video Generated!', description: 'Your AI video is ready for preview.'});
         }, 4000);
     };
-    
+
     return (
         <div className="bg-background min-h-screen">
             <main className="container mx-auto px-4 py-8 md:py-12">
@@ -80,7 +80,7 @@ export default function VideoGeneratorPage() {
                                     <CardDescription>Describe the scene you want to create.</CardDescription>
                                   </CardHeader>
                                   <CardContent>
-                                    <Textarea 
+                                    <Textarea
                                       value={prompt}
                                       onChange={(e) => setPrompt(e.target.value)}
                                       placeholder="e.g., An astronaut riding a horse on Mars"
