@@ -27,6 +27,11 @@ const VerifiedBadge = () => (
   </svg>
 );
 
+type ToastInfo = {
+  title: string;
+  description?: string;
+  variant?: 'default' | 'destructive';
+};
 
 export default function TweetGenerator() {
   const { toast } = useToast();
@@ -41,11 +46,23 @@ export default function TweetGenerator() {
   const [quotes, setQuotes] = useState('88');
   const [isVerified, setIsVerified] = useState(true);
   const [date, setDate] = useState<Date | undefined>();
+  const [toastInfo, setToastInfo] = useState<ToastInfo | null>(null);
 
   useEffect(() => {
     // Set date only on the client to avoid hydration mismatch
     setDate(new Date());
   }, []);
+
+  useEffect(() => {
+    if (toastInfo) {
+      toast({
+        title: toastInfo.title,
+        description: toastInfo.description,
+        variant: toastInfo.variant,
+      });
+      setToastInfo(null);
+    }
+  }, [toastInfo, toast]);
 
   const handlePfpUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -53,7 +70,7 @@ export default function TweetGenerator() {
       const reader = new FileReader();
       reader.onload = (e) => {
         setPfp(e.target?.result as string);
-        toast({ title: "Profile picture updated!" });
+        setToastInfo({ title: "Profile picture updated!" });
       };
       reader.readAsDataURL(file);
     }
@@ -70,12 +87,12 @@ export default function TweetGenerator() {
         link.download = 'tweet-by-dev-basket.png'
         link.href = dataUrl
         link.click()
-        toast({ title: "Tweet image downloading!" });
+        setToastInfo({ title: "Tweet image downloading!" });
       })
       .catch((err) => {
-        toast({ variant: "destructive", title: "Oops!", description: "Something went wrong while generating the image."})
+        setToastInfo({ variant: "destructive", title: "Oops!", description: "Something went wrong while generating the image."})
       })
-  }, [tweetRef, toast]);
+  }, []);
   
   const resetAll = () => {
     setUsername('Dev Basket');
@@ -87,7 +104,7 @@ export default function TweetGenerator() {
     setQuotes('88');
     setIsVerified(true);
     setDate(new Date());
-    toast({ title: "Fields have been reset!" });
+    setToastInfo({ title: "Fields have been reset!" });
   };
   
   const formatNumber = (numStr: string) => {

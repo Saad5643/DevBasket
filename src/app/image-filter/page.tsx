@@ -67,12 +67,12 @@ export default function ImageFilterTool() {
     setFilters(prev => ({ ...prev, [filterName]: value }));
   };
 
-  const resetFilters = useCallback(() => {
+  const resetFilters = () => {
     setFilters(initialFilters);
     setToastInfo({ title: "Filters Reset", description: "All filter values have been reset to their defaults." });
-  }, []);
+  };
   
-  const getCssFilterString = () => {
+  const getCssFilterString = useCallback(() => {
     const sharpenContrast = 100 + filters.sharpen / 2;
 
     return `
@@ -86,7 +86,7 @@ export default function ImageFilterTool() {
       invert(${filters.invert}%)
       opacity(${filters.opacity}%)
     `.trim();
-  };
+  }, [filters]);
 
   const downloadImage = useCallback(() => {
     if (!imageRef.current || !canvasRef.current) {

@@ -21,7 +21,7 @@ const thumbnailSizes = [
 
 type ToastInfo = {
   title: string;
-  description: string;
+  description?: string;
   variant?: 'default' | 'destructive';
 };
 

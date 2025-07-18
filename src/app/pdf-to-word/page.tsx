@@ -18,29 +18,38 @@ const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
 
 type ConversionStatus = 'idle' | 'uploading' | 'converting' | 'success' | 'error';
 
+type ToastInfo = {
+  title: string;
+  description?: string;
+  variant?: 'default' | 'destructive';
+};
+
 export default function PdfToWordConverter() {
   const { toast } = useToast();
   const [file, setFile] = useState<File | null>(null);
   const [useOcr, setUseOcr] = useState(false);
   const [status, setStatus] = useState<ConversionStatus>('idle');
   const [progress, setProgress] = useState(0);
-  const [dropError, setDropError] = useState<string | null>(null);
+  const [toastInfo, setToastInfo] = useState<ToastInfo | null>(null);
 
   useEffect(() => {
-    if (dropError) {
-      toast({ variant: 'destructive', title: 'File Error', description: dropError });
-      setDropError(null);
+    if (toastInfo) {
+      toast({
+        title: toastInfo.title,
+        description: toastInfo.description,
+        variant: toastInfo.variant,
+      });
+      setToastInfo(null);
     }
-  }, [dropError]);
+  }, [toastInfo, toast]);
 
   const onDrop = useCallback((acceptedFiles: File[], fileRejections: any[]) => {
-    setDropError(null);
     if (fileRejections.length > 0) {
       const error = fileRejections[0].errors[0];
       if (error.code === 'file-too-large') {
-        setDropError(`Please upload a file smaller than ${MAX_SIZE_MB}MB.`);
+        setToastInfo({ variant: 'destructive', title: 'File Error', description: `Please upload a file smaller than ${MAX_SIZE_MB}MB.` });
       } else {
-        setDropError('Please upload a valid PDF file.');
+        setToastInfo({ variant: 'destructive', title: 'File Error', description: 'Please upload a valid PDF file.' });
       }
       return;
     }
@@ -68,10 +77,10 @@ export default function PdfToWordConverter() {
     // Simulate conversion progress
     const interval = setInterval(() => {
       setProgress(prev => {
-        if (prev >= 100) {
+        if (prev >= 90) {
           clearInterval(interval);
           setStatus('success');
-          toast({ title: "Conversion Complete!", description: "Your DOCX file is ready for download." });
+          setToastInfo({ title: "Conversion Complete!", description: "Your DOCX file is ready for download." });
           return 100;
         }
         return prev + 10;
@@ -87,7 +96,7 @@ export default function PdfToWordConverter() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-    toast({ title: 'Download Started', description: 'This is a placeholder download.' });
+    setToastInfo({ title: 'Download Started', description: 'This is a placeholder download.' });
   };
   
   const handleReset = () => {
