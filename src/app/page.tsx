@@ -82,12 +82,6 @@ const toolCategories = [
         icon: <FileSignature className="h-8 w-8" />,
         href: '/pdf-to-word',
       },
-      {
-        name: 'Word to PDF Converter',
-        description: 'Convert DOCX files to professional PDF documents.',
-        icon: <FileInput className="h-8 w-8" />,
-        href: '/word-to-pdf',
-      },
     ],
   },
   {
