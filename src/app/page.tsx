@@ -127,13 +127,13 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex flex-col justify-center gap-4 pt-4 min-[400px]:flex-row">
-                <Button asChild size="lg" className="h-12 transform-gpu px-8 text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
+                <Button asChild size="lg" className="h-12 transform-gpu px-8 text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-xl active:scale-95">
                   <Link href="#tools">
                     Explore Tools
                     <ChevronDown className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="h-12 px-8 text-base">
+                <Button asChild variant="outline" size="lg" className="h-12 px-8 text-base active:scale-95">
                    <Link href="#suggest">Suggest a Tool</Link>
                 </Button>
               </div>
@@ -163,7 +163,7 @@ export default function Home() {
                     </div>
                   </CardHeader>
                   <CardContent>
-                    <Button asChild className="w-full">
+                    <Button asChild className="w-full active:scale-95">
                       <Link href={tool.href}>Open Tool</Link>
                     </Button>
                   </CardContent>
@@ -184,7 +184,7 @@ export default function Home() {
             <div className="mx-auto w-full max-w-sm space-y-2">
               <form className="flex flex-col gap-2">
                 <Textarea placeholder="Describe your tool idea..." />
-                <Button type="submit">
+                <Button type="submit" className="active:scale-95">
                   <Send className="mr-2 h-4 w-4" /> Suggest Tool
                 </Button>
               </form>
