@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -19,12 +19,30 @@ const thumbnailSizes = [
   { name: 'Default', key: 'default', resolution: '120x90' },
 ];
 
+type ToastInfo = {
+  title: string;
+  description: string;
+  variant?: 'default' | 'destructive';
+};
+
 export default function YoutubeThumbnailDownloader() {
   const { toast } = useToast();
   const [url, setUrl] = useState('');
   const [videoId, setVideoId] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+  const [toastInfo, setToastInfo] = useState<ToastInfo | null>(null);
+
+  useEffect(() => {
+    if (toastInfo) {
+      toast({
+        title: toastInfo.title,
+        description: toastInfo.description,
+        variant: toastInfo.variant,
+      });
+      setToastInfo(null);
+    }
+  }, [toastInfo, toast]);
 
   const extractVideoId = (inputUrl: string) => {
     const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
@@ -37,7 +55,6 @@ export default function YoutubeThumbnailDownloader() {
     const id = extractVideoId(url);
     if (id) {
       setLoading(true);
-      // Simulate network delay for loading state
       setTimeout(() => {
         setVideoId(id);
         setLoading(false);
@@ -56,7 +73,7 @@ export default function YoutubeThumbnailDownloader() {
   };
 
   const handleDownload = useCallback(async (thumbnailUrl: string, quality: string) => {
-    toast({
+    setToastInfo({
       title: 'Downloading...',
       description: `Preparing the ${quality} thumbnail.`,
     });
@@ -71,18 +88,18 @@ export default function YoutubeThumbnailDownloader() {
       link.click();
       document.body.removeChild(link);
       URL.revokeObjectURL(link.href);
-      toast({
+      setToastInfo({
         title: 'Download Complete!',
         description: 'The thumbnail has been saved to your device.',
       });
     } catch (err) {
-      toast({
+      setToastInfo({
         variant: 'destructive',
         title: 'Download Failed',
         description: 'This thumbnail quality may not exist for this video.',
       });
     }
-  }, [toast, videoId]);
+  }, [videoId]);
 
   return (
     <div className="bg-background min-h-screen py-8 md:py-12">

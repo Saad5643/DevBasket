@@ -134,6 +134,12 @@ const platforms = {
     telegram: { name: "Telegram", defaultStatus: "typing..." },
 }
 
+type ToastInfo = {
+  title: string;
+  description?: string;
+  variant?: 'default' | 'destructive';
+};
+
 export default function ChatGenerator() {
   const { toast } = useToast();
   const chatRef = useRef<HTMLDivElement>(null);
@@ -153,6 +159,18 @@ export default function ChatGenerator() {
   ]);
 
   const [newMessage, setNewMessage] = useState('');
+  const [toastInfo, setToastInfo] = useState<ToastInfo | null>(null);
+
+  useEffect(() => {
+    if (toastInfo) {
+      toast({
+        title: toastInfo.title,
+        description: toastInfo.description,
+        variant: toastInfo.variant,
+      });
+      setToastInfo(null);
+    }
+  }, [toastInfo, toast]);
 
   const handlePlatformChange = (value: Platform) => {
     setPlatform(value);
@@ -167,7 +185,7 @@ export default function ChatGenerator() {
         const result = e.target?.result as string;
         if(user === 'sender') setSenderPfp(result);
         else setReceiverPfp(result);
-        toast({ title: "Profile picture updated!" });
+        setToastInfo({ title: "Profile picture updated!" });
       };
       reader.readAsDataURL(file);
     }
@@ -184,12 +202,12 @@ export default function ChatGenerator() {
         link.download = `chat-by-devbasket-${platform}.png`;
         link.href = dataUrl;
         link.click();
-        toast({ title: "Chat image downloading!" });
+        setToastInfo({ title: "Chat image downloading!" });
       })
       .catch((err) => {
-        toast({ variant: "destructive", title: "Oops!", description: "Something went wrong while generating the image."});
+        setToastInfo({ variant: "destructive", title: "Oops!", description: "Something went wrong while generating the image."});
       });
-  }, [chatRef, toast, platform]);
+  }, [platform]);
   
   const resetAll = () => {
     setPlatform('imessage');
@@ -204,7 +222,7 @@ export default function ChatGenerator() {
         { id: 3, text: 'Fancy a hike? The weather is supposed to be amazing.', sender: 'other', time: '10:31 AM', status: 'read' },
     ]);
     setNewMessage('');
-    toast({ title: "Fields have been reset!" });
+    setToastInfo({ title: "Fields have been reset!" });
   };
   
   const handleAddMessage = (sender: 'me' | 'other') => {

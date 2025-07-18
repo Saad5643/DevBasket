@@ -1,7 +1,7 @@
 
 'use client';
 
-import { useState, useRef, ChangeEvent, useCallback } from 'react';
+import { useState, useRef, ChangeEvent, useCallback, useEffect } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
@@ -26,12 +26,30 @@ const initialFilters = {
 
 type FilterKeys = keyof typeof initialFilters;
 
+type ToastInfo = {
+  title: string;
+  description?: string;
+  variant?: 'default' | 'destructive';
+};
+
 export default function ImageFilterTool() {
   const [imageSrc, setImageSrc] = useState<string | null>(null);
   const [filters, setFilters] = useState(initialFilters);
   const { toast } = useToast();
   const imageRef = useRef<HTMLImageElement>(null);
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [toastInfo, setToastInfo] = useState<ToastInfo | null>(null);
+
+  useEffect(() => {
+    if (toastInfo) {
+      toast({
+        title: toastInfo.title,
+        description: toastInfo.description,
+        variant: toastInfo.variant,
+      });
+      setToastInfo(null);
+    }
+  }, [toastInfo, toast]);
 
   const handleImageUpload = (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -39,7 +57,7 @@ export default function ImageFilterTool() {
       const reader = new FileReader();
       reader.onload = (e) => {
         setImageSrc(e.target?.result as string);
-        toast({ title: "Image loaded successfully!" });
+        setToastInfo({ title: "Image loaded successfully!" });
       };
       reader.readAsDataURL(file);
     }
@@ -51,8 +69,8 @@ export default function ImageFilterTool() {
 
   const resetFilters = useCallback(() => {
     setFilters(initialFilters);
-    toast({ title: "Filters Reset", description: "All filter values have been reset to their defaults." });
-  }, [toast]);
+    setToastInfo({ title: "Filters Reset", description: "All filter values have been reset to their defaults." });
+  }, []);
   
   const getCssFilterString = () => {
     const sharpenContrast = 100 + filters.sharpen / 2;
@@ -72,7 +90,7 @@ export default function ImageFilterTool() {
 
   const downloadImage = useCallback(() => {
     if (!imageRef.current || !canvasRef.current) {
-      toast({ variant: 'destructive', title: "Error", description: "Cannot download image. Please upload an image first." });
+      setToastInfo({ variant: 'destructive', title: "Error", description: "Cannot download image. Please upload an image first." });
       return;
     }
     
@@ -81,7 +99,7 @@ export default function ImageFilterTool() {
     const ctx = canvas.getContext('2d');
     
     if (!ctx) {
-       toast({ variant: 'destructive', title: "Error", description: "Could not get canvas context." });
+       setToastInfo({ variant: 'destructive', title: "Error", description: "Could not get canvas context." });
        return;
     }
 
@@ -94,8 +112,8 @@ export default function ImageFilterTool() {
     link.download = 'filtered-image.png';
     link.href = canvas.toDataURL('image/png');
     link.click();
-    toast({ title: "Image Downloading", description: "Your filtered image has started downloading." });
-  }, [getCssFilterString, toast]);
+    setToastInfo({ title: "Image Downloading", description: "Your filtered image has started downloading." });
+  }, [getCssFilterString]);
 
 
   const filterControls = [
