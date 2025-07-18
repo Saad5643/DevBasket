@@ -41,7 +41,7 @@ export default function PdfToWordConverter() {
       setStatus('idle');
       setProgress(0);
     }
-  }, [toast]);
+  }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,

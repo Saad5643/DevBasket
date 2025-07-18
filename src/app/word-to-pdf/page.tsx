@@ -44,7 +44,7 @@ export default function WordToPdfConverter() {
       setStatus('idle');
       setProgress(0);
     }
-  }, [toast]);
+  }, []);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
@@ -225,5 +225,3 @@ export default function WordToPdfConverter() {
     </div>
   );
 }
-
-    
