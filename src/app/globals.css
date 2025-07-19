@@ -22,6 +22,7 @@ body {
     --muted-foreground: 240 4% 46%;
     --accent: 240 6% 10%; /* Black */
     --accent-foreground: 0 0% 98%;
+    --accent-blue: 217 91% 60%; /* Blue */
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 0 0% 98%;
     --border: 240 6% 90%;
@@ -31,7 +32,7 @@ body {
   }
 
   .dark {
-    --background: 0 0% 2%; /* Deep Black */
+    --background: 0 0% 2%;
     --foreground: 0 0% 98%;
     --card: 0 0% 8%;
     --card-foreground: 0 0% 98%;
@@ -45,6 +46,7 @@ body {
     --muted-foreground: 0 0% 64%;
     --accent: 271 85% 75%; /* Light Purple */
     --accent-foreground: 0 0% 98%;
+    --accent-blue: 217 91% 70%; /* Blue */
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 15%;

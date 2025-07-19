@@ -173,7 +173,7 @@ export default function Home() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2 animate-fade-in-up">
                 <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                  <span className="inline-block bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent animate-gradient">
+                  <span className="inline-block bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent animate-gradient">
                     Your Daily Developer Toolkit.
                   </span>
                 </h1>
