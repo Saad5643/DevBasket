@@ -1,6 +1,7 @@
 
 'use client';
 
+import { useState } from 'react';
 import Link from 'next/link';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
@@ -117,6 +118,10 @@ const toolCategories = [
 
 
 export default function Home() {
+  const [suggestion, setSuggestion] = useState('');
+
+  const mailtoLink = `mailto:devbasketofficial@gmail.com?subject=Devbasket%20Tool%20Suggestion&body=${encodeURIComponent(suggestion)}`;
+  
   return (
     <div className="flex min-h-dvh w-full flex-col bg-background">
       <header className="sticky top-0 z-50 w-full border-b bg-muted/80 px-4 py-3 backdrop-blur-lg sm:px-6">
@@ -239,12 +244,14 @@ export default function Home() {
               </p>
             </div>
             <div className="mx-auto w-full max-w-sm space-y-2">
-              <form className="flex flex-col gap-2">
-                <Textarea placeholder="Describe your tool idea..." />
-                <Button type="submit" className="active:scale-95">
-                  <Send className="mr-2 h-4 w-4" /> Suggest Tool
+              <div className="flex flex-col gap-2">
+                <Textarea placeholder="Describe your tool idea..." value={suggestion} onChange={(e) => setSuggestion(e.target.value)} />
+                <Button asChild className="active:scale-95">
+                  <a href={suggestion ? mailtoLink : undefined} onClick={(e) => !suggestion && e.preventDefault()}>
+                    <Send className="mr-2 h-4 w-4" /> Suggest Tool
+                  </a>
                 </Button>
-              </form>
+              </div>
             </div>
           </div>
         </section>
@@ -260,3 +267,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
