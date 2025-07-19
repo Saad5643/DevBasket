@@ -3,6 +3,7 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -128,8 +129,7 @@ export default function Home() {
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           <div className="flex items-center gap-6">
             <Link href="#" className="flex items-center gap-2">
-              <Package2 className="h-6 w-6" />
-              <span className="text-lg font-bold">Devbasket</span>
+              <Image src="/logo.png" alt="Devbasket Logo" width={120} height={30} />
             </Link>
             <nav className="hidden items-center gap-6 text-sm md:flex">
               <Link href="#tools" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
@@ -152,8 +152,7 @@ export default function Home() {
               <SheetContent side="left">
                 <nav className="grid gap-6 text-lg font-medium">
                   <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
-                    <Package2 className="h-6 w-6" />
-                    <span className="font-bold text-foreground">Devbasket</span>
+                    <Image src="/logo.png" alt="Devbasket Logo" width={120} height={30} />
                   </Link>
                   <Link href="#tools" className="text-muted-foreground hover:text-foreground">
                     Tools
@@ -173,7 +172,7 @@ export default function Home() {
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2 animate-fade-in-up">
                 <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                  <span className="inline-block bg-gradient-to-r from-primary to-blue-500 bg-clip-text text-transparent animate-gradient">
+                  <span className="inline-block bg-gradient-to-r from-primary to-accent-blue bg-clip-text text-transparent animate-gradient">
                     Your Daily Developer Toolkit.
                   </span>
                 </h1>
@@ -267,5 +266,7 @@ export default function Home() {
     </div>
   );
 }
+
+    
 
     
