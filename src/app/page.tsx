@@ -255,9 +255,6 @@ export default function Home() {
           <Link href="#" className="text-xs hover:underline underline-offset-4">
             Privacy
           </Link>
-          <Link href="https://github.com/firebase/genkit/tree/main/studio" className="text-xs hover:underline underline-offset-4">
-            GitHub
-          </Link>
         </nav>
       </footer>
     </div>
