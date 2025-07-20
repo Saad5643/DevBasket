@@ -1,5 +1,6 @@
 /** @type {import('next-sitemap').IConfig} */
 module.exports = {
-  siteUrl: process.env.SITE_URL || 'https://yourdomain.com',
+  siteUrl: 'https://devbasket.site',
   generateRobotsTxt: true,
+  generateIndexSitemap: false,
 };
