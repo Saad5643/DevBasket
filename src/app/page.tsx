@@ -137,7 +137,8 @@ export default function Home() {
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <div className="flex items-center gap-6">
             <Link href="#" className="flex items-center gap-2 font-semibold">
-               <Image src="/thelogo.png" alt="Devbasket Logo" width={120} height={30} />
+               <Image src="/thelogo.png" alt="Devbasket Logo" width={120} height={30} className="dark:hidden" />
+               <Image src="/thelogo-dark.png" alt="Devbasket Logo" width={120} height={30} className="hidden dark:block" />
             </Link>
             <nav className="hidden items-center gap-6 text-sm md:flex">
               <Link href="#tools" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
@@ -160,7 +161,8 @@ export default function Home() {
               <SheetContent side="left">
                 <nav className="grid gap-6 text-lg font-medium">
                   <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
-                    <Image src="/thelogo.png" alt="Devbasket Logo" width={120} height={30} />
+                     <Image src="/thelogo.png" alt="Devbasket Logo" width={120} height={30} className="dark:hidden" />
+                     <Image src="/thelogo-dark.png" alt="Devbasket Logo" width={120} height={30} className="hidden dark:block" />
                     <span className="sr-only">Devbasket</span>
                   </Link>
                   <Link href="#tools" className="text-muted-foreground hover:text-foreground">
