@@ -137,7 +137,7 @@ export default function Home() {
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <div className="flex items-center gap-6">
             <Link href="#" className="flex items-center gap-2 font-semibold">
-               <Image src="/light.png" alt="Devbasket Logo" width={120} height={30} className="dark:hidden" />
+               <Image src="/light.png" alt="Devbasket Logo" width={120} height={30} className="block dark:hidden" />
                <Image src="/dark.png" alt="Devbasket Logo" width={120} height={30} className="hidden dark:block" />
             </Link>
             <nav className="hidden items-center gap-6 text-sm md:flex">
@@ -161,7 +161,7 @@ export default function Home() {
               <SheetContent side="left">
                 <nav className="grid gap-6 text-lg font-medium">
                   <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
-                     <Image src="/light.png" alt="Devbasket Logo" width={120} height={30} className="dark:hidden" />
+                     <Image src="/light.png" alt="Devbasket Logo" width={120} height={30} className="block dark:hidden" />
                      <Image src="/dark.png" alt="Devbasket Logo" width={120} height={30} className="hidden dark:block" />
                     <span className="sr-only">Devbasket</span>
                   </Link>
@@ -282,5 +282,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
