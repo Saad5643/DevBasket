@@ -182,7 +182,7 @@ export default function Home() {
                 </p>
               </div>
               <div className="flex animate-fade-in-up flex-col justify-center gap-4 pt-4 min-[400px]:flex-row">
-                <Button asChild size="lg" className="h-12 transform-gpu px-8 text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-xl active:scale-95">
+                <Button asChild size="lg" className="h-12 transform-gpu px-8 text-base transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-primary via-primary to-purple-600 hover:shadow-2xl hover:shadow-primary/40 active:scale-95">
                   <Link href="#tools">
                     Explore Tools
                     <ChevronDown className="ml-2 h-5 w-5" />
