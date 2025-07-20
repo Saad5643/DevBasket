@@ -125,7 +125,7 @@ export default function Home() {
   
   return (
     <div className="flex min-h-dvh w-full flex-col bg-background">
-      <header className="sticky top-0 z-50 w-full bg-background/80 px-4 py-2 backdrop-blur-lg sm:px-6">
+      <header className="sticky top-0 z-50 w-full bg-background/80 px-4 py-2 shadow-sm backdrop-blur-lg sm:px-6">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <div className="flex items-center gap-6">
             <Link href="#" className="flex items-center gap-2 font-semibold">
@@ -267,5 +267,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
