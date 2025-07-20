@@ -1,9 +1,10 @@
 
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { useTheme } from 'next-themes';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -121,8 +122,16 @@ const toolCategories = [
 
 export default function Home() {
   const { toast } = useToast();
+  const { theme } = useTheme();
+  const [logoSrc, setLogoSrc] = useState('/light.png');
   const suggestionEmail = "devbasketofficial@gmail.com";
 
+  useEffect(() => {
+    // Set the logo based on the current theme.
+    // We use a state and useEffect to prevent hydration mismatches.
+    setLogoSrc(theme === 'dark' ? '/dark.png' : '/light.png');
+  }, [theme]);
+  
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(suggestionEmail);
     toast({
@@ -133,12 +142,11 @@ export default function Home() {
   
   return (
     <div className="flex min-h-dvh w-full flex-col bg-background">
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 px-4 py-2 shadow-sm backdrop-blur-lg sm:px-6 dark:bg-background/80">
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 px-4 py-2 backdrop-blur-lg sm:px-6 dark:bg-background/80">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <div className="flex items-center gap-6">
             <Link href="#" className="flex items-center gap-2 font-semibold">
-               <Image src="/light.png" alt="Devbasket Logo" width={120} height={30} className="block dark:hidden" />
-               <Image src="/dark.png" alt="Devbasket Logo" width={120} height={30} className="hidden dark:block" />
+               <Image src={logoSrc} alt="Devbasket Logo" width={120} height={30} key={logoSrc} />
             </Link>
             <nav className="hidden items-center gap-6 text-sm md:flex">
               <Link href="#tools" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
@@ -161,8 +169,7 @@ export default function Home() {
               <SheetContent side="left">
                 <nav className="grid gap-6 text-lg font-medium">
                   <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
-                     <Image src="/light.png" alt="Devbasket Logo" width={120} height={30} className="block dark:hidden" />
-                     <Image src="/dark.png" alt="Devbasket Logo" width={120} height={30} className="hidden dark:block" />
+                    <Image src={logoSrc} alt="Devbasket Logo" width={120} height={30} key={logoSrc + 'mobile'} />
                     <span className="sr-only">Devbasket</span>
                   </Link>
                   <Link href="#tools" className="text-muted-foreground hover:text-foreground">
