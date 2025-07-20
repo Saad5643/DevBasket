@@ -8,7 +8,6 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Textarea } from '@/components/ui/textarea';
 import { Menu, Package2, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput, Pencil, FileImage, Code, Copy, Mail } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
@@ -121,11 +120,8 @@ const toolCategories = [
 
 
 export default function Home() {
-  const [suggestion, setSuggestion] = useState('');
   const { toast } = useToast();
   const suggestionEmail = "devbasketofficial@gmail.com";
-
-  const mailtoLink = `mailto:${suggestionEmail}?subject=Devbasket%20Tool%20Suggestion&body=${encodeURIComponent(suggestion)}`;
 
   const handleCopyEmail = () => {
     navigator.clipboard.writeText(suggestionEmail);
@@ -264,6 +260,11 @@ export default function Home() {
                    <span className="sr-only">Copy email address</span>
                 </Button>
               </div>
+              <Button asChild className="w-full">
+                <Link href="https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcSMVxWhBNkJMzgCmGFTLFztnmxKDBsmctMRPxQRQNmJntKNlLjRwbRrKwSdrFcQjDbtfKWxG" target="_blank" rel="noopener noreferrer">
+                  <Send className="mr-2 h-4 w-4" /> Send Email via Gmail
+                </Link>
+              </Button>
             </div>
           </div>
         </section>
