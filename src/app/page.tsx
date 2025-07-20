@@ -9,7 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, Package2, TextQuote, Send, ChevronDown, Type, Image as ImageIcon, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput, Pencil, FileImage, Code } from 'lucide-react';
+import { Menu, Package2, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput, Pencil, FileImage, Code } from 'lucide-react';
 
 const toolCategories = [
   {
@@ -47,7 +47,7 @@ const toolCategories = [
       {
         name: 'Image Filter',
         description: 'Apply real-time filters to your images and download them.',
-        icon: <ImageIcon className="h-8 w-8" />,
+        icon: <ImageIconLucide className="h-8 w-8" />,
         href: '/image-filter',
       },
     ]
@@ -128,8 +128,9 @@ export default function Home() {
       <header className="sticky top-0 z-50 w-full bg-background/80 px-4 py-2 backdrop-blur-lg sm:px-6">
         <div className="mx-auto flex max-w-5xl items-center justify-between">
           <div className="flex items-center gap-6">
-            <Link href="#" className="flex items-center gap-2">
-              <Image src="/logo.png" alt="Devbasket Logo" width={120} height={30} />
+            <Link href="#" className="flex items-center gap-2 font-semibold">
+              <Package2 className="h-6 w-6" />
+              <span>Devbasket</span>
             </Link>
             <nav className="hidden items-center gap-6 text-sm md:flex">
               <Link href="#tools" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
@@ -152,7 +153,8 @@ export default function Home() {
               <SheetContent side="left">
                 <nav className="grid gap-6 text-lg font-medium">
                   <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
-                    <Image src="/logo.png" alt="Devbasket Logo" width={120} height={30} />
+                    <Package2 className="h-6 w-6" />
+                    <span className="sr-only">Devbasket</span>
                   </Link>
                   <Link href="#tools" className="text-muted-foreground hover:text-foreground">
                     Tools
