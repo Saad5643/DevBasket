@@ -9,7 +9,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Textarea } from '@/components/ui/textarea';
-import { Menu, Package2, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput, Pencil, FileImage, Code } from 'lucide-react';
+import { Menu, Package2, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput, Pencil, FileImage, Code, Copy, Mail } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import { Input } from '@/components/ui/input';
 
 const toolCategories = [
   {
@@ -120,8 +122,18 @@ const toolCategories = [
 
 export default function Home() {
   const [suggestion, setSuggestion] = useState('');
+  const { toast } = useToast();
+  const suggestionEmail = "devbasketofficial@gmail.com";
 
-  const mailtoLink = `mailto:devbasketofficial@gmail.com?subject=Devbasket%20Tool%20Suggestion&body=${encodeURIComponent(suggestion)}`;
+  const mailtoLink = `mailto:${suggestionEmail}?subject=Devbasket%20Tool%20Suggestion&body=${encodeURIComponent(suggestion)}`;
+
+  const handleCopyEmail = () => {
+    navigator.clipboard.writeText(suggestionEmail);
+    toast({
+      title: "Email Copied!",
+      description: "The email address has been copied to your clipboard.",
+    });
+  };
   
   return (
     <div className="flex min-h-dvh w-full flex-col bg-background">
@@ -240,16 +252,32 @@ export default function Home() {
             <div className="space-y-3">
               <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Have an Idea?</h2>
               <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                If there's a tool you'd love to see in the basket, feel free to suggest it.
+                If there's a tool you'd love to see in the basket, feel free to suggest it below or email us directly.
               </p>
             </div>
-            <div className="mx-auto w-full max-w-sm space-y-2">
+            <div className="mx-auto w-full max-w-sm space-y-4">
               <div className="flex flex-col gap-2">
                 <Textarea placeholder="Describe your tool idea..." value={suggestion} onChange={(e) => setSuggestion(e.target.value)} />
                 <Button asChild className="active:scale-95">
                   <a href={suggestion ? mailtoLink : undefined} onClick={(e) => !suggestion && e.preventDefault()}>
-                    <Send className="mr-2 h-4 w-4" /> Suggest Tool
+                    <Send className="mr-2 h-4 w-4" /> Suggest via Email
                   </a>
+                </Button>
+              </div>
+              <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-2 text-muted-foreground">OR</span>
+                </div>
+              </div>
+              <div className="relative">
+                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+                <Input readOnly value={suggestionEmail} className="pr-12 pl-10" />
+                <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8" onClick={handleCopyEmail}>
+                   <Copy className="h-4 w-4" />
+                   <span className="sr-only">Copy email address</span>
                 </Button>
               </div>
             </div>
