@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
-import { ArrowLeft, Keyboard, RefreshCw, BarChart, Timer, Globe } from 'lucide-react';
+import { ArrowLeft, Keyboard, RefreshCw, Timer, Globe } from 'lucide-react';
 import { words } from '@/lib/words';
 import { cn } from '@/lib/utils';
 
@@ -37,9 +37,12 @@ export default function TypingTestPage() {
   const [testFinished, setTestFinished] = useState(false);
   const [wpm, setWpm] = useState(0);
   const [accuracy, setAccuracy] = useState(0);
+  const [lineOffset, setLineOffset] = useState(0);
 
   const inputRef = useRef<HTMLInputElement>(null);
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
+  const wordRefs = useRef<(HTMLSpanElement | null)[]>([]);
+
 
   const startTest = useCallback(() => {
     const wordCount = testMode === 'words' ? wordsOption : 150; 
@@ -53,6 +56,8 @@ export default function TypingTestPage() {
     setWpm(0);
     setAccuracy(0);
     setTimeLeft(timeOption);
+    setLineOffset(0);
+    wordRefs.current = [];
     
     if (timerIntervalRef.current) {
         clearInterval(timerIntervalRef.current);
@@ -118,11 +123,22 @@ export default function TypingTestPage() {
       } else {
         setErrorChars(e => e + currentWord.length + 1);
       }
+      
+      const nextWordIndex = currentWordIndex + 1;
 
-      setCurrentWordIndex(i => i + 1);
+      // Check for line change
+      const currentWordEl = wordRefs.current[currentWordIndex];
+      const nextWordEl = wordRefs.current[nextWordIndex];
+      if (currentWordEl && nextWordEl && currentWordEl.offsetTop < nextWordEl.offsetTop) {
+        // We measure in rem, and leading-relaxed is 1.625rem line-height
+        // font-size is 2xl (2rem), so a line is about 3.25rem
+        setLineOffset(prev => prev - 3.25); 
+      }
+      
+      setCurrentWordIndex(nextWordIndex);
       setUserInput('');
       
-      if (testMode === 'words' && currentWordIndex + 1 === wordsOption) {
+      if (testMode === 'words' && nextWordIndex === wordsOption) {
         finishTest();
       }
     } else {
@@ -135,10 +151,8 @@ export default function TypingTestPage() {
       return 'text-muted-foreground';
     }
     if (wordIdx < currentWordIndex) {
-      // This part could be enhanced to show previous errors, but for now we'll mark as correct
       return 'text-primary';
     }
-    // Current word
     if (charIdx < userInput.length) {
       return userInput[charIdx] === char ? 'text-foreground' : 'bg-destructive/50 rounded-sm';
     }
@@ -214,15 +228,15 @@ export default function TypingTestPage() {
                   ) : (
                     <>
                       <div className="text-2xl md:text-3xl leading-relaxed font-mono h-32 overflow-hidden select-none" onClick={() => inputRef.current?.focus()}>
-                        <div className={cn("transition-all duration-100 ease-linear")} style={{ marginTop: `-${Math.floor(currentWordIndex / 4) * 2.5}rem`}}>
+                        <div className={cn("transition-all duration-100 ease-linear flex flex-wrap")} style={{ marginTop: `${lineOffset}rem`}}>
                             {wordList.map((word, wordIdx) => (
-                              <span key={wordIdx} className={cn('relative pb-1', wordIdx === currentWordIndex && "border-b-2 border-primary")}>
+                              <span key={wordIdx} ref={el => wordRefs.current[wordIdx] = el} className={cn('relative pb-1', wordIdx === currentWordIndex && "border-b-2 border-primary")}>
                                 {word.split('').map((char, charIdx) => (
                                   <span key={charIdx} className={getCharClass(wordIdx, charIdx, char)}>
                                     {char}
                                   </span>
                                 ))}
-                                <span> </span>
+                                <span>&nbsp;</span>
                               </span>
                             ))}
                         </div>
