@@ -9,7 +9,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Package2, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput, Pencil, FileImage, Code, Copy, Mail } from 'lucide-react';
+import { Menu, Package2, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput, Pencil, FileImage, Code, Copy, Mail, Instagram, Youtube } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
 
@@ -281,7 +281,15 @@ export default function Home() {
       <footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
         <p className="text-xs text-muted-foreground">&copy; 2024 Devbasket. Made with ❤️</p>
         <nav className="flex gap-4 sm:ml-auto sm:gap-6">
-          <Link href="#" className="text-xs hover:underline underline-offset-4">
+          <Link href="https://www.instagram.com/devbasket/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground">
+            <Instagram className="h-5 w-5" />
+            <span className="sr-only">Instagram</span>
+          </Link>
+           <Link href="https://www.youtube.com/channel/UCAVnhkNMkMPH7p78yz9LABA" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground">
+            <Youtube className="h-5 w-5" />
+            <span className="sr-only">YouTube</span>
+          </Link>
+          <Link href="#" className="text-xs hover:underline underline-offset-4 text-muted-foreground">
             Privacy
           </Link>
         </nav>
