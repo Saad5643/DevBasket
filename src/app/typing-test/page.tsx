@@ -62,7 +62,9 @@ export default function TypingTestPage() {
     if (timerIntervalRef.current) {
         clearInterval(timerIntervalRef.current);
     }
-    inputRef.current?.focus();
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   }, [testMode, timeOption, wordsOption]);
 
   useEffect(() => {
@@ -125,15 +127,6 @@ export default function TypingTestPage() {
       }
       
       const nextWordIndex = currentWordIndex + 1;
-
-      // Check for line change
-      const currentWordEl = wordRefs.current[currentWordIndex];
-      const nextWordEl = wordRefs.current[nextWordIndex];
-      if (currentWordEl && nextWordEl && currentWordEl.offsetTop < nextWordEl.offsetTop) {
-        // We measure in rem, and leading-relaxed is 1.625rem line-height
-        // font-size is 2xl (2rem), so a line is about 3.25rem
-        setLineOffset(prev => prev - 3.25); 
-      }
       
       setCurrentWordIndex(nextWordIndex);
       setUserInput('');
@@ -146,13 +139,30 @@ export default function TypingTestPage() {
     }
   };
 
+  useEffect(() => {
+    // This effect handles the line scrolling
+    if (currentWordIndex > 0) {
+      const currentWordEl = wordRefs.current[currentWordIndex];
+      const prevWordEl = wordRefs.current[currentWordIndex - 1];
+      if (currentWordEl && prevWordEl && currentWordEl.offsetTop > prevWordEl.offsetTop) {
+        // We measure in rem. font-size is 2xl (2rem), leading-relaxed is 1.625rem line-height.
+        // So a line height is roughly 2 * 1.625 = 3.25rem
+        setLineOffset(prev => prev - 3.25);
+      }
+    }
+  }, [currentWordIndex]);
+
+
   const getCharClass = (wordIdx: number, charIdx: number, char: string) => {
     if (wordIdx > currentWordIndex) {
       return 'text-muted-foreground';
     }
     if (wordIdx < currentWordIndex) {
+      // Logic for already typed words
+      // This part is simplified, a full implementation might need to store correctness of each word
       return 'text-primary';
     }
+    // Current word
     if (charIdx < userInput.length) {
       return userInput[charIdx] === char ? 'text-foreground' : 'bg-destructive/50 rounded-sm';
     }
@@ -228,9 +238,12 @@ export default function TypingTestPage() {
                   ) : (
                     <>
                       <div className="text-2xl md:text-3xl leading-relaxed font-mono h-32 overflow-hidden select-none" onClick={() => inputRef.current?.focus()}>
-                        <div className={cn("transition-all duration-100 ease-linear flex flex-wrap")} style={{ marginTop: `${lineOffset}rem`}}>
+                        <div className={cn("transition-all duration-100 ease-linear flex flex-wrap")} style={{ transform: `translateY(${lineOffset}rem)`}}>
                             {wordList.map((word, wordIdx) => (
-                              <span key={wordIdx} ref={el => wordRefs.current[wordIdx] = el} className={cn('relative pb-1', wordIdx === currentWordIndex && "border-b-2 border-primary")}>
+                              <span key={wordIdx} ref={el => {wordRefs.current[wordIdx] = el;}} className="relative">
+                                {wordIdx === currentWordIndex && (
+                                    <span className="absolute -bottom-1 left-0 w-full h-0.5 bg-primary animate-pulse" />
+                                )}
                                 {word.split('').map((char, charIdx) => (
                                   <span key={charIdx} className={getCharClass(wordIdx, charIdx, char)}>
                                     {char}
