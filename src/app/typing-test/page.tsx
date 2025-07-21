@@ -18,7 +18,8 @@ const TIME_OPTIONS: TimeOption[] = [15, 30, 60];
 const WORDS_OPTIONS: WordsOption[] = [10, 25, 50];
 
 const generateWords = (count: number) => {
-  return Array.from({ length: count }, () => words[Math.floor(Math.random() * words.length)]);
+  const shuffled = [...words].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
 };
 
 export default function TypingTestPage() {
@@ -41,7 +42,7 @@ export default function TypingTestPage() {
   const timerIntervalRef = useRef<NodeJS.Timeout | null>(null);
 
   const startTest = useCallback(() => {
-    const wordCount = testMode === 'words' ? wordsOption : 150; // Generate ample words for time mode
+    const wordCount = testMode === 'words' ? wordsOption : 150; 
     setWordList(generateWords(wordCount));
     setUserInput('');
     setCurrentWordIndex(0);
@@ -63,11 +64,27 @@ export default function TypingTestPage() {
     startTest();
   }, [startTest]);
 
+  const finishTest = useCallback(() => {
+    if (testFinished) return;
+    if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
+    setTestFinished(true);
+
+    const endTime = Date.now();
+    const durationInMinutes = ((endTime - (startTime ?? endTime)) / 1000) / 60;
+    
+    if (durationInMinutes > 0) {
+      const grossWpm = (correctChars / 5) / durationInMinutes;
+      setWpm(Math.round(grossWpm));
+      const totalChars = correctChars + errorChars;
+      setAccuracy(totalChars > 0 ? Math.round((correctChars / totalChars) * 100) : 100);
+    }
+  }, [correctChars, errorChars, startTime, testFinished]);
+
   useEffect(() => {
-    if (startTime && testMode === 'time' && !testFinished) {
+    if (startTime && !testFinished && testMode === 'time') {
       timerIntervalRef.current = setInterval(() => {
-        const elapsedTime = (Date.now() - startTime) / 1000;
-        const newTimeLeft = Math.max(0, timeOption - elapsedTime);
+        const elapsedTimeSeconds = (Date.now() - startTime) / 1000;
+        const newTimeLeft = Math.max(0, timeOption - elapsedTimeSeconds);
         setTimeLeft(newTimeLeft);
         if (newTimeLeft <= 0) {
           finishTest();
@@ -77,20 +94,8 @@ export default function TypingTestPage() {
     return () => {
       if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
     };
-  }, [startTime, testMode, timeOption, testFinished]);
+  }, [startTime, testFinished, testMode, timeOption, finishTest]);
 
-  const finishTest = () => {
-    if (timerIntervalRef.current) clearInterval(timerIntervalRef.current);
-    setTestFinished(true);
-    const endTime = Date.now();
-    const durationInMinutes = ((endTime - (startTime ?? endTime)) / 1000) / 60;
-    
-    const grossWpm = (correctChars / 5) / durationInMinutes;
-    setWpm(Math.round(grossWpm > 0 ? grossWpm : 0));
-    
-    const totalChars = correctChars + errorChars;
-    setAccuracy(totalChars > 0 ? Math.round((correctChars / totalChars) * 100) : 100);
-  };
   
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (testFinished) return;
@@ -100,32 +105,42 @@ export default function TypingTestPage() {
     const currentWord = wordList[currentWordIndex];
 
     if (value.endsWith(' ')) {
-        // Word completed
-        if (value.trim() === currentWord) {
-            setCorrectChars(c => c + currentWord.length + 1); // +1 for space
-        } else {
-            setErrorChars(e => e + currentWord.length + 1);
-        }
-        setCurrentWordIndex(i => i + 1);
-        setUserInput('');
-        
-        if (testMode === 'words' && currentWordIndex + 1 === wordsOption) {
-            finishTest();
-        }
+      if(value.trim() === '') {
+          setUserInput('');
+          return;
+      }
+      
+      const typedWord = value.trim();
+      const isCorrect = typedWord === currentWord;
+
+      if (isCorrect) {
+        setCorrectChars(c => c + currentWord.length + 1); // +1 for space
+      } else {
+        setErrorChars(e => e + currentWord.length + 1);
+      }
+
+      setCurrentWordIndex(i => i + 1);
+      setUserInput('');
+      
+      if (testMode === 'words' && currentWordIndex + 1 === wordsOption) {
+        finishTest();
+      }
     } else {
-        setUserInput(value);
+      setUserInput(value);
     }
   };
 
   const getCharClass = (wordIdx: number, charIdx: number, char: string) => {
-    if (wordIdx < currentWordIndex) {
-      return 'text-green-500';
-    }
-    if (wordIdx === currentWordIndex) {
-      if (charIdx < userInput.length) {
-        return char === userInput[charIdx] ? 'text-green-500' : 'text-red-500';
-      }
+    if (wordIdx > currentWordIndex) {
       return 'text-muted-foreground';
+    }
+    if (wordIdx < currentWordIndex) {
+      // This part could be enhanced to show previous errors, but for now we'll mark as correct
+      return 'text-primary';
+    }
+    // Current word
+    if (charIdx < userInput.length) {
+      return userInput[charIdx] === char ? 'text-foreground' : 'bg-destructive/50 rounded-sm';
     }
     return 'text-muted-foreground';
   };
@@ -156,23 +171,23 @@ export default function TypingTestPage() {
             </CardHeader>
             <CardContent className="flex flex-col items-center space-y-6">
               <div className="flex flex-col sm:flex-row items-center gap-4">
-                  <ToggleGroup type="single" value={testMode} onValueChange={(v) => { if(v) setTestMode(v as TestMode); startTest(); }}>
+                  <ToggleGroup type="single" value={testMode} onValueChange={(v) => { if(v) { setTestMode(v as TestMode); startTest(); }}} disabled={!!startTime && !testFinished}>
                       <ToggleGroupItem value="time" aria-label="Time-based test"><Timer className="mr-2 h-4 w-4"/> Time</ToggleGroupItem>
                       <ToggleGroupItem value="words" aria-label="Word-based test"><Globe className="mr-2 h-4 w-4"/> Words</ToggleGroupItem>
                   </ToggleGroup>
                   {testMode === 'time' ? (
-                      <ToggleGroup type="single" value={String(timeOption)} onValueChange={(v) => { if(v) setTimeOption(Number(v) as TimeOption); startTest(); }}>
+                      <ToggleGroup type="single" value={String(timeOption)} onValueChange={(v) => { if(v) { setTimeOption(Number(v) as TimeOption); startTest(); }}} disabled={!!startTime && !testFinished}>
                           {TIME_OPTIONS.map(t => <ToggleGroupItem key={t} value={String(t)}>{t}s</ToggleGroupItem>)}
                       </ToggleGroup>
                   ) : (
-                      <ToggleGroup type="single" value={String(wordsOption)} onValueChange={(v) => { if(v) setWordsOption(Number(v) as WordsOption); startTest(); }}>
+                      <ToggleGroup type="single" value={String(wordsOption)} onValueChange={(v) => { if(v) { setWordsOption(Number(v) as WordsOption); startTest(); }}} disabled={!!startTime && !testFinished}>
                           {WORDS_OPTIONS.map(w => <ToggleGroupItem key={w} value={String(w)}>{w}</ToggleGroupItem>)}
                       </ToggleGroup>
                   )}
               </div>
               
               <Card className="w-full p-6 bg-muted/50 relative">
-                  {!testFinished && (
+                  {(!!startTime && !testFinished) && (
                       <div className="absolute top-4 right-4 text-2xl font-bold text-primary">
                           {testMode === 'time' ? Math.ceil(timeLeft) : `${currentWordIndex} / ${wordsOption}`}
                       </div>
@@ -199,16 +214,18 @@ export default function TypingTestPage() {
                   ) : (
                     <>
                       <div className="text-2xl md:text-3xl leading-relaxed font-mono h-32 overflow-hidden select-none" onClick={() => inputRef.current?.focus()}>
-                        {wordList.map((word, wordIdx) => (
-                          <span key={wordIdx} className={cn('relative', wordIdx === currentWordIndex && "underline underline-offset-4 decoration-primary")}>
-                            {word.split('').map((char, charIdx) => (
-                              <span key={charIdx} className={getCharClass(wordIdx, charIdx, char)}>
-                                {char}
+                        <div className={cn("transition-all duration-100 ease-linear")} style={{ marginTop: `-${Math.floor(currentWordIndex / 4) * 2.5}rem`}}>
+                            {wordList.map((word, wordIdx) => (
+                              <span key={wordIdx} className={cn('relative pb-1', wordIdx === currentWordIndex && "border-b-2 border-primary")}>
+                                {word.split('').map((char, charIdx) => (
+                                  <span key={charIdx} className={getCharClass(wordIdx, charIdx, char)}>
+                                    {char}
+                                  </span>
+                                ))}
+                                <span> </span>
                               </span>
                             ))}
-                            <span> </span>
-                          </span>
-                        ))}
+                        </div>
                       </div>
                       <input
                           ref={inputRef}
