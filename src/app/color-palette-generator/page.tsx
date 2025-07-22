@@ -15,7 +15,7 @@ import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
 import { ArrowLeft, Palette, Copy, Download, FileJson, FileImage } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { generateHarmonies, HarmonyType } from '@/lib/color-utils';
+import { generateHarmonies, HarmonyType, harmonyTypes } from '@/lib/color-utils';
 
 extend([harmonies]);
 
@@ -28,7 +28,12 @@ type ToastInfo = {
 export default function ColorPaletteGenerator() {
   const { toast } = useToast();
   const [baseColor, setBaseColor] = useState('#A020F0');
-  const [harmonies, setHarmonies] = useState<Record<HarmonyType, string[]>>({});
+  const [harmonies, setHarmonies] = useState<Record<HarmonyType, string[]>>({
+    analogous: [],
+    complementary: [],
+    'split-complementary': [],
+    triadic: [],
+  });
   const paletteRef = useRef<HTMLDivElement>(null);
   const [toastInfo, setToastInfo] = useState<ToastInfo | null>(null);
 
@@ -171,8 +176,8 @@ export default function ColorPaletteGenerator() {
                 <h3 className="text-xl font-semibold mb-4 text-center">Generated Palettes</h3>
                  <Tabs defaultValue="analogous" className="w-full">
                     <TabsList className="grid w-full grid-cols-2 sm:grid-cols-4">
-                       {Object.keys(harmonies).map(type => (
-                          <TabsTrigger key={type} value={type} className="capitalize">{type}</TabsTrigger>
+                       {harmonyTypes.map(type => (
+                          <TabsTrigger key={type} value={type} className="capitalize">{type.replace('-', ' ')}</TabsTrigger>
                        ))}
                     </TabsList>
                    {Object.entries(harmonies).map(([type, colors]) => (
