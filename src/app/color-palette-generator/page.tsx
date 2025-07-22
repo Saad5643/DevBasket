@@ -84,7 +84,7 @@ export default function ColorPaletteGenerator() {
   };
   
   const downloadPng = useCallback((paletteType: HarmonyType) => {
-     const element = document.getElementById(`${type}-palette`);
+     const element = document.getElementById(`${paletteType}-palette`);
     if (!element) return;
     
     toPng(element, { cacheBust: true, pixelRatio: 2, style: { padding: '1rem', background: 'hsl(var(--card))'} })
@@ -97,7 +97,7 @@ export default function ColorPaletteGenerator() {
       .catch(() => {
         setToastInfo({ variant: "destructive", title: "Oops!", description: "Something went wrong generating the image."});
       });
-  }, []);
+  }, [baseColor]);
 
   const HSLSliders = () => {
     const hsl = colord(baseColor).toHsl();
@@ -195,9 +195,9 @@ export default function ColorPaletteGenerator() {
                       <TabsContent key={type} value={type}>
                         <Card className="p-4">
                           <div id={`${type}-palette`} className="flex flex-col md:flex-row h-80 md:h-60 w-full rounded-lg overflow-hidden shadow-inner bg-card">
-                            {colors.map((color) => (
+                            {colors.map((color, index) => (
                               <div
-                                key={color}
+                                key={`${color}-${index}`}
                                 className="w-full h-full flex items-end justify-center p-2 text-white font-mono text-sm cursor-pointer relative group"
                                 style={{ backgroundColor: color }}
                                 onClick={() => copyToClipboard(color)}
