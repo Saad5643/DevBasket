@@ -1,8 +1,9 @@
 
 import { colord, extend } from 'colord';
 import harmonies from 'colord/plugins/harmonies';
+import shades from 'colord/plugins/shades';
 
-extend([harmonies]);
+extend([harmonies, shades]);
 
 export type HarmonyType = 'analogous' | 'complementary' | 'split-complementary' | 'triadic' | 'tetradic' | 'monochromatic';
 
@@ -17,7 +18,7 @@ export function generateHarmonies(baseColor: string): Record<HarmonyType, string
     'split-complementary': c.harmonies('split-complementary').map(color => color.toHex()),
     triadic: c.harmonies('triadic').map(color => color.toHex()),
     tetradic: c.harmonies('tetradic').map(color => color.toHex()),
-    monochromatic: c.harmonies('monochromatic').map(color => color.toHex()),
+    monochromatic: c.shades(5).map(color => color.toHex()),
   };
 }
 
