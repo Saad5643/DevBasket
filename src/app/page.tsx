@@ -9,7 +9,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Package2, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput, Pencil, FileImage, Code, Copy, Mail, Instagram, Youtube, Replace, Images } from 'lucide-react';
+import { Menu, Package2, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput, Pencil, FileImage, Code, Copy, Mail, Instagram, Youtube, Replace, Images, Palette } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
 
@@ -86,6 +86,12 @@ const toolCategories = [
         description: 'Create and customize simple CSS loading animations.',
         icon: <Loader2 className="h-8 w-8" />,
         href: '/css-loader-generator',
+      },
+      {
+        name: 'Color Palette Generator',
+        description: 'Create and customize color palettes from a base color.',
+        icon: <Palette className="h-8 w-8" />,
+        href: '/color-palette-generator',
       },
     ]
   },
