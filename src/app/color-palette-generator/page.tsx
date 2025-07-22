@@ -153,13 +153,14 @@ export default function ColorPaletteGenerator() {
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
               {/* Controls */}
               <div className="lg:col-span-2 space-y-6">
+                 <Button onClick={handleRegenerate} size="lg" className="w-full">
+                  <Shuffle className="mr-2 h-5 w-5" />
+                  Regenerate Random Palette
+                </Button>
                 <Card>
                   <CardHeader>
                     <div className="flex justify-between items-center">
                       <CardTitle className="text-xl">Color Picker</CardTitle>
-                      <Button variant="ghost" size="icon" onClick={handleRegenerate}>
-                        <Shuffle className="h-5 w-5" />
-                      </Button>
                     </div>
                   </CardHeader>
                   <CardContent className="space-y-4">

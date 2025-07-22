@@ -9,13 +9,24 @@ export type HarmonyType = 'analogous' | 'complementary' | 'split-complementary' 
 export const harmonyTypes: HarmonyType[] = ['analogous', 'complementary', 'split-complementary', 'triadic'];
 
 export function generateHarmonies(baseColor: string): Record<HarmonyType, string[]> {
-  const c = colord(baseColor);
+  const base = colord(baseColor);
+  const baseHsl = base.toHsl();
+
+  const processHarmony = (harmonyType: HarmonyType): string[] => {
+    return base.harmonies(harmonyType).map(color => {
+      // Adjust saturation and lightness to be closer to the base color for better aesthetics
+      const colorHsl = color.toHsl();
+      colorHsl.s = (colorHsl.s + baseHsl.s) / 2; // Average saturation
+      colorHsl.l = (colorHsl.l + baseHsl.l) / 2; // Average lightness
+      return colord(colorHsl).toHex();
+    });
+  };
 
   return {
-    analogous: c.harmonies('analogous').map(color => color.toHex()),
-    complementary: c.harmonies('complementary').map(color => color.toHex()),
-    'split-complementary': c.harmonies('split-complementary').map(color => color.toHex()),
-    triadic: c.harmonies('triadic').map(color => color.toHex()),
+    analogous: processHarmony('analogous'),
+    complementary: processHarmony('complementary'),
+    'split-complementary': processHarmony('split-complementary'),
+    triadic: processHarmony('triadic'),
   };
 }
 
