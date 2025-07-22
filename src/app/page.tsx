@@ -58,6 +58,12 @@ const toolCategories = [
         icon: <Replace className="h-8 w-8" />,
         href: '/jpeg-to-png',
       },
+      {
+        name: 'WebP to PNG Converter',
+        description: 'Convert modern WebP images to the widely supported PNG format.',
+        icon: <Replace className="h-8 w-8" />,
+        href: '/webp-to-png',
+      },
     ]
   },
   {
@@ -303,3 +309,5 @@ export default function Home() {
     </div>
   );
 }
+
+    
