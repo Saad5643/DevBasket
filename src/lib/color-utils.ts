@@ -1,8 +1,9 @@
 
 import { colord, extend } from 'colord';
 import harmonies from 'colord/plugins/harmonies';
+import random from 'colord/plugins/random';
 
-extend([harmonies]);
+extend([harmonies, random]);
 
 export type HarmonyType = 'analogous' | 'complementary' | 'split-complementary' | 'triadic';
 
