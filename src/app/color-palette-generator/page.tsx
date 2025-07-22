@@ -13,7 +13,7 @@ import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Slider } from '@/components/ui/slider';
 import { useToast } from '@/hooks/use-toast';
-import { ArrowLeft, Palette, Copy, Download, FileJson, FileImage } from 'lucide-react';
+import { ArrowLeft, Palette, Copy, Download, FileJson, FileImage, Shuffle } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { generateHarmonies, HarmonyType, harmonyTypes } from '@/lib/color-utils';
 
@@ -56,6 +56,12 @@ export default function ColorPaletteGenerator() {
     }
   };
 
+  const handleRegenerate = () => {
+    const randomColor = colord.random().toHex();
+    setBaseColor(randomColor);
+    setToastInfo({ title: 'New palette generated!', description: `Base color set to ${randomColor}.` });
+  };
+
   const copyToClipboard = (text: string) => {
     navigator.clipboard.writeText(text);
     setToastInfo({ title: 'Copied to clipboard!', description: `${text} has been copied.` });
@@ -78,7 +84,7 @@ export default function ColorPaletteGenerator() {
   };
   
   const downloadPng = useCallback((paletteType: HarmonyType) => {
-     const element = document.getElementById(`${paletteType}-palette`);
+     const element = document.getElementById(`${type}-palette`);
     if (!element) return;
     
     toPng(element, { cacheBust: true, pixelRatio: 2, style: { padding: '1rem', background: 'hsl(var(--card))'} })
@@ -149,7 +155,12 @@ export default function ColorPaletteGenerator() {
               <div className="lg:col-span-2 space-y-6">
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-xl">Color Picker</CardTitle>
+                    <div className="flex justify-between items-center">
+                      <CardTitle className="text-xl">Color Picker</CardTitle>
+                      <Button variant="ghost" size="icon" onClick={handleRegenerate}>
+                        <Shuffle className="h-5 w-5" />
+                      </Button>
+                    </div>
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div className="relative h-24 w-full rounded-md border border-border" style={{ backgroundColor: baseColor }} />
