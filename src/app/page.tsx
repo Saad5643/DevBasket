@@ -9,7 +9,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Package2, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput, Pencil, FileImage, Code, Copy, Mail, Instagram, Youtube, Replace } from 'lucide-react';
+import { Menu, Package2, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput, Pencil, FileImage, Code, Copy, Mail, Instagram, Youtube, Replace, Images } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
 
@@ -92,6 +92,12 @@ const toolCategories = [
   {
     category: 'PDF Tools',
     tools: [
+      {
+        name: 'Image to PDF Converter',
+        description: 'Combine multiple images into a single, downloadable PDF file.',
+        icon: <Images className="h-8 w-8" />,
+        href: '/image-to-pdf',
+      },
       {
         name: 'PDF to PNG Converter',
         description: 'Convert each page of a PDF file into separate PNG images.',
@@ -309,5 +315,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
