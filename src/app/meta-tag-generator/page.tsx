@@ -141,37 +141,8 @@ export default function MetaTagGenerator() {
                  </div>
               </div>
 
-              {/* Previews and Output */}
+              {/* Output */}
               <div className="space-y-8">
-                <div>
-                  <h3 className="text-xl font-semibold mb-4 flex items-center gap-2"><Twitter className="text-blue-500"/>Twitter Preview</h3>
-                  <Card className="bg-[#15202B] text-white p-4 rounded-xl border border-border/20 w-full max-w-lg mx-auto">
-                    <div className="border border-gray-700 rounded-xl overflow-hidden">
-                      {isClient && imageUrl && <Image src={imageUrl} alt="Twitter preview" width={500} height={261} className="w-full h-auto object-cover" data-ai-hint="website banner" />}
-                      <div className="p-3">
-                        <p className="text-gray-400 text-sm">{getDomain(url)}</p>
-                        <p className="font-bold text-base truncate">{title}</p>
-                        <p className="text-gray-400 text-sm overflow-hidden text-ellipsis line-clamp-2">{description}</p>
-                      </div>
-                    </div>
-                  </Card>
-                </div>
-                 <div>
-                  <h3 className="text-xl font-semibold mb-4 flex items-center gap-2"><Facebook className="text-blue-600"/>Facebook Preview</h3>
-                  <Card className="bg-[#F0F2F5] dark:bg-[#18191A] p-4 rounded-lg border border-border/20 w-full max-w-lg mx-auto">
-                     <div className="bg-white dark:bg-[#242526] rounded-lg overflow-hidden">
-                       {isClient && imageUrl && <Image src={imageUrl} alt="Facebook preview" width={500} height={261} className="w-full h-auto object-cover" data-ai-hint="social media post" />}
-                       <div className="p-3 bg-gray-50 dark:bg-gray-700/20">
-                         <p className="text-xs text-gray-500 dark:text-gray-400 uppercase">{getDomain(url)}</p>
-                         <p className="font-semibold text-base truncate text-gray-800 dark:text-gray-200">{title}</p>
-                         <p className="text-sm text-gray-600 dark:text-gray-300 overflow-hidden text-ellipsis line-clamp-1">{description}</p>
-                       </div>
-                     </div>
-                  </Card>
-                </div>
-
-                <Separator />
-
                 <div>
                    <div className="flex justify-between items-center mb-2">
                         <h3 className="text-xl font-semibold">Generated Tags</h3>
@@ -182,7 +153,7 @@ export default function MetaTagGenerator() {
                     <Textarea
                         readOnly
                         value={generatedTags}
-                        className="w-full h-64 font-mono text-xs"
+                        className="w-full h-96 font-mono text-xs"
                     />
                 </div>
 
