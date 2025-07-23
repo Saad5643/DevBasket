@@ -95,12 +95,7 @@ const toolCategories = [
         icon: <Palette className="h-8 w-8" />,
         href: '/color-palette-generator',
       },
-    ]
-  },
-  {
-    category: 'Developer Tools',
-    tools: [
-       {
+      {
         name: 'HTML Previewer',
         description: 'Write HTML code and see a real-time, sandboxed preview.',
         icon: <Code className="h-8 w-8" />,
