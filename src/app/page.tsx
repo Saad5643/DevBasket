@@ -29,12 +29,6 @@ const toolCategories = [
         icon: <Sparkles className="h-8 w-8" />,
         href: '/ai-image-generator',
       },
-      {
-        name: 'AI Video Generator',
-        description: 'Create short video clips from text prompts using generative AI.',
-        icon: <Film className="h-8 w-8" />,
-        href: '/video-generator',
-      },
        {
         name: 'Hashtag Generator',
         description: 'Generate trending and niche hashtags for your content.',
