@@ -163,7 +163,7 @@ export default function Home() {
                <Link href="#" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
                 Pricing
               </Link>
-              <Link href="#" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
+              <Link href="/contact" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
                 Contact
               </Link>
             </nav>
@@ -188,7 +188,7 @@ export default function Home() {
                   <Link href="#" className="text-muted-foreground hover:text-foreground">
                     Pricing
                   </Link>
-                  <Link href="#" className="text-muted-foreground hover:text-foreground">
+                  <Link href="/contact" className="text-muted-foreground hover:text-foreground">
                     Contact
                   </Link>
                 </nav>
