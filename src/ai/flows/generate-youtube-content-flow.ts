@@ -11,7 +11,7 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 
-export const GenerateYoutubeContentInputSchema = z.object({
+const GenerateYoutubeContentInputSchema = z.object({
   topic: z.string().describe('The main topic or title for the YouTube video.'),
   videoDescription: z.string().optional().describe('A brief description of the video content.'),
   targetAudience: z.string().optional().describe('The intended audience for the video (e.g., beginner developers, fitness enthusiasts).'),
@@ -19,7 +19,7 @@ export const GenerateYoutubeContentInputSchema = z.object({
 });
 export type GenerateYoutubeContentInput = z.infer<typeof GenerateYoutubeContentInputSchema>;
 
-export const GenerateYoutubeContentOutputSchema = z.object({
+const GenerateYoutubeContentOutputSchema = z.object({
   title: z.string().describe('A catchy and SEO-optimized video title.'),
   description: z.string().describe('A well-structured and engaging video description including a summary and key points.'),
   hashtags: z.array(z.string()).describe('An array of 10-15 relevant hashtags, including the # symbol.'),
