@@ -101,6 +101,12 @@ const toolCategories = [
         icon: <Code className="h-8 w-8" />,
         href: '/html-previewer',
       },
+       {
+        name: 'Meta Tag Generator',
+        description: 'Generate SEO and social media meta tags for your website.',
+        icon: <Code className="h-8 w-8" />,
+        href: '/meta-tag-generator',
+      },
     ]
   },
   {
