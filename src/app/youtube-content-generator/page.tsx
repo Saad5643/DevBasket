@@ -8,7 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/com
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Loader2, Wand2, Copy, Sparkles, Youtube } from 'lucide-react';
-import { generateYoutubeContent, GenerateYoutubeContentInput, GenerateYoutubeContentOutput } from '@/ai/flows/generate-youtube-content-flow';
+import { generateYoutubeContent } from '@/ai/flows/generate-youtube-content-flow';
+import type { GenerateYoutubeContentInput, GenerateYoutubeContentOutput } from '@/ai/flows/generate-youtube-content-flow';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
@@ -144,10 +145,12 @@ export default function YoutubeSeoOptimizer() {
                     {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
                     {isLoading ? 'Generating...' : 'Generate Content'}
                 </Button>
-                
-                 {/* Generated Content Fields */}
+              </div>
+
+              {/* Right Panel: Generated Content */}
+              <div className="space-y-4">
+                 <h3 className="text-xl font-semibold">Generated Content</h3>
                  <div className="space-y-4">
-                    <h3 className="text-xl font-semibold">Generated Content</h3>
                      <Card>
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
                            <CardTitle className="text-base">Title</CardTitle>
@@ -193,28 +196,6 @@ export default function YoutubeSeoOptimizer() {
                         </CardContent>
                     </Card>
                  </div>
-              </div>
-
-              {/* Right Panel: Preview */}
-              <div className="space-y-4">
-                 <h3 className="text-xl font-semibold text-center">Live Preview</h3>
-                 <Card className="w-full max-w-lg mx-auto overflow-hidden">
-                    <div className="bg-muted aspect-video flex items-center justify-center">
-                        <Youtube className="h-16 w-16 text-muted-foreground"/>
-                    </div>
-                    <div className="p-4">
-                        <h4 className="font-bold text-lg leading-tight">
-                          {isLoading ? 'Generating title...' : displayContent.title}
-                        </h4>
-                        <div className="text-sm text-muted-foreground mt-2">
-                            <span>Dev Tuber</span>
-                             <span className="mx-1">•</span>
-                            <span>1.2M views</span>
-                            <span className="mx-1">•</span>
-                            <span>1 day ago</span>
-                        </div>
-                    </div>
-                 </Card>
               </div>
             </div>
           </CardContent>
