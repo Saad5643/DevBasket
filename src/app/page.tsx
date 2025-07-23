@@ -98,6 +98,17 @@ const toolCategories = [
     ]
   },
   {
+    category: 'Developer Tools',
+    tools: [
+       {
+        name: 'HTML Previewer',
+        description: 'Write HTML code and see a real-time, sandboxed preview.',
+        icon: <Code className="h-8 w-8" />,
+        href: '/html-previewer',
+      },
+    ]
+  },
+  {
     category: 'PDF Tools',
     tools: [
       {
