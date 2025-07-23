@@ -9,7 +9,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Package2, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput, Pencil, FileImage, Code, Copy, Mail, Instagram, Youtube, Replace, Images, Palette } from 'lucide-react';
+import { Menu, Package2, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput, Pencil, FileImage, Code, Copy, Mail, Instagram, Youtube, Replace, Images, Palette, Hash } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
 
@@ -34,6 +34,12 @@ const toolCategories = [
         description: 'Create short video clips from text prompts using generative AI.',
         icon: <Film className="h-8 w-8" />,
         href: '/video-generator',
+      },
+       {
+        name: 'Hashtag Generator',
+        description: 'Generate trending and niche hashtags for your content.',
+        icon: <Hash className="h-8 w-8" />,
+        href: '/hashtag-generator',
       },
     ]
   },
@@ -106,7 +112,7 @@ const toolCategories = [
       },
       {
         name: 'PDF to PNG Converter',
-        description: 'Convert each page of a PDF file into separate PNG images.',
+        description: 'Convert each page of a PDF into separate PNG images.',
         icon: <FileImage className="h-8 w-8" />,
         href: '/pdf-to-png',
       },
