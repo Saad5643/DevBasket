@@ -11,6 +11,7 @@ import { ArrowLeft, Loader2, Wand2, Copy, Sparkles, Youtube } from 'lucide-react
 import { generateYoutubeContent, GenerateYoutubeContentInput, GenerateYoutubeContentOutput } from '@/ai/flows/generate-youtube-content-flow';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { Label } from '@/components/ui/label';
+import { Input } from '@/components/ui/input';
 
 type Tone = 'professional' | 'casual' | 'viral';
 
@@ -21,9 +22,11 @@ const initialContent: GenerateYoutubeContentOutput = {
   keywords: ['portfolio website tutorial 2025', 'next.js portfolio setup', 'tailwind css beginner project', 'modern portfolio site build'],
 };
 
-export default function YoutubeContentGenerator() {
+export default function YoutubeSeoOptimizer() {
   const { toast } = useToast();
-  const [topic, setTopic] = useState('Build a portfolio website with Next.js and Tailwind CSS');
+  const [topic, setTopic] = useState('How to Build a Portfolio Website in 2025');
+  const [videoDesc, setVideoDesc] = useState('A step-by-step tutorial to create a modern developer portfolio using Next.js and Tailwind CSS.');
+  const [audience, setAudience] = useState('Beginner developers, coders, web designers');
   const [tone, setTone] = useState<Tone>('casual');
   const [content, setContent] = useState<GenerateYoutubeContentOutput | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -38,7 +41,12 @@ export default function YoutubeContentGenerator() {
     setContent(null);
 
     try {
-      const input: GenerateYoutubeContentInput = { topic, tone };
+      const input: GenerateYoutubeContentInput = { 
+        topic, 
+        tone, 
+        videoDescription: videoDesc, 
+        targetAudience: audience 
+      };
       const result = await generateYoutubeContent(input);
       setContent(result);
     } catch (error) {
@@ -74,7 +82,7 @@ export default function YoutubeContentGenerator() {
               <Youtube className="h-8 w-8" />
             </div>
             <CardTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent">
-              YouTube Content Generator
+              YouTube SEO Optimizer
             </CardTitle>
             <CardDescription>
               Generate optimized titles, descriptions, and tags for your YouTube videos.
@@ -90,13 +98,31 @@ export default function YoutubeContentGenerator() {
                   </CardHeader>
                   <CardContent className="space-y-4">
                     <div>
-                      <Label htmlFor="topic-input">Video Topic or Idea</Label>
-                      <Textarea
+                      <Label htmlFor="topic-input">Video Topic or Title</Label>
+                      <Input
                         id="topic-input"
                         value={topic}
                         onChange={(e) => setTopic(e.target.value)}
-                        placeholder="e.g., A tutorial on building a Next.js app with Tailwind CSS"
+                        placeholder="e.g., A tutorial on building a Next.js app"
+                      />
+                    </div>
+                     <div>
+                      <Label htmlFor="video-desc-input">Short Description of Video Content</Label>
+                      <Textarea
+                        id="video-desc-input"
+                        value={videoDesc}
+                        onChange={(e) => setVideoDesc(e.target.value)}
+                        placeholder="e.g., A step-by-step guide to..."
                         rows={3}
+                      />
+                    </div>
+                     <div>
+                      <Label htmlFor="audience-input">Target Audience (Optional)</Label>
+                      <Input
+                        id="audience-input"
+                        value={audience}
+                        onChange={(e) => setAudience(e.target.value)}
+                        placeholder="e.g., Beginner developers, fitness enthusiasts"
                       />
                     </div>
                      <div>
@@ -142,20 +168,28 @@ export default function YoutubeContentGenerator() {
                     </Card>
                      <Card>
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
-                           <CardTitle className="text-base">Hashtags & Keywords</CardTitle>
-                           <Button variant="ghost" size="icon" onClick={() => copyToClipboard([...displayContent.hashtags, ...displayContent.keywords].join(' '), 'Hashtags')}><Copy className="h-4 w-4" /></Button>
+                           <CardTitle className="text-base">Hashtags</CardTitle>
+                           <Button variant="ghost" size="icon" onClick={() => copyToClipboard(displayContent.hashtags.join(' '), 'Hashtags')}><Copy className="h-4 w-4" /></Button>
                         </CardHeader>
                         <CardContent className="flex flex-wrap gap-2">
                             {isLoading ? <p className="text-muted-foreground">Generating...</p> : 
-                            (<>
-                                {displayContent.hashtags.map((tag, i) => (
+                                displayContent.hashtags.map((tag, i) => (
                                     <span key={`ht-${i}`} className="px-2 py-1 bg-primary/10 text-primary rounded-md text-sm">{tag}</span>
-                                ))}
-                                {displayContent.keywords.map((kw, i) => (
+                                ))
+                            }
+                        </CardContent>
+                    </Card>
+                     <Card>
+                        <CardHeader className="flex flex-row items-center justify-between pb-2">
+                           <CardTitle className="text-base">Keywords / LSI Terms</CardTitle>
+                           <Button variant="ghost" size="icon" onClick={() => copyToClipboard(displayContent.keywords.join(', '), 'Keywords')}><Copy className="h-4 w-4" /></Button>
+                        </CardHeader>
+                        <CardContent className="flex flex-wrap gap-2">
+                            {isLoading ? <p className="text-muted-foreground">Generating...</p> : 
+                                displayContent.keywords.map((kw, i) => (
                                     <span key={`kw-${i}`} className="px-2 py-1 bg-secondary text-secondary-foreground rounded-md text-sm">{kw}</span>
-                                ))}
-                            </>
-                            )}
+                                ))
+                            }
                         </CardContent>
                     </Card>
                  </div>

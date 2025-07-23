@@ -20,7 +20,7 @@ const toolCategories = [
     category: 'AI Tools',
     tools: [
       {
-        name: 'YouTube Content Generator',
+        name: 'YouTube SEO Optimizer',
         description: 'Generate optimized titles, descriptions, and tags for your videos.',
         icon: <Youtube className="h-8 w-8" />,
         href: '/youtube-content-generator',
