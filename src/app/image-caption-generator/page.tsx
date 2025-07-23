@@ -111,37 +111,29 @@ export default function ImageCaptionGenerator() {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
               {/* Controls and Image Preview */}
               <div className="lg:col-span-1 space-y-6">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-xl">1. Upload Image</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="flex items-center justify-center w-full">
-                        <Label htmlFor="image-upload" className="flex flex-col items-center justify-center w-full h-64 border-2 border-border border-dashed rounded-lg cursor-pointer bg-muted/50 hover:bg-muted">
-                            <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                {imageSrc ? (
-                                    <Image src={imageSrc} alt="Uploaded preview" width={200} height={200} className="max-h-56 w-auto object-contain rounded-lg" />
-                                ) : (
-                                    <>
-                                        <Upload className="w-8 h-8 mb-4 text-muted-foreground" />
-                                        <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                        <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP (MAX. 10MB)</p>
-                                    </>
-                                )}
+                <Card className="p-4">
+                   <input id="image-upload" type="file" className="hidden" accept="image/png, image/jpeg, image/webp" onChange={handleImageUpload} />
+                   <Label 
+                      htmlFor="image-upload" 
+                      className="flex flex-col items-center justify-center w-full min-h-64 border-2 border-border border-dashed rounded-lg cursor-pointer bg-muted/50 hover:bg-muted transition-colors"
+                    >
+                        {imageSrc ? (
+                            <Image src={imageSrc} alt="Uploaded preview" width={400} height={400} className="max-h-96 w-auto object-contain rounded-lg p-2" />
+                        ) : (
+                            <div className="flex flex-col items-center justify-center p-6 text-center">
+                                <Upload className="w-10 h-10 mb-4 text-muted-foreground" />
+                                <p className="mb-2 text-sm text-muted-foreground"><span className="font-semibold">Click to upload</span> or drag and drop</p>
+                                <p className="text-xs text-muted-foreground">PNG, JPG, or WEBP (MAX. 10MB)</p>
                             </div>
-                            <input id="image-upload" type="file" className="hidden" accept="image/png, image/jpeg, image/webp" onChange={handleImageUpload} />
-                        </Label>
-                    </div>
-                  </CardContent>
+                        )}
+                    </Label>
                 </Card>
                 
                 <Card>
                   <CardHeader>
-                    <CardTitle className="text-xl">2. Select Style</CardTitle>
+                    <CardTitle className="text-xl">Select a Style</CardTitle>
                   </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div>
-                      <Label htmlFor="caption-style">Caption Style</Label>
+                  <CardContent>
                       <Select value={captionStyle} onValueChange={setCaptionStyle} disabled={!imageSrc}>
                         <SelectTrigger id="caption-style">
                           <SelectValue placeholder="Select a style" />
@@ -152,7 +144,6 @@ export default function ImageCaptionGenerator() {
                           ))}
                         </SelectContent>
                       </Select>
-                    </div>
                   </CardContent>
                 </Card>
 
@@ -169,7 +160,7 @@ export default function ImageCaptionGenerator() {
 
               {/* Generated Captions */}
               <div className="lg:col-span-1">
-                <h3 className="text-xl font-semibold mb-4 text-center">3. Generated Captions</h3>
+                <h3 className="text-xl font-semibold mb-4 text-center">Generated Captions</h3>
                 <div className="h-[550px] overflow-y-auto space-y-4 pr-2">
                   {isLoading && (
                     <div className="flex flex-col items-center justify-center h-full text-muted-foreground">
@@ -185,7 +176,7 @@ export default function ImageCaptionGenerator() {
                      </div>
                   )}
                   {!isLoading && captions.length > 0 && captions.map((caption, index) => (
-                    <Card key={index} className="relative group">
+                    <Card key={index} className="relative group animate-fade-in-up" style={{animationDelay: `${index * 100}ms`}}>
                       <CardContent className="p-4">
                         <p className="text-base text-foreground pr-8">{caption}</p>
                         <Button

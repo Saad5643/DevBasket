@@ -17,15 +17,15 @@ const GenerateYoutubeContentInputSchema = z.object({
   targetAudience: z.string().optional().describe('The intended audience for the video (e.g., beginner developers, fitness enthusiasts).'),
   tone: z.enum(['professional', 'casual', 'viral']).describe('The desired tone for the generated content.'),
 });
-export type GenerateYoutubeContentInput = z.infer<typeof GenerateYoutubeContentInputSchema>;
+type GenerateYoutubeContentInput = z.infer<typeof GenerateYoutubeContentInputSchema>;
 
 const GenerateYoutubeContentOutputSchema = z.object({
   title: z.string().describe('A catchy and SEO-optimized video title.'),
-  description: z.string().describe('A well-structured and engaging video description including a summary and key points.'),
+  description: z.string().describe('A well-structured and engaging video description including a summary, key points/timestamps, and a call-to-action.'),
   hashtags: z.array(z.string()).describe('An array of 10-15 relevant hashtags, including the # symbol.'),
   keywords: z.array(z.string()).describe('A list of 5-10 SEO keywords or LSI terms related to the video topic.'),
 });
-export type GenerateYoutubeContentOutput = z.infer<typeof GenerateYoutubeContentOutputSchema>;
+type GenerateYoutubeContentOutput = z.infer<typeof GenerateYoutubeContentOutputSchema>;
 
 
 export async function generateYoutubeContent(input: GenerateYoutubeContentInput): Promise<GenerateYoutubeContentOutput> {
@@ -36,7 +36,7 @@ const prompt = ai.definePrompt({
   name: 'generateYoutubeContentPrompt',
   input: { schema: GenerateYoutubeContentInputSchema },
   output: { schema: GenerateYoutubeContentOutputSchema },
-  prompt: `You are a YouTube content strategist and SEO expert. Your task is to generate optimized content for a video based on a given topic and tone.
+  prompt: `You are a YouTube content strategist and SEO expert with a knack for creating viral content. Your task is to generate highly optimized metadata for a video based on the provided details.
 
 Video Topic: {{{topic}}}
 {{#if videoDescription}}Video Description: {{{videoDescription}}}{{/if}}
@@ -44,12 +44,19 @@ Video Topic: {{{topic}}}
 Tone: {{{tone}}}
 
 Instructions:
-1.  **Title**: Create a compelling, clickable, and SEO-friendly title based on the provided inputs. It should be under 70 characters.
-2.  **Description**: Write a detailed and engaging video description. Start with a 2-3 sentence summary. Then, add a "In this video:" section with bullet points or timestamps.
-3.  **Hashtags**: Generate a list of 10-15 relevant hashtags. Mix broad and specific tags. All hashtags must start with #.
-4.  **Keywords**: Generate a list of 5-10 important keywords and LSI (Latent Semantic Indexing) terms for the YouTube algorithm. These should be terms people are likely to search for.
+1.  **Title**: Create a compelling, clickable, and SEO-friendly title under 70 characters. Use power words, numbers, and brackets/parentheses to maximize click-through rate.
+2.  **Description**: Write a detailed, engaging, and well-structured video description.
+    - Start with a 2-3 sentence hook that summarizes the video's value.
+    - Add a "In this video:" or "Timestamps:" section with at least 3-5 bullet points covering key topics.
+    - Include a clear call-to-action (e.g., "Subscribe for more!", "Check out the links below.").
+    - Naturally weave in important keywords throughout the description.
+3.  **Hashtags**: Generate a list of 10-15 relevant hashtags. Include a mix of broad (high volume) and specific (niche) tags. All hashtags must start with #.
+4.  **Keywords**: Generate a list of 5-10 important keywords and LSI (Latent Semantic Indexing) terms. These should be search terms people are likely to use to find this video. Do not include the # symbol.
 
-The tone should be '{{{tone}}}'. For 'viral', use more sensational language and emojis. For 'professional', be more formal. For 'casual', be friendly and relatable.
+The tone should be '{{{tone}}}'.
+- For 'viral', use sensational language, emojis, and create a sense of urgency or curiosity.
+- For 'professional', be formal, authoritative, and clear.
+- For 'casual', be friendly, relatable, and use conversational language.
 
 Provide the response as a JSON object that strictly follows the output schema.`,
 });

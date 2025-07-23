@@ -10,7 +10,8 @@ import { Label } from '@/components/ui/label';
 import { ToggleGroup, ToggleGroupItem } from '@/components/ui/toggle-group';
 import { useToast } from "@/hooks/use-toast";
 import { ArrowLeft, Hash, Sparkles, Copy, Loader2, Tags } from 'lucide-react';
-import { generateHashtags, GenerateHashtagsInput } from '@/ai/flows/generate-hashtags-flow';
+import { generateHashtags } from '@/ai/flows/generate-hashtags-flow';
+import type { GenerateHashtagsInput } from '@/ai/flows/generate-hashtags-flow';
 import { cn } from '@/lib/utils';
 
 type HashtagStyle = 'trending' | 'niche' | 'random-mix';
@@ -132,8 +133,8 @@ export default function HashtagGenerator() {
                    <button 
                     key={`${tag}-${index}`}
                     onClick={() => copyToClipboard(tag, `Copied ${tag} to clipboard!`)}
-                    className="group relative animate-in fade-in slide-in-from-bottom-2 duration-300"
-                    style={{animationDelay: `${index * 20}ms`}}
+                    className="group relative animate-fade-in-up"
+                    style={{animationDelay: `${index * 30}ms`, animationFillMode: 'both'}}
                     >
                      <span className="px-3 py-1.5 bg-background border rounded-full text-sm font-medium hover:bg-accent hover:border-primary hover:text-primary transition-all cursor-pointer shadow-sm">
                        {tag}

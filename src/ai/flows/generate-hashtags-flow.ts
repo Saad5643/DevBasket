@@ -11,13 +11,13 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'zod';
 
-export const GenerateHashtagsInputSchema = z.object({
+const GenerateHashtagsInputSchema = z.object({
   topic: z.string().describe('The topic or keyword to generate hashtags for.'),
   style: z.enum(['trending', 'niche', 'random-mix']).describe('The desired style for the hashtags.'),
 });
 export type GenerateHashtagsInput = z.infer<typeof GenerateHashtagsInputSchema>;
 
-export const GenerateHashtagsOutputSchema = z.object({
+const GenerateHashtagsOutputSchema = z.object({
   hashtags: z.array(z.string()).describe('An array of 20-30 generated hashtags, including the # symbol.'),
 });
 export type GenerateHashtagsOutput = z.infer<typeof GenerateHashtagsOutputSchema>;
@@ -31,16 +31,17 @@ const prompt = ai.definePrompt({
   name: 'generateHashtagsPrompt',
   input: { schema: GenerateHashtagsInputSchema },
   output: { schema: GenerateHashtagsOutputSchema },
-  prompt: `You are a social media expert specializing in hashtag strategy. Your task is to generate a list of 20-30 relevant hashtags for a given topic and style.
+  prompt: `You are a social media expert specializing in advanced hashtag strategy. Your task is to generate a list of 20-30 highly relevant and effective hashtags for a given topic and style.
 
 Topic: {{{topic}}}
 Style: {{{style}}}
 
 Instructions:
-- If the style is "trending", generate popular and widely used hashtags related to the topic.
-- If the style is "niche", generate more specific, long-tail, and community-focused hashtags.
-- If the style is "random-mix", provide a healthy mix of both trending and niche hashtags.
+- If the style is "trending", generate popular and widely used hashtags related to the topic. Focus on high-volume tags that maximize reach.
+- If the style is "niche", generate more specific, long-tail, and community-focused hashtags. These should target a very specific audience.
+- If the style is "random-mix", provide a well-balanced mix of trending (broad reach) and niche (high engagement) hashtags. Aim for a 50/50 split.
 - All hashtags must start with the # symbol.
+- Avoid generic and spammy hashtags.
 - Ensure the output is a JSON object with a "hashtags" key containing an array of strings.
 `,
 });

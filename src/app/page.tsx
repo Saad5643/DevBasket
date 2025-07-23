@@ -218,16 +218,16 @@ export default function Home() {
       <main className="flex-1">
         <section className="relative w-full overflow-hidden">
           <div className="container flex min-h-[calc(80vh)] flex-col items-center justify-center space-y-4 px-4 text-center md:px-6">
-              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 p-4">
+              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 p-4 animate-fade-in-up">
                   <Rocket className="h-10 w-10 text-primary" />
               </div>
-              <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl">
+              <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl animate-fade-in-up" style={{animationDelay: '0.1s'}}>
                 Stop wasting time –<br />All your tools, one place
               </h1>
-              <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
+              <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl animate-fade-in-up" style={{animationDelay: '0.2s'}}>
                   From thumbnail grabbers to AI-powered generators, find everything you need — fast, free, and open-source.
               </p>
-               <Button asChild size="lg" className="mt-4 h-12 transform-gpu px-8 text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/40 active:scale-95">
+               <Button asChild size="lg" className="mt-4 h-12 transform-gpu px-8 text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/40 active:scale-95 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
                   <Link href="#tools">
                     Explore Tools
                     <ChevronDown className="ml-2 h-5 w-5" />
@@ -252,9 +252,9 @@ export default function Home() {
                 <div key={category.category}>
                   <h3 className="mb-6 text-2xl font-bold tracking-tight">{category.category}</h3>
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {category.tools.map((tool) => (
+                    {category.tools.map((tool, toolIndex) => (
                        <Link key={tool.name} href={tool.href}>
-                         <Card className="flex h-full transform-gpu cursor-pointer flex-col justify-between rounded-2xl border-2 border-transparent bg-background/50 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20">
+                         <Card className="flex h-full transform-gpu cursor-pointer flex-col justify-between rounded-2xl border-2 border-transparent bg-background/50 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 animate-fade-in-up" style={{animationDelay: `${toolIndex * 50}ms`}}>
                             <CardHeader className="flex flex-row items-center gap-4 pb-4">
                                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
                                  {tool.icon}

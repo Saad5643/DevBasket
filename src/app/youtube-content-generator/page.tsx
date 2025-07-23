@@ -64,6 +64,7 @@ export default function YoutubeSeoOptimizer() {
   };
   
   const displayContent = content || initialContent;
+  const showInitialState = !content && !isLoading;
 
   return (
     <div className="bg-background min-h-screen">
@@ -154,7 +155,7 @@ export default function YoutubeSeoOptimizer() {
                      <Card>
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
                            <CardTitle className="text-base">Title</CardTitle>
-                            <Button variant="ghost" size="icon" onClick={() => copyToClipboard(displayContent.title, 'Title')}><Copy className="h-4 w-4" /></Button>
+                            <Button variant="ghost" size="icon" onClick={() => copyToClipboard(displayContent.title, 'Title')} disabled={showInitialState && !isLoading}><Copy className="h-4 w-4" /></Button>
                         </CardHeader>
                         <CardContent>
                            <p className="text-muted-foreground">{isLoading ? 'Generating...' : displayContent.title}</p>
@@ -163,7 +164,7 @@ export default function YoutubeSeoOptimizer() {
                      <Card>
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
                            <CardTitle className="text-base">Description</CardTitle>
-                           <Button variant="ghost" size="icon" onClick={() => copyToClipboard(displayContent.description, 'Description')}><Copy className="h-4 w-4" /></Button>
+                           <Button variant="ghost" size="icon" onClick={() => copyToClipboard(displayContent.description, 'Description')} disabled={showInitialState && !isLoading}><Copy className="h-4 w-4" /></Button>
                         </CardHeader>
                         <CardContent>
                            <p className="text-muted-foreground whitespace-pre-line">{isLoading ? 'Generating...' : displayContent.description}</p>
@@ -172,7 +173,7 @@ export default function YoutubeSeoOptimizer() {
                      <Card>
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
                            <CardTitle className="text-base">Hashtags</CardTitle>
-                           <Button variant="ghost" size="icon" onClick={() => copyToClipboard(displayContent.hashtags.join(' '), 'Hashtags')}><Copy className="h-4 w-4" /></Button>
+                           <Button variant="ghost" size="icon" onClick={() => copyToClipboard(displayContent.hashtags.join(' '), 'Hashtags')} disabled={showInitialState && !isLoading}><Copy className="h-4 w-4" /></Button>
                         </CardHeader>
                         <CardContent className="flex flex-wrap gap-2">
                             {isLoading ? <p className="text-muted-foreground">Generating...</p> : 
@@ -185,7 +186,7 @@ export default function YoutubeSeoOptimizer() {
                      <Card>
                         <CardHeader className="flex flex-row items-center justify-between pb-2">
                            <CardTitle className="text-base">Keywords / LSI Terms</CardTitle>
-                           <Button variant="ghost" size="icon" onClick={() => copyToClipboard(displayContent.keywords.join(', '), 'Keywords')}><Copy className="h-4 w-4" /></Button>
+                           <Button variant="ghost" size="icon" onClick={() => copyToClipboard(displayContent.keywords.join(', '), 'Keywords')} disabled={showInitialState && !isLoading}><Copy className="h-4 w-4" /></Button>
                         </CardHeader>
                         <CardContent className="flex flex-wrap gap-2">
                             {isLoading ? <p className="text-muted-foreground">Generating...</p> : 

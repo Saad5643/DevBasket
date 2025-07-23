@@ -13,6 +13,7 @@ import { z } from 'zod';
 
 const GenerateImageInputSchema = z.object({
   prompt: z.string().describe("The user's text prompt for the image."),
+  negativePrompt: z.string().optional().describe("A description of what to avoid in the image."),
   style: z.string().describe("The desired artistic style for the image (e.g., Cinematic, Anime)."),
   orientation: z.enum(['square', 'portrait', 'landscape']).describe("The desired orientation for the image."),
   quality: z.enum(['standard', 'hd']).describe("The desired quality for the image."),
@@ -35,11 +36,11 @@ const generateImageFlow = ai.defineFlow(
     inputSchema: GenerateImageInputSchema,
     outputSchema: GenerateImageOutputSchema,
   },
-  async ({ prompt, quality, style, orientation }) => {
+  async ({ prompt, negativePrompt, quality, style, orientation }) => {
     
     let enhancedPrompt = prompt;
     if (style && style !== 'none') {
-      enhancedPrompt = `${prompt}, ${style} style`;
+      enhancedPrompt = `${prompt}, in a ${style} style`;
     }
      if (orientation) {
         if (orientation === 'portrait') {
@@ -49,7 +50,10 @@ const generateImageFlow = ai.defineFlow(
         }
     }
     if (quality === 'hd') {
-      enhancedPrompt = `${enhancedPrompt}, 4k, photorealistic, ultra detailed, high quality`;
+      enhancedPrompt = `${enhancedPrompt}, 4k, photorealistic, ultra detailed, high quality, professional photography`;
+    }
+    if (negativePrompt) {
+        enhancedPrompt = `${enhancedPrompt}. Negative prompt: do not include ${negativePrompt}.`;
     }
     
     const { media } = await ai.generate({

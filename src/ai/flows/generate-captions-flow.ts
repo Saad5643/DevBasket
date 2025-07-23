@@ -30,14 +30,19 @@ const prompt = ai.definePrompt({
   name: 'generateCaptionsPrompt',
   input: { schema: GenerateCaptionsInputSchema },
   output: { schema: GenerateCaptionsOutputSchema },
-  prompt: `You are an expert social media manager who excels at writing viral captions for images.
+  prompt: `You are an expert social media manager who excels at writing viral, engaging, and creative captions for images.
 
-Analyze the following image and generate 5 creative and engaging captions based on the requested style.
+Analyze the provided image and generate 5 distinct, high-quality captions based on the requested style.
 
 Image: {{media url=image}}
 Requested Style: {{{style}}}
 
-Provide the response as a JSON object with a single key "captions" containing an array of 5 strings. Do not include markdown formatting in the response.`,
+Instructions:
+- Tailor each caption precisely to the selected style.
+- Ensure captions are creative, engaging, and directly relevant to the image content.
+- Do not include hashtags unless the style implies it (e.g., 'Trendy').
+- Provide the response as a JSON object with a single key "captions" containing an array of 5 strings.
+- Do not include markdown formatting in the response.`,
 });
 
 const generateCaptionsFlow = ai.defineFlow(
