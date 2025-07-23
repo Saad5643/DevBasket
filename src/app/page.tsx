@@ -160,7 +160,7 @@ export default function Home() {
               <Link href="#tools" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
                 Tools
               </Link>
-               <Link href="#" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
+               <Link href="/pricing" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
                 Pricing
               </Link>
               <Link href="/contact" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
@@ -185,7 +185,7 @@ export default function Home() {
                   <Link href="#tools" className="text-muted-foreground hover:text-foreground">
                     Tools
                   </Link>
-                  <Link href="#" className="text-muted-foreground hover:text-foreground">
+                  <Link href="/pricing" className="text-muted-foreground hover:text-foreground">
                     Pricing
                   </Link>
                   <Link href="/contact" className="text-muted-foreground hover:text-foreground">
