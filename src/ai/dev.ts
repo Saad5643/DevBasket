@@ -2,3 +2,4 @@
 import './flows/generate-captions-flow';
 import './flows/generate-image-flow';
 import './flows/generate-hashtags-flow';
+import './flows/generate-youtube-content-flow';

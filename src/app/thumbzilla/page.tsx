@@ -25,7 +25,7 @@ type ToastInfo = {
   variant?: 'default' | 'destructive';
 };
 
-export default function YoutubeThumbnailDownloader() {
+export default function Thumbzilla() {
   const { toast } = useToast();
   const [url, setUrl] = useState('');
   const [videoId, setVideoId] = useState('');

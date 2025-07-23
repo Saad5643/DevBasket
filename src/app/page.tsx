@@ -20,6 +20,12 @@ const toolCategories = [
     category: 'AI Tools',
     tools: [
       {
+        name: 'YouTube Content Generator',
+        description: 'Generate optimized titles, descriptions, and tags for your videos.',
+        icon: <Youtube className="h-8 w-8" />,
+        href: '/youtube-content-generator',
+      },
+      {
         name: 'AI Image Caption Generator',
         description: 'Generate AI-powered captions for your images in various styles.',
         icon: <Captions className="h-8 w-8" />,
@@ -43,10 +49,10 @@ const toolCategories = [
     category: 'Image & Video',
     tools: [
       {
-        name: 'YouTube Thumbnail Downloader',
+        name: 'Thumbzilla',
         description: 'Grab all available thumbnail resolutions from a YouTube video.',
         icon: <ImageDown className="h-8 w-8" />,
-        href: '/youtube-thumbnail-downloader',
+        href: '/thumbzilla',
       },
       {
         name: 'Image Filter',
