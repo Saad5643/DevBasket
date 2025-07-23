@@ -9,7 +9,7 @@ import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Package2, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, Film, FileSignature, FileInput, Pencil, FileImage, Code, Copy, Mail, Instagram, Youtube, Replace, Images, Palette, Hash } from 'lucide-react';
+import { Menu, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, FileSignature, FileInput, Pencil, FileImage, Code, Copy, Mail, Instagram, Youtube, Replace, Images, Palette, Hash } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
 
@@ -147,7 +147,7 @@ const toolCategories = [
 export default function Home() {
   const { toast } = useToast();
   const { theme } = useTheme();
-  const [logoSrc, setLogoSrc] = useState('/light.png');
+  const [logoSrc, setLogoSrc] = useState('/dark.png');
   const suggestionEmail = "devbasketofficial@gmail.com";
 
   useEffect(() => {
@@ -166,8 +166,8 @@ export default function Home() {
   
   return (
     <div className="flex min-h-dvh w-full flex-col bg-background">
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 px-4 py-2 backdrop-blur-lg sm:px-6 dark:bg-background/80">
-        <div className="mx-auto flex max-w-5xl items-center justify-between">
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 px-4 py-2 backdrop-blur-sm sm:px-6">
+        <div className="mx-auto flex max-w-7xl items-center justify-between">
           <div className="flex items-center gap-6">
             <Link href="#" className="flex items-center gap-2 font-semibold">
                <Image src={logoSrc} alt="Devbasket Logo" width={120} height={30} key={logoSrc} />
@@ -181,7 +181,7 @@ export default function Home() {
               </Link>
             </nav>
           </div>
-          <div className="flex items-center justify-end gap-4">
+          <div className="flex items-center justify-end gap-2">
             <ThemeToggle />
             <Sheet>
               <SheetTrigger asChild>
@@ -210,7 +210,7 @@ export default function Home() {
       </header>
       <main className="flex-1">
         <section className="w-full border-b">
-          <div className="container flex min-h-[calc(100vh-5rem)] items-center justify-center px-4 md:px-6">
+          <div className="container flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2 animate-fade-in-up">
                 <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl xl:text-6xl/none">
@@ -218,11 +218,11 @@ export default function Home() {
                     Your Daily Developer Toolkit.
                   </span>
                 </h1>
-                <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl">
-                  From thumbnail grabbers to URL shorteners, find everything you need — fast and free.
+                <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
+                  From thumbnail grabbers to AI-powered generators, find everything you need — fast, free, and open-source.
                 </p>
               </div>
-              <div className="flex animate-fade-in-up flex-col justify-center gap-4 pt-4 min-[400px]:flex-row">
+              <div style={{ animationDelay: '0.2s' }} className="flex animate-fade-in-up flex-col justify-center gap-4 pt-4 min-[400px]:flex-row">
                 <Button asChild size="lg" className="h-12 transform-gpu px-8 text-base transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-primary via-primary to-purple-600 hover:shadow-2xl hover:shadow-primary/40 active:scale-95">
                   <Link href="#tools">
                     Explore Tools
@@ -239,7 +239,7 @@ export default function Home() {
         
         <section id="tools" className="w-full bg-muted/40 py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
-            <div className="flex animate-fade-in-up flex-col items-center justify-center space-y-4 text-center">
+            <div style={{ animationDelay: '0.3s' }} className="flex animate-fade-in-up flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Featured Tools</div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">A Growing Collection</h2>
@@ -249,15 +249,15 @@ export default function Home() {
               </div>
             </div>
             <div className="mx-auto mt-12 space-y-12">
-              {toolCategories.map((category) => (
-                <div key={category.category} className="animate-fade-in-up">
+              {toolCategories.map((category, i) => (
+                <div key={category.category} style={{ animationDelay: `${0.4 + i*0.1}s` }} className="animate-fade-in-up opacity-0">
                   <h3 className="text-2xl font-bold tracking-tight mb-6">{category.category}</h3>
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:gap-8">
+                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {category.tools.map((tool) => (
-                      <Card key={tool.name} className="flex h-full flex-col justify-between transform-gpu transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl">
-                        <CardHeader className="flex flex-row items-start gap-4 pb-4">
-                           <div className="bg-gradient-to-br from-primary/20 to-accent/20 text-primary p-3 rounded-xl">{tool.icon}</div>
-                           <div>
+                      <Card key={tool.name} className="flex h-full flex-col justify-between transform-gpu transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20">
+                        <CardHeader className="flex flex-col items-start gap-4 pb-4">
+                           <div className="bg-gradient-to-br from-primary/20 to-accent-blue/20 text-primary p-3 rounded-xl">{tool.icon}</div>
+                           <div className='flex-grow'>
                              <CardTitle>{tool.name}</CardTitle>
                              <CardDescription className="mt-1">{tool.description}</CardDescription>
                            </div>
@@ -294,8 +294,8 @@ export default function Home() {
                 </Button>
               </div>
               <Button asChild className="w-full">
-                <Link href="https://mail.google.com/mail/u/0/#inbox?compose=GTvVlcSMVxWhBNkJMzgCmGFTLFztnmxKDBsmctMRPxQRQNmJntKNlLjRwbRrKwSdrFcQjDbtfKWxG" target="_blank" rel="noopener noreferrer">
-                  <Send className="mr-2 h-4 w-4" /> Send Email via Gmail
+                <Link href={`mailto:${suggestionEmail}`} target="_blank" rel="noopener noreferrer">
+                  <Send className="mr-2 h-4 w-4" /> Send Email
                 </Link>
               </Button>
             </div>

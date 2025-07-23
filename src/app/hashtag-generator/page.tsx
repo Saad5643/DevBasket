@@ -66,12 +66,12 @@ export default function HashtagGenerator() {
           </Button>
         </div>
 
-        <Card className="max-w-4xl mx-auto shadow-lg border-border/60" style={{'--primary-blue': 'hsl(221, 83%, 53%)'} as React.CSSProperties}>
+        <Card className="max-w-4xl mx-auto shadow-lg border-border/60">
           <CardHeader className="text-center">
-            <div className="mx-auto bg-gradient-to-br from-blue-500/20 to-purple-500/20 text-blue-500 p-3 rounded-xl inline-block mb-4">
+            <div className="mx-auto bg-gradient-to-br from-primary/20 to-accent-blue/20 text-primary p-3 rounded-xl inline-block mb-4">
               <Hash className="h-8 w-8" />
             </div>
-            <CardTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-500">
+            <CardTitle className="text-3xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-accent-blue">
               AI Hashtag Generator
             </CardTitle>
             <CardDescription>
@@ -105,7 +105,7 @@ export default function HashtagGenerator() {
                     </ToggleGroup>
                 </div>
 
-                <Button onClick={handleGenerate} disabled={isLoading} size="lg" className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+                <Button onClick={handleGenerate} disabled={isLoading} size="lg" className="w-full bg-gradient-to-r from-primary to-accent-blue text-white">
                     {isLoading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <Sparkles className="mr-2 h-4 w-4" />}
                     {isLoading ? 'Generating...' : 'Generate Hashtags'}
                 </Button>
@@ -124,7 +124,7 @@ export default function HashtagGenerator() {
                 <Card className="flex flex-wrap items-center justify-center gap-2 p-4 border-dashed min-h-64 bg-muted/50">
                 {isLoading && (
                     <div className="flex flex-col items-center justify-center text-muted-foreground gap-4">
-                      <Loader2 className="h-12 w-12 animate-spin text-blue-500" />
+                      <Loader2 className="h-12 w-12 animate-spin text-primary" />
                       <p>Finding the best hashtags for you...</p>
                     </div>
                 )}
@@ -135,7 +135,7 @@ export default function HashtagGenerator() {
                     className="group relative animate-in fade-in slide-in-from-bottom-2 duration-300"
                     style={{animationDelay: `${index * 20}ms`}}
                     >
-                     <span className="px-3 py-1.5 bg-background border rounded-full text-sm font-medium hover:bg-accent hover:border-blue-500 hover:text-blue-500 transition-all cursor-pointer shadow-sm">
+                     <span className="px-3 py-1.5 bg-background border rounded-full text-sm font-medium hover:bg-accent hover:border-primary hover:text-primary transition-all cursor-pointer shadow-sm">
                        {tag}
                      </span>
                    </button>
