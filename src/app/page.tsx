@@ -12,6 +12,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, FileSignature, FileInput, Pencil, FileImage, Code, Copy, Mail, Instagram, Youtube, Replace, Images, Palette, Hash } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
+import { cn } from '@/lib/utils';
 
 const toolCategories = [
   {
@@ -254,7 +255,10 @@ export default function Home() {
                   <h3 className="text-2xl font-bold tracking-tight mb-6">{category.category}</h3>
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {category.tools.map((tool) => (
-                      <Card key={tool.name} className="flex h-full flex-col justify-between transform-gpu transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-primary/20">
+                       <Card key={tool.name} className={cn(
+                        "flex h-full flex-col justify-between transform-gpu transition-all duration-300 hover:-translate-y-2",
+                        "bg-gradient-to-br from-card to-muted/30 hover:shadow-2xl hover:shadow-primary/20"
+                       )}>
                         <CardHeader className="flex flex-col items-start gap-4 pb-4">
                            <div className="bg-gradient-to-br from-primary/20 to-accent-blue/20 text-primary p-3 rounded-xl">{tool.icon}</div>
                            <div className='flex-grow'>
