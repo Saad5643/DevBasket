@@ -5,14 +5,15 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { useTheme } from 'next-themes';
-import { ThemeToggle } from '@/components/theme-toggle';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, FileSignature, FileInput, Pencil, FileImage, Code, Copy, Mail, Instagram, Youtube, Replace, Images, Palette, Hash } from 'lucide-react';
+import { Menu, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, FileSignature, FileInput, Pencil, FileImage, Code, Copy, Mail, Instagram, Youtube, Replace, Images, Palette, Hash, Rocket } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { Input } from '@/components/ui/input';
 import { cn } from '@/lib/utils';
+import { ThemeToggle } from '@/components/theme-toggle';
+
 
 const toolCategories = [
   {
@@ -146,44 +147,29 @@ const toolCategories = [
 
 
 export default function Home() {
-  const { toast } = useToast();
   const { theme } = useTheme();
-  const [logoSrc, setLogoSrc] = useState('/dark.png');
-  const suggestionEmail = "devbasketofficial@gmail.com";
 
-  useEffect(() => {
-    // Set the logo based on the current theme.
-    // We use a state and useEffect to prevent hydration mismatches.
-    setLogoSrc(theme === 'dark' ? '/dark.png' : '/light.png');
-  }, [theme]);
-  
-  const handleCopyEmail = () => {
-    navigator.clipboard.writeText(suggestionEmail);
-    toast({
-      title: "Email Copied!",
-      description: "The email address has been copied to your clipboard.",
-    });
-  };
-  
   return (
-    <div className="flex min-h-dvh w-full flex-col bg-background">
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 px-4 py-2 backdrop-blur-sm sm:px-6">
+    <div className="flex min-h-dvh w-full flex-col bg-background animated-gradient">
+      <header className="sticky top-0 z-50 w-full bg-background/80 px-4 py-3 backdrop-blur-sm sm:px-6">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <div className="flex items-center gap-6">
-            <Link href="#" className="flex items-center gap-2 font-semibold">
-               <Image src={logoSrc} alt="Devbasket Logo" width={120} height={30} key={logoSrc} />
+            <Link href="/" className="flex items-center gap-2 font-bold text-lg">
+               DevBasket.site
             </Link>
-            <nav className="hidden items-center gap-6 text-sm md:flex">
+           <nav className="hidden items-center justify-center gap-6 text-sm md:flex">
               <Link href="#tools" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
                 Tools
               </Link>
-              <Link href="#suggest" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
-                Suggest a Tool
+               <Link href="#" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
+                Pricing
+              </Link>
+              <Link href="#" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
+                Contact
               </Link>
             </nav>
-          </div>
           <div className="flex items-center justify-end gap-2">
-            <ThemeToggle />
+             <Button variant="outline">Sign Up</Button>
+             <ThemeToggle />
             <Sheet>
               <SheetTrigger asChild>
                 <Button variant="outline" size="icon" className="shrink-0 md:hidden">
@@ -194,14 +180,16 @@ export default function Home() {
               <SheetContent side="left">
                 <nav className="grid gap-6 text-lg font-medium">
                   <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
-                    <Image src={logoSrc} alt="Devbasket Logo" width={120} height={30} key={logoSrc + 'mobile'} />
-                    <span className="sr-only">Devbasket</span>
+                    DevBasket.site
                   </Link>
                   <Link href="#tools" className="text-muted-foreground hover:text-foreground">
                     Tools
                   </Link>
-                  <Link href="#suggest" className="text-muted-foreground hover:text-foreground">
-                    Suggest a Tool
+                  <Link href="#" className="text-muted-foreground hover:text-foreground">
+                    Pricing
+                  </Link>
+                  <Link href="#" className="text-muted-foreground hover:text-foreground">
+                    Contact
                   </Link>
                 </nav>
               </SheetContent>
@@ -210,39 +198,31 @@ export default function Home() {
         </div>
       </header>
       <main className="flex-1">
-        <section className="w-full border-b">
-          <div className="container flex min-h-[calc(100vh-4rem)] items-center justify-center px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2 animate-fade-in-up">
-                <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl xl:text-6xl/none">
-                  <span className="inline-block bg-gradient-to-r from-primary to-accent-blue bg-clip-text text-transparent animate-gradient">
-                    Your Daily Developer Toolkit.
-                  </span>
-                </h1>
-                <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
-                  From thumbnail grabbers to AI-powered generators, find everything you need — fast, free, and open-source.
-                </p>
+        <section className="relative w-full overflow-hidden">
+          <div className="container flex min-h-[calc(80vh)] flex-col items-center justify-center space-y-4 px-4 text-center md:px-6">
+              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 p-4">
+                  <Rocket className="h-10 w-10 text-primary" />
               </div>
-              <div style={{ animationDelay: '0.2s' }} className="flex animate-fade-in-up flex-col justify-center gap-4 pt-4 min-[400px]:flex-row">
-                <Button asChild size="lg" className="h-12 transform-gpu px-8 text-base transition-all duration-300 hover:-translate-y-1 bg-gradient-to-br from-primary via-primary to-purple-600 hover:shadow-2xl hover:shadow-primary/40 active:scale-95">
+              <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl">
+                Stop wasting time – All your tools, one place
+              </h1>
+              <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
+                  From thumbnail grabbers to AI-powered generators, find everything you need — fast, free, and open-source.
+              </p>
+               <Button asChild size="lg" className="mt-4 h-12 transform-gpu px-8 text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/40 active:scale-95">
                   <Link href="#tools">
                     Explore Tools
                     <ChevronDown className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
-                <Button asChild variant="outline" size="lg" className="h-12 px-8 text-base active:scale-95">
-                   <Link href="#suggest">Suggest a Tool</Link>
-                </Button>
-              </div>
-            </div>
           </div>
+          <div className="absolute bottom-0 left-0 h-32 w-full bg-gradient-to-t from-background to-transparent" />
         </section>
         
-        <section id="tools" className="w-full bg-muted/40 py-12 md:py-24 lg:py-32">
+        <section id="tools" className="w-full bg-background py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
-            <div style={{ animationDelay: '0.3s' }} className="flex animate-fade-in-up flex-col items-center justify-center space-y-4 text-center">
+            <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
-                <div className="inline-block rounded-lg bg-muted px-3 py-1 text-sm">Featured Tools</div>
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">A Growing Collection</h2>
                 <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
                   Here are some of the free and useful online tools available in the basket. More are being added all the time.
@@ -251,27 +231,25 @@ export default function Home() {
             </div>
             <div className="mx-auto mt-12 space-y-12">
               {toolCategories.map((category, i) => (
-                <div key={category.category} style={{ animationDelay: `${0.4 + i*0.1}s` }} className="animate-fade-in-up opacity-0">
-                  <h3 className="text-2xl font-bold tracking-tight mb-6">{category.category}</h3>
+                <div key={category.category}>
+                  <h3 className="mb-6 text-2xl font-bold tracking-tight">{category.category}</h3>
                   <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
                     {category.tools.map((tool) => (
-                       <Card key={tool.name} className={cn(
-                        "flex h-full flex-col justify-between transform-gpu transition-all duration-300 hover:-translate-y-2",
-                        "bg-gradient-to-br from-card to-muted/30 hover:shadow-2xl hover:shadow-primary/20"
-                       )}>
-                        <CardHeader className="flex flex-col items-start gap-4 pb-4">
-                           <div className="bg-gradient-to-br from-primary/20 to-accent-blue/20 text-primary p-3 rounded-xl">{tool.icon}</div>
-                           <div className='flex-grow'>
-                             <CardTitle>{tool.name}</CardTitle>
-                             <CardDescription className="mt-1">{tool.description}</CardDescription>
-                           </div>
-                        </CardHeader>
-                        <CardContent className="mt-auto pt-0">
-                          <Button asChild className="w-full active:scale-95">
-                            <Link href={tool.href}>Open Tool</Link>
-                          </Button>
-                        </CardContent>
-                      </Card>
+                       <Link key={tool.name} href={tool.href}>
+                         <Card className="flex h-full transform-gpu cursor-pointer flex-col justify-between rounded-2xl border-2 border-transparent bg-background/50 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20">
+                            <CardHeader className="flex flex-row items-center gap-4 pb-4">
+                               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                                 {tool.icon}
+                               </div>
+                               <div>
+                                 <CardTitle>{tool.name}</CardTitle>
+                               </div>
+                            </CardHeader>
+                            <CardContent>
+                               <CardDescription>{tool.description}</CardDescription>
+                            </CardContent>
+                          </Card>
+                       </Link>
                     ))}
                   </div>
                 </div>
@@ -279,35 +257,9 @@ export default function Home() {
             </div>
           </div>
         </section>
-
-        <section id="suggest" className="w-full border-t py-12 md:py-24 lg:py-32">
-          <div className="container grid animate-fade-in-up items-center justify-center gap-4 px-4 text-center md:px-6">
-            <div className="space-y-3">
-              <h2 className="text-3xl font-bold tracking-tighter md:text-4xl/tight">Have an Idea?</h2>
-              <p className="mx-auto max-w-[600px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                If there's a tool you'd love to see in the basket, feel free to contact us directly via email.
-              </p>
-            </div>
-            <div className="mx-auto w-full max-w-sm space-y-4">
-              <div className="relative">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                <Input readOnly value={suggestionEmail} className="pr-12 pl-10" />
-                <Button variant="ghost" size="icon" className="absolute right-1 top-1/2 -translate-y-1/2 h-8 w-8" onClick={handleCopyEmail}>
-                   <Copy className="h-4 w-4" />
-                   <span className="sr-only">Copy email address</span>
-                </Button>
-              </div>
-              <Button asChild className="w-full">
-                <Link href={`mailto:${suggestionEmail}`} target="_blank" rel="noopener noreferrer">
-                  <Send className="mr-2 h-4 w-4" /> Send Email
-                </Link>
-              </Button>
-            </div>
-          </div>
-        </section>
       </main>
       <footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
-        <p className="text-xs text-muted-foreground">&copy; 2024 Devbasket. Made with ❤️</p>
+        <p className="text-xs text-muted-foreground">&copy; 2024 DevBasket.site. All Rights Reserved.</p>
         <nav className="flex gap-4 sm:ml-auto sm:gap-6">
           <Link href="https://www.instagram.com/devbasket/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground">
             <Instagram className="h-5 w-5" />
@@ -317,11 +269,10 @@ export default function Home() {
             <Youtube className="h-5 w-5" />
             <span className="sr-only">YouTube</span>
           </Link>
-          <Link href="#" className="text-xs hover:underline underline-offset-4 text-muted-foreground">
-            Privacy
-          </Link>
         </nav>
       </footer>
     </div>
   );
 }
+
+    
