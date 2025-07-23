@@ -204,7 +204,7 @@ export default function Home() {
                   <Rocket className="h-10 w-10 text-primary" />
               </div>
               <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl">
-                Stop wasting time – All your tools, one place
+                Stop wasting time –<br />All your tools, one place
               </h1>
               <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl">
                   From thumbnail grabbers to AI-powered generators, find everything you need — fast, free, and open-source.
@@ -274,5 +274,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
