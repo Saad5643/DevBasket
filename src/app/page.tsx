@@ -170,7 +170,7 @@ export default function Home() {
   return (
     <div className="flex min-h-dvh w-full flex-col bg-background animated-gradient">
       <header className="sticky top-0 z-50 w-full bg-background/80 px-4 py-3 backdrop-blur-sm sm:px-6">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
+        <div className="flex w-full items-center justify-between">
             <Link href="/" className="flex items-center gap-2 font-bold text-lg">
                DevBasket.site
             </Link>
