@@ -93,3 +93,15 @@ body {
     transform: translateY(0);
   }
 }
+
+.animated-gradient {
+  background: linear-gradient(
+    -45deg,
+    hsl(var(--background)),
+    hsl(var(--primary) / 0.1),
+    hsl(var(--accent) / 0.1),
+    hsl(var(--background))
+  );
+  background-size: 400% 400%;
+  animation: gradient 15s ease-in-out infinite;
+}
