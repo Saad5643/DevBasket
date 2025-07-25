@@ -140,7 +140,7 @@ export default function Thumbzilla() {
               </div>
               <Button onClick={handleShowThumbnails} disabled={loading || !url} className="w-full sm:w-auto">
                 {loading ? <RefreshCw className="animate-spin mr-2 h-4 w-4" /> : null}
-                Show Thumbnails
+                Show Thumbnail
               </Button>
               {(videoId || error) && (
                 <Button variant="outline" onClick={handleReset} className="w-full sm:w-auto">
