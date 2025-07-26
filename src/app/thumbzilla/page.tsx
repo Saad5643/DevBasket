@@ -102,8 +102,8 @@ export default function Thumbzilla() {
   }, [videoId]);
 
   return (
-    <div className="bg-background min-h-screen py-8 md:py-12">
-      <main className="container mx-auto px-4">
+    <div className="bg-background min-h-screen">
+      <main className="container mx-auto px-4 py-8 md:py-12">
         <div className="mb-8">
             <Button asChild variant="outline" size="sm">
                 <Link href="/">
@@ -113,7 +113,7 @@ export default function Thumbzilla() {
             </Button>
         </div>
 
-        <Card className="max-w-5xl mx-auto shadow-lg border-border/60">
+        <Card className="max-w-5xl mx-auto shadow-lg border-border/60 bg-secondary/30 backdrop-blur-sm">
           <CardHeader className="text-center">
             <div className="mx-auto bg-gradient-to-br from-primary/20 to-accent/20 text-primary p-3 rounded-xl inline-block mb-4">
               <ImageDown className="h-8 w-8" />

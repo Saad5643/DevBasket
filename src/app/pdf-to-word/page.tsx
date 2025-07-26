@@ -129,7 +129,7 @@ export default function PdfToWordConverter() {
           </Button>
         </div>
 
-        <Card className="max-w-3xl mx-auto shadow-lg border-border/60">
+        <Card className="max-w-3xl mx-auto shadow-lg border-border/60 bg-secondary/30 backdrop-blur-sm">
           <CardHeader className="text-center">
             <div className="mx-auto bg-gradient-to-br from-primary/20 to-accent/20 text-primary p-3 rounded-xl inline-block mb-4">
               <FileSignature className="h-8 w-8" />

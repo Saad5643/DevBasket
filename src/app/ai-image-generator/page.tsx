@@ -182,7 +182,7 @@ export default function AiImageGenerator() {
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             <div className="lg:col-span-2">
-                <Card className="shadow-lg border-border/60">
+                <Card className="shadow-lg border-border/60 bg-secondary/30 backdrop-blur-sm">
                   <CardHeader className="text-center">
                     <div className="mx-auto bg-gradient-to-br from-primary/20 to-accent/20 text-primary p-3 rounded-xl inline-block mb-4">
                       <Sparkles className="h-8 w-8" />
@@ -306,7 +306,7 @@ export default function AiImageGenerator() {
                 </Card>
             </div>
             <div className="lg:col-span-1">
-                 <Card>
+                 <Card className="bg-secondary/30 backdrop-blur-sm">
                     <CardHeader>
                         <CardTitle>Your Collection</CardTitle>
                         <CardDescription>Images you have saved will appear here.</CardDescription>
