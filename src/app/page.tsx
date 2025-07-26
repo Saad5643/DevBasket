@@ -52,7 +52,7 @@ export default function Home() {
 
   return (
     <div className="flex min-h-dvh w-full flex-col bg-background text-foreground">
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background backdrop-blur-sm">
+      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-sm">
         <div className="container flex h-14 items-center">
             <Link href="/" className="mr-auto flex items-center gap-2 font-bold text-lg">
                DevBasket.site
