@@ -122,7 +122,7 @@ export default function Home() {
           </div>
         </section>
         
-        <section id="tools" className="w-full py-12 md:py-24 lg:py-32 bg-background">
+        <section id="tools" className="w-full py-12 md:py-24 lg:py-32 bg-background bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]">
           <div className="container px-4 md:px-6">
             <div className="mb-12 text-center">
                 <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">A Tool for Every Need</h2>
@@ -133,7 +133,7 @@ export default function Home() {
             <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {tools.map((tool, toolIndex) => (
                  <Link key={tool.name} href={tool.href}>
-                   <Card className="flex h-full transform-gpu cursor-pointer flex-col justify-start rounded-2xl border bg-secondary/30 p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-primary/50 animate-fade-in-up" style={{animationDelay: `${toolIndex * 100}ms`}}>
+                   <Card className="flex h-full transform-gpu cursor-pointer flex-col justify-start rounded-2xl border bg-secondary/30 p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-primary/50 animate-fade-in-up backdrop-blur-sm" style={{animationDelay: `${toolIndex * 100}ms`}}>
                       <CardHeader className="flex flex-row items-center gap-4 p-0 pb-4">
                          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
                            {tool.icon}
