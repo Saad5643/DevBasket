@@ -1,293 +1,153 @@
 
 'use client';
 
-import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { useTheme } from 'next-themes';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, TextQuote, Send, ChevronDown, Type, ImageIcon as ImageIconLucide, Loader2, MessageSquare, MessagesSquare, Captions, Sparkles, ImageDown, Wand2, FileSignature, FileInput, Pencil, FileImage, Code, Copy, Mail, Instagram, Youtube, Replace, Images, Palette, Hash, Rocket } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
-import { Input } from '@/components/ui/input';
-import { cn } from '@/lib/utils';
-import { ThemeToggle } from '@/components/theme-toggle';
-
+import { Menu, Rocket, Image as ImageIcon, Edit, FileText, Code, Settings, X, Search } from 'lucide-react';
 
 const toolCategories = [
   {
-    category: 'AI Tools',
-    tools: [
-      {
-        name: 'YouTube SEO Optimizer',
-        description: 'Generate optimized titles, descriptions, and tags for your videos.',
-        icon: <Youtube className="h-8 w-8" />,
-        href: '/youtube-content-generator',
-      },
-      {
-        name: 'AI Image Caption Generator',
-        description: 'Generate AI-powered captions for your images in various styles.',
-        icon: <Captions className="h-8 w-8" />,
-        href: '/image-caption-generator',
-      },
-      {
-        name: 'AI Image Generator',
-        description: 'Create unique images from text prompts using generative AI.',
-        icon: <Sparkles className="h-8 w-8" />,
-        href: '/ai-image-generator',
-      },
-       {
-        name: 'Hashtag Generator',
-        description: 'Generate trending and niche hashtags for your content.',
-        icon: <Hash className="h-8 w-8" />,
-        href: '/hashtag-generator',
-      },
-    ]
+    name: 'Image Converters',
+    description: 'Convert images between formats like JPEG, PNG, and WebP.',
+    icon: <ImageIcon className="h-6 w-6" />,
+    href: '/jpeg-to-png', // Example link
   },
   {
-    category: 'Image & Video',
-    tools: [
-      {
-        name: 'Thumbzilla',
-        description: 'Grab all available thumbnail resolutions from a YouTube video.',
-        icon: <ImageDown className="h-8 w-8" />,
-        href: '/thumbzilla',
-      },
-      {
-        name: 'Image Filter',
-        description: 'Apply real-time filters to your images and download them.',
-        icon: <ImageIconLucide className="h-8 w-8" />,
-        href: '/image-filter',
-      },
-      {
-        name: 'JPEG to PNG Converter',
-        description: 'Convert, resize, and compress JPEG images to PNG format.',
-        icon: <Replace className="h-8 w-8" />,
-        href: '/jpeg-to-png',
-      },
-      {
-        name: 'WebP to PNG Converter',
-        description: 'Convert modern WebP images to the widely supported PNG format.',
-        icon: <Replace className="h-8 w-8" />,
-        href: '/webp-to-png',
-      },
-    ]
+    name: 'PDF Editors',
+    description: 'Merge, split, and edit your PDF files with ease.',
+    icon: <FileText className="h-6 w-6" />,
+    href: '/pdf-to-html', // Example link
   },
   {
-    category: 'Text & Design',
-    tools: [
-       {
-        name: 'Word Counter',
-        description: 'Count words, characters, and sentences in your text.',
-        icon: <TextQuote className="h-8 w-8" />,
-        href: '/word-counter',
-      },
-      {
-        name: 'Font Changer',
-        description: 'Preview and experiment with different web fonts and styles.',
-        icon: <Type className="h-8 w-8" />,
-        href: '/font-changer',
-      },
-      {
-        name: 'CSS Loader Generator',
-        description: 'Create and customize simple CSS loading animations.',
-        icon: <Loader2 className="h-8 w-8" />,
-        href: '/css-loader-generator',
-      },
-      {
-        name: 'Color Palette Generator',
-        description: 'Create and customize color palettes from a base color.',
-        icon: <Palette className="h-8 w-8" />,
-        href: '/color-palette-generator',
-      },
-      {
-        name: 'HTML Previewer',
-        description: 'Write HTML code and see a real-time, sandboxed preview.',
-        icon: <Code className="h-8 w-8" />,
-        href: '/html-previewer',
-      },
-       {
-        name: 'Meta Tag Generator',
-        description: 'Generate SEO and social media meta tags for your website.',
-        icon: <Code className="h-8 w-8" />,
-        href: '/meta-tag-generator',
-      },
-    ]
+    name: 'CSS Generators',
+    description: 'Create loaders, gradients, and other CSS snippets.',
+    icon: <Settings className="h-6 w-6" />,
+    href: '/css-loader-generator', // Example link
   },
   {
-    category: 'PDF Tools',
-    tools: [
-      {
-        name: 'Image to PDF Converter',
-        description: 'Combine multiple images into a single, downloadable PDF file.',
-        icon: <Images className="h-8 w-8" />,
-        href: '/image-to-pdf',
-      },
-      {
-        name: 'PDF to PNG Converter',
-        description: 'Convert each page of a PDF into separate PNG images.',
-        icon: <FileImage className="h-8 w-8" />,
-        href: '/pdf-to-png',
-      },
-      {
-        name: 'PDF to HTML Converter',
-        description: 'Convert PDF files into structured HTML documents.',
-        icon: <Code className="h-8 w-8" />,
-        href: '/pdf-to-html',
-      },
-      {
-        name: 'PDF to Word Converter',
-        description: 'Convert PDF files to editable Word documents with optional OCR.',
-        icon: <FileSignature className="h-8 w-8" />,
-        href: '/pdf-to-word',
-      },
-    ],
+    name: 'Content Tools',
+    description: 'Generate captions, hashtags, and other text content.',
+    icon: <Edit className="h-6 w-6" />,
+    href: '/image-caption-generator', // Example link
   },
   {
-    category: 'Social Media',
-    tools: [
-      {
-        name: 'Tweet Generator',
-        description: 'Create and download realistic mockups of tweets.',
-        icon: <MessageSquare className="h-8 w-8" />,
-        href: '/tweet-generator',
-      },
-      {
-        name: 'Chat Screenshot Generator',
-        description: 'Craft and download realistic fake chat conversations.',
-        icon: <MessagesSquare className="h-8 w-8" />,
-        href: '/chat-generator',
-      }
-    ]
-  }
+    name: 'Social Mockups',
+    description: 'Create realistic mockups for tweets and chats.',
+    icon: <X className="h-6 w-6" />, // Using X for Twitter
+    href: '/tweet-generator', // Example link
+  },
+  {
+    name: 'Developer Tools',
+    description: 'Handy utilities for developers and designers.',
+    icon: <Code className="h-6 w-6" />,
+    href: '/html-previewer', // Example link
+  },
 ];
 
 
 export default function Home() {
-  const { theme } = useTheme();
 
   return (
-    <div className="flex min-h-dvh w-full flex-col bg-background animated-gradient">
-      <header className="sticky top-0 z-50 w-full bg-background/95 backdrop-blur-sm">
-        <div className="container flex h-14 items-center">
+    <div className="flex min-h-dvh w-full flex-col bg-background text-foreground">
+      <header className="sticky top-0 z-50 w-full bg-background/80 backdrop-blur-sm border-b border-border/50">
+        <div className="container flex h-20 items-center">
             <Link href="/" className="mr-auto flex items-center gap-2 font-bold text-lg">
                DevBasket.site
             </Link>
-           <nav className="hidden items-center justify-center gap-6 text-sm md:flex flex-1">
-              <Link href="#tools" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
+           <nav className="hidden items-center justify-center gap-8 text-sm md:flex mx-auto">
+              <Link href="#" className="font-semibold text-primary transition-colors hover:text-primary/80">
+                Home
+              </Link>
+               <Link href="#tools" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
                 Tools
               </Link>
-               <Link href="/pricing" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
-                Pricing
-              </Link>
               <Link href="/contact" className="font-medium text-muted-foreground transition-colors hover:text-foreground">
-                Contact
+                About
               </Link>
             </nav>
-          <div className="flex items-center justify-end gap-2">
-             <Button variant="outline">Sign Up</Button>
-             <ThemeToggle />
-            <Sheet>
-              <SheetTrigger asChild>
-                <Button variant="outline" size="icon" className="shrink-0 md:hidden">
-                  <Menu className="h-5 w-5" />
-                  <span className="sr-only">Toggle navigation menu</span>
-                </Button>
-              </SheetTrigger>
-              <SheetContent side="left">
-                <nav className="grid gap-6 text-lg font-medium">
-                  <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
-                    DevBasket.site
-                  </Link>
-                  <Link href="#tools" className="text-muted-foreground hover:text-foreground">
-                    Tools
-                  </Link>
-                  <Link href="/pricing" className="text-muted-foreground hover:text-foreground">
-                    Pricing
-                  </Link>
-                  <Link href="/contact" className="text-muted-foreground hover:text-foreground">
-                    Contact
-                  </Link>
-                </nav>
-              </SheetContent>
-            </Sheet>
+          <div className="hidden md:flex items-center justify-end gap-2 ml-auto">
+             <Button>Sign Up</Button>
           </div>
+           <div className="md:hidden ml-auto">
+            <Sheet>
+                <SheetTrigger asChild>
+                  <Button variant="outline" size="icon" className="shrink-0">
+                    <Menu className="h-5 w-5" />
+                    <span className="sr-only">Toggle navigation menu</span>
+                  </Button>
+                </SheetTrigger>
+                <SheetContent side="left">
+                  <nav className="grid gap-6 text-lg font-medium">
+                    <Link href="#" className="flex items-center gap-2 text-lg font-semibold">
+                      DevBasket.site
+                    </Link>
+                    <Link href="#" className="hover:text-foreground text-primary font-semibold">
+                      Home
+                    </Link>
+                    <Link href="#tools" className="text-muted-foreground hover:text-foreground">
+                      Tools
+                    </Link>
+                     <Link href="/contact" className="text-muted-foreground hover:text-foreground">
+                      About
+                    </Link>
+                    <Button>Sign Up</Button>
+                  </nav>
+                </SheetContent>
+              </Sheet>
+           </div>
         </div>
       </header>
       <main className="flex-1">
-        <section className="relative w-full overflow-hidden">
-          <div className="container flex min-h-[calc(80vh)] flex-col items-center justify-center space-y-4 px-4 text-center md:px-6">
-              <div className="mx-auto mb-6 flex h-20 w-20 items-center justify-center rounded-full bg-primary/10 p-4 animate-fade-in-up">
-                  <Rocket className="h-10 w-10 text-primary" />
+        <section className="relative w-full overflow-hidden bg-background">
+          <div className="container flex min-h-[calc(80vh_-_5rem)] flex-col items-center justify-center space-y-6 px-4 text-center md:px-6">
+              <div className="mx-auto mb-4 flex h-20 w-20 items-center justify-center rounded-full p-4 animate-fade-in-up">
+                  <Rocket className="h-12 w-12 text-foreground" />
               </div>
-              <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl animate-fade-in-up" style={{animationDelay: '0.1s'}}>
+              <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl animate-fade-in-up" style={{animationDelay: '0.1s'}}>
                 Stop wasting time –<br />All your tools, one place
               </h1>
-              <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl animate-fade-in-up" style={{animationDelay: '0.2s'}}>
-                  From thumbnail grabbers to AI-powered generators, find everything you need — fast, free, and open-source.
-              </p>
-               <Button asChild size="lg" className="mt-4 h-12 transform-gpu px-8 text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-primary/40 active:scale-95 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
+               <Button asChild size="lg" className="mt-4 h-12 transform-gpu rounded-full px-8 text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-lg active:scale-95 animate-fade-in-up" style={{animationDelay: '0.2s'}}>
                   <Link href="#tools">
                     Explore Tools
-                    <ChevronDown className="ml-2 h-5 w-5" />
                   </Link>
                 </Button>
           </div>
-          <div className="absolute bottom-0 left-0 h-32 w-full bg-gradient-to-t from-background to-transparent" />
+          <div className="absolute bottom-0 left-0 right-0 h-[200px] w-full">
+            <svg viewBox="0 0 1440 160" preserveAspectRatio="none" className="h-full w-full">
+                 <path
+                    fill="white"
+                    d="M1440 32.2C1280 10.7 1120 0 960 0s-320 10.7-480 32.2S160 74.8 0 74.8V160h1440z"
+                  ></path>
+            </svg>
+           </div>
         </section>
         
-        <section id="tools" className="w-full bg-background py-12 md:py-24 lg:py-32">
+        <section id="tools" className="w-full bg-white py-12 md:py-24 lg:py-32">
           <div className="container px-4 md:px-6">
-            <div className="flex flex-col items-center justify-center space-y-4 text-center">
-              <div className="space-y-2">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-5xl">A Growing Collection</h2>
-                <p className="max-w-[900px] text-muted-foreground md:text-xl/relaxed lg:text-base/relaxed xl:text-xl/relaxed">
-                  Here are some of the free and useful online tools available in the basket. More are being added all the time.
-                </p>
-              </div>
-            </div>
-            <div className="mx-auto mt-12 space-y-12">
-              {toolCategories.map((category, i) => (
-                <div key={category.category}>
-                  <h3 className="mb-6 text-2xl font-bold tracking-tight">{category.category}</h3>
-                  <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-                    {category.tools.map((tool, toolIndex) => (
-                       <Link key={tool.name} href={tool.href}>
-                         <Card className="flex h-full transform-gpu cursor-pointer flex-col justify-between rounded-2xl border-2 border-transparent bg-background/50 transition-all duration-300 hover:-translate-y-2 hover:border-primary/50 hover:shadow-2xl hover:shadow-primary/20 animate-fade-in-up" style={{animationDelay: `${toolIndex * 50}ms`}}>
-                            <CardHeader className="flex flex-row items-center gap-4 pb-4">
-                               <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                                 {tool.icon}
-                               </div>
-                               <div>
-                                 <CardTitle>{tool.name}</CardTitle>
-                               </div>
-                            </CardHeader>
-                            <CardContent>
-                               <CardDescription>{tool.description}</CardDescription>
-                            </CardContent>
-                          </Card>
-                       </Link>
-                    ))}
-                  </div>
-                </div>
+            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {toolCategories.map((tool, toolIndex) => (
+                 <Link key={tool.name} href={tool.href}>
+                   <Card className="flex h-full transform-gpu cursor-pointer flex-col justify-start rounded-2xl border p-6 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 animate-fade-in-up" style={{animationDelay: `${toolIndex * 100}ms`}}>
+                      <CardHeader className="flex flex-row items-center gap-4 p-0 pb-4">
+                         <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                           {tool.icon}
+                         </div>
+                      </CardHeader>
+                      <CardContent className="p-0">
+                         <CardTitle className="text-lg font-semibold">{tool.name}</CardTitle>
+                         <CardDescription className="mt-1">{tool.description}</CardDescription>
+                      </CardContent>
+                    </Card>
+                 </Link>
               ))}
             </div>
           </div>
         </section>
       </main>
-      <footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t px-4 py-6 sm:flex-row md:px-6">
+      <footer className="flex w-full shrink-0 flex-col items-center gap-2 border-t bg-white px-4 py-6 sm:flex-row md:px-6">
         <p className="text-xs text-muted-foreground">&copy; 2024 DevBasket.site. All Rights Reserved.</p>
-        <nav className="flex gap-4 sm:ml-auto sm:gap-6">
-          <Link href="https://www.instagram.com/devbasket/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground">
-            <Instagram className="h-5 w-5" />
-            <span className="sr-only">Instagram</span>
-          </Link>
-           <Link href="https://www.youtube.com/channel/UCAVnhkNMkMPH7p78yz9LABA" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-foreground">
-            <Youtube className="h-5 w-5" />
-            <span className="sr-only">YouTube</span>
-          </Link>
-        </nav>
       </footer>
     </div>
   );
