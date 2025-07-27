@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Rocket, Image as ImageIcon, Edit, FileText, Code, Settings, Search, ChevronDown, Captions, Hash, Youtube, MessageSquare, ImageDown, Palette, Loader2, Type, SlidersHorizontal, FileImage, Replace, Tags, FileCode, FileSignature, TextQuote, MessagesSquare } from 'lucide-react';
+import { Menu, Rocket, Image as ImageIcon, Edit, FileText, Code, Settings, Search, ChevronDown, Captions, Hash, Youtube, MessageSquare, ImageDown, Palette, Loader2, Type, SlidersHorizontal, FileImage, Replace, Tags, FileCode, FileSignature, TextQuote, MessagesSquare, Calculator } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 
 const aiTools = [
@@ -117,6 +117,12 @@ const devDesignTools = [
     icon: <Tags className="h-6 w-6" />,
     href: '/meta-tag-generator',
   },
+  {
+    name: 'ROI Calculator',
+    description: 'Calculate the return on your investments.',
+    icon: <Calculator className="h-6 w-6" />,
+    href: '/roi-calculator',
+  }
 ];
 
 const pdfDocumentTools = [
