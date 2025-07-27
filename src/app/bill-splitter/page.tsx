@@ -55,11 +55,6 @@ export default function BillSplitter() {
     }
     
     if (Math.abs(totalPaid - billWithTip) > 0.01) {
-        toast({
-            variant: 'destructive',
-            title: 'Calculation Mismatch',
-            description: `Total paid (${totalPaid.toFixed(2)}) doesn't match the bill with tip (${billWithTip.toFixed(2)}). Please adjust values.`
-        });
         setTransactions([]);
         return;
     }
