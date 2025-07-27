@@ -206,7 +206,7 @@ export default function Home() {
               <p className="max-w-[600px] text-muted-foreground md:text-xl animate-fade-in-up" style={{animationDelay: '0.2s', textShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
                 From thumbnail grabbers to AI-powered generators, find everything you need — fast, free, and open-source.
               </p>
-               <Button asChild size="lg" className="mt-4 h-12 transform-gpu rounded-md px-8 text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-lg active:scale-95 animate-fade-in-up border border-white/20 bg-white/10 hover:bg-white/20 backdrop-blur-sm" style={{animationDelay: '0.3s'}}>
+               <Button asChild size="lg" className="mt-4 h-12 transform-gpu rounded-md px-8 text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-lg active:scale-95 animate-fade-in-up border border-primary/50 bg-primary/20 hover:bg-primary/30 backdrop-blur-sm text-primary-foreground" style={{animationDelay: '0.3s'}}>
                   <Link href="#tools">
                     Explore Tools
                     <ChevronDown className="ml-2 h-4 w-4" />
