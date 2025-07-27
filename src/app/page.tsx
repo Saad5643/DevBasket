@@ -187,7 +187,7 @@ export default function Home() {
       </header>
       <main className="flex-1">
         <section className="relative w-full overflow-hidden bg-background">
-          <div className="container flex min-h-[calc(80vh_-_5rem)] flex-col items-center justify-center space-y-6 px-4 text-center md:px-6">
+          <div className="container flex min-h-[calc(100vh_-_3.5rem)] flex-col items-center justify-center space-y-6 px-4 text-center md:px-6">
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 p-4 animate-fade-in-up">
                   <Rocket className="h-10 w-10 text-primary" />
               </div>
