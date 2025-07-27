@@ -145,7 +145,7 @@ export default function Home() {
 
   return (
     <div className="flex min-h-dvh w-full flex-col bg-background text-foreground">
-      <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-sm">
+      <header className="sticky top-0 z-50 w-full border-b border-white/20 bg-black/30 bg-gradient-to-b from-white/10 to-transparent backdrop-blur-sm">
         <div className="container flex h-14 items-center">
             <Link href="/" className="mr-auto flex items-center gap-2 font-bold text-lg">
                DevBasket.site
@@ -201,7 +201,7 @@ export default function Home() {
                   <Rocket className="h-10 w-10 text-primary" />
               </div>
               <h1 className="text-3xl font-extrabold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl animate-fade-in-up" style={{animationDelay: '0.1s', textShadow: '0 0 20px rgba(255, 255, 255, 0.5)'}}>
-                Stop wasting time <br />All your tools, one place
+                Stop wasting time All your tools, one place
               </h1>
               <p className="max-w-[600px] text-muted-foreground md:text-xl animate-fade-in-up" style={{animationDelay: '0.2s', textShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
                 From thumbnail grabbers to AI-powered generators, find everything you need — fast, free, and open-source.
