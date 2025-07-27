@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Rocket, Image as ImageIcon, Edit, FileText, Code, Settings, Search, ChevronDown } from 'lucide-react';
+import { Menu, Rocket, Image as ImageIcon, Edit, FileText, Code, Settings, Search, ChevronDown, Captions, Hash, Youtube, MessageSquare, ImageDown, Palette, Loader2, Type, SlidersHorizontal, FileImage, Replace, Tags, FileCode, FileSignature, TextQuote, MessagesSquare } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 
 const tools = [
@@ -18,32 +18,116 @@ const tools = [
   {
     name: 'Image Caption Generator',
     description: 'Generate catchy captions for your images.',
-    icon: <Edit className="h-6 w-6" />,
+    icon: <Captions className="h-6 w-6" />,
     href: '/image-caption-generator',
   },
   {
     name: 'Hashtag Generator',
     description: 'Find the best hashtags for your content.',
-    icon: <Settings className="h-6 w-6" />,
+    icon: <Hash className="h-6 w-6" />,
     href: '/hashtag-generator',
   },
   {
     name: 'YouTube Content Creator',
     description: 'Get titles, descriptions, and tags for videos.',
-    icon: <FileText className="h-6 w-6" />,
+    icon: <Youtube className="h-6 w-6" />,
     href: '/youtube-content-generator',
   },
   {
     name: 'Tweet Generator',
     description: 'Create realistic mockups for tweets.',
-    icon: <Code className="h-6 w-6" />,
+    icon: <MessageSquare className="h-6 w-6" />,
     href: '/tweet-generator',
+  },
+  {
+    name: 'Chat Screenshot Generator',
+    description: 'Create realistic chat mockups for different platforms.',
+    icon: <MessagesSquare className="h-6 w-6" />,
+    href: '/chat-generator',
   },
   {
     name: 'Thumbnail Downloader',
     description: 'Download YouTube video thumbnails.',
-    icon: <ImageIcon className="h-6 w-6" />,
+    icon: <ImageDown className="h-6 w-6" />,
     href: '/thumbzilla',
+  },
+  {
+    name: 'Color Palette Generator',
+    description: 'Create harmonious color palettes from a base color.',
+    icon: <Palette className="h-6 w-6" />,
+    href: '/color-palette-generator',
+  },
+  {
+    name: 'CSS Loader Generator',
+    description: 'Generate simple and elegant CSS loaders.',
+    icon: <Loader2 className="h-6 w-6" />,
+    href: '/css-loader-generator',
+  },
+  {
+    name: 'Font Changer & Preview',
+    description: 'Experiment with different fonts and styles in real-time.',
+    icon: <Type className="h-6 w-6" />,
+    href: '/font-changer',
+  },
+  {
+    name: 'Real-time HTML Previewer',
+    description: 'Write HTML and see the live rendered output.',
+    icon: <Code className="h-6 w-6" />,
+    href: '/html-previewer',
+  },
+  {
+    name: 'Image Filter & Editor',
+    description: 'Apply filters and adjustments to your images.',
+    icon: <SlidersHorizontal className="h-6 w-6" />,
+    href: '/image-filter',
+  },
+  {
+    name: 'Image to PDF Converter',
+    description: 'Combine multiple images into a single PDF file.',
+    icon: <FileImage className="h-6 w-6" />,
+    href: '/image-to-pdf',
+  },
+  {
+    name: 'JPEG to PNG Converter',
+    description: 'Convert JPEG images to PNG format.',
+    icon: <Replace className="h-6 w-6" />,
+    href: '/jpeg-to-png',
+  },
+  {
+    name: 'WebP to PNG Converter',
+    description: 'Convert modern WebP images to PNG format.',
+    icon: <Replace className="h-6 w-6" />,
+    href: '/webp-to-png',
+  },
+  {
+    name: 'Meta Tag Generator',
+    description: 'Generate SEO-friendly meta tags for your website.',
+    icon: <Tags className="h-6 w-6" />,
+    href: '/meta-tag-generator',
+  },
+  {
+    name: 'PDF to HTML Converter',
+    description: 'Extract text from a PDF into an HTML document.',
+    icon: <FileCode className="h-6 w-6" />,
+    href: '/pdf-to-html',
+  },
+  {
+    name: 'PDF to PNG Converter',
+    description: 'Convert each page of a PDF into PNG images.',
+    icon: <FileImage className="h-6 w-6" />,
+    href: '/pdf-to-png',
+  },
+  {
+    name: 'PDF to Word Converter',
+    description: 'Convert your PDF files into editable DOCX documents.',
+    icon: <FileSignature className="h-6 w-6" />,
+    href: '/pdf-to-word',
+  },
+  {
+    name: 'Word & Character Counter',
+    description: 'Analyze your text for word count, characters, and more.',
+    icon: <TextQuote className="h-6 w-6" />,
+    href: '/word-counter',
   },
 ];
 
