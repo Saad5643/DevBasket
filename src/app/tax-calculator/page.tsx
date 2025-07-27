@@ -17,7 +17,7 @@ import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 const countries = [
   "United States", "United Kingdom", "Canada", "Australia", "Pakistan",
   "India", "Germany", "France", "Spain", "Italy",
-  "Netherlands", "Sweden", "Japan", "Brazil", "South Africa"
+  "Netherlands", "Sweden", "Japan", "Brazil", "South Africa", "United Arab Emirates"
 ];
 
 const filingStatuses: { [key: string]: string[] } = {
