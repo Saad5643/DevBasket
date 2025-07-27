@@ -8,7 +8,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { Menu, Rocket, Image as ImageIcon, Edit, FileText, Code, Settings, Search, ChevronDown, Captions, Hash, Youtube, MessageSquare, ImageDown, Palette, Loader2, Type, SlidersHorizontal, FileImage, Replace, Tags, FileCode, FileSignature, TextQuote, MessagesSquare } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 
-const tools = [
+const aiTools = [
   {
     name: 'AI Image Generator',
     description: 'Create stunning visuals from text prompts.',
@@ -45,35 +45,14 @@ const tools = [
     icon: <MessagesSquare className="h-6 w-6" />,
     href: '/chat-generator',
   },
-  {
+];
+
+const imageVideoTools = [
+   {
     name: 'Thumbnail Downloader',
     description: 'Download YouTube video thumbnails.',
     icon: <ImageDown className="h-6 w-6" />,
     href: '/thumbzilla',
-  },
-  {
-    name: 'Color Palette Generator',
-    description: 'Create harmonious color palettes from a base color.',
-    icon: <Palette className="h-6 w-6" />,
-    href: '/color-palette-generator',
-  },
-  {
-    name: 'CSS Loader Generator',
-    description: 'Generate simple and elegant CSS loaders.',
-    icon: <Loader2 className="h-6 w-6" />,
-    href: '/css-loader-generator',
-  },
-  {
-    name: 'Font Changer & Preview',
-    description: 'Experiment with different fonts and styles in real-time.',
-    icon: <Type className="h-6 w-6" />,
-    href: '/font-changer',
-  },
-  {
-    name: 'Real-time HTML Previewer',
-    description: 'Write HTML and see the live rendered output.',
-    icon: <Code className="h-6 w-6" />,
-    href: '/html-previewer',
   },
   {
     name: 'Image Filter & Editor',
@@ -99,23 +78,53 @@ const tools = [
     icon: <Replace className="h-6 w-6" />,
     href: '/webp-to-png',
   },
+   {
+    name: 'PDF to PNG Converter',
+    description: 'Convert each page of a PDF into PNG images.',
+    icon: <FileImage className="h-6 w-6" />,
+    href: '/pdf-to-png',
+  },
+];
+
+const devDesignTools = [
+   {
+    name: 'Color Palette Generator',
+    description: 'Create harmonious color palettes from a base color.',
+    icon: <Palette className="h-6 w-6" />,
+    href: '/color-palette-generator',
+  },
   {
+    name: 'CSS Loader Generator',
+    description: 'Generate simple and elegant CSS loaders.',
+    icon: <Loader2 className="h-6 w-6" />,
+    href: '/css-loader-generator',
+  },
+  {
+    name: 'Font Changer & Preview',
+    description: 'Experiment with different fonts and styles in real-time.',
+    icon: <Type className="h-6 w-6" />,
+    href: '/font-changer',
+  },
+  {
+    name: 'Real-time HTML Previewer',
+    description: 'Write HTML and see the live rendered output.',
+    icon: <Code className="h-6 w-6" />,
+    href: '/html-previewer',
+  },
+   {
     name: 'Meta Tag Generator',
     description: 'Generate SEO-friendly meta tags for your website.',
     icon: <Tags className="h-6 w-6" />,
     href: '/meta-tag-generator',
   },
+];
+
+const pdfDocumentTools = [
   {
     name: 'PDF to HTML Converter',
     description: 'Extract text from a PDF into an HTML document.',
     icon: <FileCode className="h-6 w-6" />,
     href: '/pdf-to-html',
-  },
-  {
-    name: 'PDF to PNG Converter',
-    description: 'Convert each page of a PDF into PNG images.',
-    icon: <FileImage className="h-6 w-6" />,
-    href: '/pdf-to-png',
   },
   {
     name: 'PDF to Word Converter',
@@ -207,30 +216,112 @@ export default function Home() {
         </section>
         
         <section id="tools" className="w-full py-12 md:py-24 lg:py-32 bg-background bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))]">
-          <div className="container px-4 md:px-6">
-            <div className="mb-12 text-center">
-                <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">A Tool for Every Need</h2>
-                <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed">
-                    Browse our collection of powerful and easy-to-use developer utilities.
-                </p>
+          <div className="container px-4 md:px-6 space-y-16">
+            
+            <div>
+              <div className="mb-12 text-center">
+                  <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">AI & Content</h2>
+                  <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed">
+                      Powerful AI tools to generate content, captions, hashtags, and more.
+                  </p>
+              </div>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {aiTools.map((tool, toolIndex) => (
+                   <Link key={tool.name} href={tool.href}>
+                     <Card className="flex h-full transform-gpu cursor-pointer flex-col justify-start rounded-2xl border bg-secondary/30 p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-primary/50 animate-fade-in-up backdrop-blur-sm" style={{animationDelay: `${toolIndex * 100}ms`}}>
+                        <CardHeader className="flex flex-row items-center gap-4 p-0 pb-4">
+                           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                             {tool.icon}
+                           </div>
+                        </CardHeader>
+                        <CardContent className="p-0">
+                           <CardTitle className="text-lg font-semibold">{tool.name}</CardTitle>
+                           <CardDescription className="mt-1">{tool.description}</CardDescription>
+                        </CardContent>
+                      </Card>
+                   </Link>
+                ))}
+              </div>
             </div>
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {tools.map((tool, toolIndex) => (
-                 <Link key={tool.name} href={tool.href}>
-                   <Card className="flex h-full transform-gpu cursor-pointer flex-col justify-start rounded-2xl border bg-secondary/30 p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-primary/50 animate-fade-in-up backdrop-blur-sm" style={{animationDelay: `${toolIndex * 100}ms`}}>
-                      <CardHeader className="flex flex-row items-center gap-4 p-0 pb-4">
-                         <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
-                           {tool.icon}
-                         </div>
-                      </CardHeader>
-                      <CardContent className="p-0">
-                         <CardTitle className="text-lg font-semibold">{tool.name}</CardTitle>
-                         <CardDescription className="mt-1">{tool.description}</CardDescription>
-                      </CardContent>
-                    </Card>
-                 </Link>
-              ))}
+            
+            <div>
+              <div className="mb-12 text-center">
+                  <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Image & Video Tools</h2>
+                  <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed">
+                      A suite of tools for converting, editing, and downloading media.
+                  </p>
+              </div>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {imageVideoTools.map((tool, toolIndex) => (
+                   <Link key={tool.name} href={tool.href}>
+                     <Card className="flex h-full transform-gpu cursor-pointer flex-col justify-start rounded-2xl border bg-secondary/30 p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-primary/50 animate-fade-in-up backdrop-blur-sm" style={{animationDelay: `${toolIndex * 100}ms`}}>
+                        <CardHeader className="flex flex-row items-center gap-4 p-0 pb-4">
+                           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                             {tool.icon}
+                           </div>
+                        </CardHeader>
+                        <CardContent className="p-0">
+                           <CardTitle className="text-lg font-semibold">{tool.name}</CardTitle>
+                           <CardDescription className="mt-1">{tool.description}</CardDescription>
+                        </CardContent>
+                      </Card>
+                   </Link>
+                ))}
+              </div>
             </div>
+
+            <div>
+              <div className="mb-12 text-center">
+                  <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Developer & Design</h2>
+                  <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed">
+                      Utilities for developers and designers to streamline their workflow.
+                  </p>
+              </div>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {devDesignTools.map((tool, toolIndex) => (
+                   <Link key={tool.name} href={tool.href}>
+                     <Card className="flex h-full transform-gpu cursor-pointer flex-col justify-start rounded-2xl border bg-secondary/30 p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-primary/50 animate-fade-in-up backdrop-blur-sm" style={{animationDelay: `${toolIndex * 100}ms`}}>
+                        <CardHeader className="flex flex-row items-center gap-4 p-0 pb-4">
+                           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                             {tool.icon}
+                           </div>
+                        </CardHeader>
+                        <CardContent className="p-0">
+                           <CardTitle className="text-lg font-semibold">{tool.name}</CardTitle>
+                           <CardDescription className="mt-1">{tool.description}</CardDescription>
+                        </CardContent>
+                      </Card>
+                   </Link>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <div className="mb-12 text-center">
+                  <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">PDF & Document Tools</h2>
+                  <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed">
+                      Handy tools for converting and analyzing your documents.
+                  </p>
+              </div>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {pdfDocumentTools.map((tool, toolIndex) => (
+                   <Link key={tool.name} href={tool.href}>
+                     <Card className="flex h-full transform-gpu cursor-pointer flex-col justify-start rounded-2xl border bg-secondary/30 p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-primary/50 animate-fade-in-up backdrop-blur-sm" style={{animationDelay: `${toolIndex * 100}ms`}}>
+                        <CardHeader className="flex flex-row items-center gap-4 p-0 pb-4">
+                           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                             {tool.icon}
+                           </div>
+                        </CardHeader>
+                        <CardContent className="p-0">
+                           <CardTitle className="text-lg font-semibold">{tool.name}</CardTitle>
+                           <CardDescription className="mt-1">{tool.description}</CardDescription>
+                        </CardContent>
+                      </Card>
+                   </Link>
+                ))}
+              </div>
+            </div>
+
           </div>
         </section>
       </main>
