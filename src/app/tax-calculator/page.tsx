@@ -9,9 +9,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from "@/hooks/use-toast";
-import { ArrowLeft, Calculator, RefreshCw, Sparkles, Loader2, Globe } from 'lucide-react';
+import { ArrowLeft, Calculator, RefreshCw, Sparkles, Loader2, Globe, AlertCircle } from 'lucide-react';
 import { PieChart, Pie, Cell, ResponsiveContainer, Legend, Tooltip } from 'recharts';
 import { calculateTax, CalculateTaxInput, CalculateTaxOutput } from '@/ai/flows/tax-calculator-flow';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 
 const countries = [
   "United States", "United Kingdom", "Canada", "Australia", "Pakistan",
@@ -83,6 +84,14 @@ export default function TaxCalculator() {
       { name: 'Net Income', value: result.netIncome, fill: 'hsl(var(--primary))' },
       { name: 'Total Tax', value: result.totalTax, fill: 'hsl(var(--destructive))' },
     ];
+  }, [result]);
+
+  const confidenceMessage = useMemo(() => {
+    if (!result || result.confidenceScore === undefined) return null;
+    if (result.confidenceScore < 0.7) {
+        return "The calculation for this country/year may be less precise. Please verify with a professional.";
+    }
+    return null;
   }, [result]);
 
   return (
@@ -178,6 +187,14 @@ export default function TaxCalculator() {
                         </Card>
                     </div>
 
+                     {confidenceMessage && (
+                        <Alert variant="destructive">
+                           <AlertCircle className="h-4 w-4" />
+                           <AlertTitle>Low Confidence</AlertTitle>
+                           <AlertDescription>{confidenceMessage}</AlertDescription>
+                        </Alert>
+                     )}
+
                     <Card>
                        <CardHeader>
                          <CardTitle className="text-lg">Tax Breakdown</CardTitle>
@@ -224,5 +241,3 @@ export default function TaxCalculator() {
     </div>
   );
 }
-
-    

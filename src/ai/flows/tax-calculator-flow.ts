@@ -30,6 +30,7 @@ const CalculateTaxOutputSchema = z.object({
   currencySymbol: z.string().describe("The currency symbol for the country (e.g., $, €, £)."),
   breakdown: z.array(TaxBreakdownItemSchema).describe('An array of objects detailing the tax bracket breakdown.'),
   disclaimer: z.string().describe("A brief disclaimer stating that this is an estimate and a tax professional should be consulted."),
+  confidenceScore: z.number().min(0).max(1).describe("A score from 0 to 1 indicating the model's confidence in the accuracy of the tax calculation."),
 });
 export type CalculateTaxOutput = z.infer<typeof CalculateTaxOutputSchema>;
 
@@ -42,21 +43,23 @@ const prompt = ai.definePrompt({
   name: 'calculateTaxPrompt',
   input: { schema: CalculateTaxInputSchema },
   output: { schema: CalculateTaxOutputSchema },
-  prompt: `You are an expert tax consultant. Your task is to calculate the estimated income tax for a user based on the provided information.
+  prompt: `You are a certified tax professional with expertise in international tax law. Your task is to provide a highly accurate income tax estimation based on the user's data. You must use the most current and precise tax information available for the specified country and year.
 
-Country: {{{country}}}
-Gross Annual Income: {{{income}}}
-Tax Year: {{{year}}}
-{{#if filingStatus}}Filing Status: {{{filingStatus}}}{{/if}}
+**User Information:**
+- **Country:** {{{country}}}
+- **Gross Annual Income:** {{{income}}}
+- **Tax Year:** {{{year}}}
+{{#if filingStatus}}- **Filing Status:** {{{filingStatus}}}{{/if}}
 
-Instructions:
-1.  **Calculate Total Tax:** Based on the country's tax laws for the specified year and filing status, calculate the total estimated income tax.
-2.  **Calculate Net Income:** Subtract the total tax from the gross income.
-3.  **Determine Currency Symbol:** Provide the correct currency symbol for the country.
-4.  **Create Breakdown:** Provide a simplified breakdown of the main tax brackets or components that contribute to the total tax. For example, federal tax, state/provincial tax, social security contributions, etc. Show how different income portions are taxed at different rates.
-5.  **Add Disclaimer:** Include a disclaimer that this is an estimate for informational purposes only and a professional tax advisor should be consulted for accurate financial planning.
+**Instructions:**
+1.  **Verify Information:** Access the official tax laws and brackets for the given country, year, and filing status. Double-check all rates, thresholds, and standard deductions.
+2.  **Calculate Total Tax:** Perform a step-by-step calculation of the total estimated income tax. Account for all applicable national-level taxes (e.g., federal, social security, medicare). Do not include regional/state taxes unless they are a mandatory part of the national calculation.
+3.  **Calculate Net Income:** Subtract the calculated total tax from the gross income.
+4.  **Create Detailed Breakdown:** Provide a clear, itemized breakdown of the calculation. Each item in the breakdown should show the income bracket and the tax applied to that portion.
+5.  **Set Confidence Score:** Based on the availability and clarity of the tax data you accessed, provide a confidence score between 0.0 (no confidence) and 1.0 (very high confidence) regarding the accuracy of your calculation.
+6.  **Add Disclaimer:** Include a standard disclaimer that this is an estimate and a professional should be consulted.
 
-Provide the response as a JSON object that strictly follows the output schema. Do not include any markdown formatting.`,
+Provide the response as a JSON object that strictly follows the output schema. Do not include any markdown formatting or explanatory text outside the JSON structure.`,
 });
 
 const calculateTaxFlow = ai.defineFlow(
@@ -73,5 +76,4 @@ const calculateTaxFlow = ai.defineFlow(
     return output;
   }
 );
-
     
