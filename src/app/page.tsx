@@ -117,7 +117,10 @@ const devDesignTools = [
     icon: <Tags className="h-6 w-6" />,
     href: '/meta-tag-generator',
   },
-  {
+];
+
+const financeTools = [
+ {
     name: 'ROI Calculator',
     description: 'Calculate the return on your investments.',
     icon: <Calculator className="h-6 w-6" />,
@@ -285,6 +288,32 @@ export default function Home() {
               </div>
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {devDesignTools.map((tool, toolIndex) => (
+                   <Link key={tool.name} href={tool.href}>
+                     <Card className="flex h-full transform-gpu cursor-pointer flex-col justify-start rounded-2xl border bg-secondary/30 p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-primary/50 animate-fade-in-up backdrop-blur-sm" style={{animationDelay: `${toolIndex * 100}ms`}}>
+                        <CardHeader className="flex flex-row items-center gap-4 p-0 pb-4">
+                           <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-primary/10 text-primary">
+                             {tool.icon}
+                           </div>
+                        </CardHeader>
+                        <CardContent className="p-0">
+                           <CardTitle className="text-lg font-semibold">{tool.name}</CardTitle>
+                           <CardDescription className="mt-1">{tool.description}</CardDescription>
+                        </CardContent>
+                      </Card>
+                   </Link>
+                ))}
+              </div>
+            </div>
+
+             <div>
+              <div className="mb-12 text-center">
+                  <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl">Finance Tools</h2>
+                  <p className="mx-auto max-w-[700px] text-muted-foreground md:text-xl/relaxed">
+                      Tools for financial calculations and analysis.
+                  </p>
+              </div>
+              <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                {financeTools.map((tool, toolIndex) => (
                    <Link key={tool.name} href={tool.href}>
                      <Card className="flex h-full transform-gpu cursor-pointer flex-col justify-start rounded-2xl border bg-secondary/30 p-6 transition-all duration-300 hover:shadow-xl hover:-translate-y-1 hover:border-primary/50 animate-fade-in-up backdrop-blur-sm" style={{animationDelay: `${toolIndex * 100}ms`}}>
                         <CardHeader className="flex flex-row items-center gap-4 p-0 pb-4">
