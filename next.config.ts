@@ -1,3 +1,4 @@
+
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
@@ -27,6 +28,9 @@ const nextConfig: NextConfig = {
   webpack: (config) => {
     config.resolve.alias.canvas = false;
     return config;
+  },
+  env: {
+    BUILD_TIME: new Date().toISOString(),
   },
 };
 
