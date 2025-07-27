@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { Menu, Rocket, Image as ImageIcon, Edit, FileText, Code, Settings, Search, ChevronDown, Captions, Hash, Youtube, MessageSquare, ImageDown, Palette, Loader2, Type, SlidersHorizontal, FileImage, Replace, Tags, FileCode, FileSignature, TextQuote, MessagesSquare, Calculator, PiggyBank, Briefcase } from 'lucide-react';
+import { Menu, Rocket, Image as ImageIcon, Edit, FileText, Code, Settings, Search, ChevronDown, Captions, Hash, Youtube, MessageSquare, ImageDown, Palette, Loader2, Type, SlidersHorizontal, FileImage, Replace, Tags, FileCode, FileSignature, TextQuote, MessagesSquare, Calculator, PiggyBank, Briefcase, Landmark } from 'lucide-react';
 import { ThemeToggle } from '@/components/theme-toggle';
 
 const aiTools = [
@@ -138,6 +138,12 @@ const financeTools = [
     icon: <Calculator className="h-6 w-6" />,
     href: '/tax-calculator',
   },
+  {
+    name: 'Loan & EMI Calculator',
+    description: 'Plan your loans and EMIs like a pro.',
+    icon: <Landmark className="h-6 w-6" />,
+    href: '/loan-calculator',
+  },
 ];
 
 const businessTools = [
@@ -175,7 +181,7 @@ export default function Home() {
 
   return (
     <div className="flex min-h-dvh w-full flex-col bg-background text-foreground">
-      <header className="sticky top-0 z-50 w-full border-b border-white/20 bg-black/30 backdrop-blur-sm bg-gradient-to-b from-black/50 to-black/30">
+      <header className="sticky top-0 z-50 w-full border-b border-border/10 bg-black/30 backdrop-blur-sm bg-gradient-to-b from-black/50 to-black/30">
         <div className="container flex h-14 items-center">
             <Link href="/" className="mr-auto flex items-center gap-2 font-bold text-lg">
                DevBasket.site
@@ -236,7 +242,7 @@ export default function Home() {
               <p className="max-w-[600px] text-muted-foreground md:text-xl animate-fade-in-up" style={{animationDelay: '0.2s', textShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
                 From thumbnail grabbers to AI-powered generators, find everything you need — fast, free, and open-source.
               </p>
-               <Button asChild size="lg" className="mt-4 h-12 transform-gpu rounded-md px-8 text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-lg active:scale-95 animate-fade-in-up border border-white/20 bg-white/30 hover:bg-white/40 backdrop-blur-sm text-white" style={{animationDelay: '0.3s'}}>
+               <Button asChild size="lg" className="mt-4 h-12 transform-gpu rounded-md px-8 text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-lg active:scale-95 animate-fade-in-up border border-white/30 bg-white/20 hover:bg-white/30 backdrop-blur-sm text-white" style={{animationDelay: '0.3s'}}>
                   <Link href="#tools">
                     Explore Tools
                     <ChevronDown className="ml-2 h-4 w-4" />
@@ -413,5 +419,7 @@ export default function Home() {
     </div>
   );
 }
+
+    
 
     
