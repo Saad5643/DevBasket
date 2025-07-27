@@ -191,7 +191,7 @@ export default function Home() {
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 p-4 animate-fade-in-up">
                   <Rocket className="h-10 w-10 text-primary" />
               </div>
-              <h1 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl lg:text-7xl animate-fade-in-up" style={{animationDelay: '0.1s'}}>
+              <h1 className="text-3xl font-extrabold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl animate-fade-in-up" style={{animationDelay: '0.1s'}}>
                 Stop wasting time—<br />All your tools, one place
               </h1>
               <p className="max-w-[600px] text-muted-foreground md:text-xl animate-fade-in-up" style={{animationDelay: '0.2s'}}>
