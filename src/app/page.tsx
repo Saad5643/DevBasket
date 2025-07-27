@@ -200,10 +200,10 @@ export default function Home() {
               <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-primary/10 p-4 animate-fade-in-up">
                   <Rocket className="h-10 w-10 text-primary" />
               </div>
-              <h1 className="text-3xl font-extrabold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl animate-fade-in-up" style={{animationDelay: '0.1s', textShadow: '0 0 15px hsl(var(--primary) / 0.5), 0 0 30px hsl(var(--primary) / 0.3)'}}>
+              <h1 className="text-3xl font-extrabold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl animate-fade-in-up" style={{animationDelay: '0.1s', textShadow: '0 0 20px rgba(255, 255, 255, 0.5)'}}>
                 Stop wasting time <br />All your tools, one place
               </h1>
-              <p className="max-w-[600px] text-muted-foreground md:text-xl animate-fade-in-up" style={{animationDelay: '0.2s', textShadow: '0 0 10px hsl(var(--primary) / 0.3)'}}>
+              <p className="max-w-[600px] text-muted-foreground md:text-xl animate-fade-in-up" style={{animationDelay: '0.2s', textShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
                 From thumbnail grabbers to AI-powered generators, find everything you need — fast, free, and open-source.
               </p>
                <Button asChild size="lg" className="mt-4 h-12 transform-gpu rounded-md px-8 text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-lg active:scale-95 animate-fade-in-up" style={{animationDelay: '0.3s'}}>
