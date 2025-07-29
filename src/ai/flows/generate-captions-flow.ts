@@ -51,7 +51,7 @@ const generateCaptionsFlow = ai.defineFlow(
     inputSchema: GenerateCaptionsInputSchema,
     outputSchema: GenerateCaptionsOutputSchema,
   },
-  async (input) => {
+  async (input: GenerateCaptionsInput) => {
     const { output } = await prompt(input);
     if (!output) {
       throw new Error('Failed to generate captions');
