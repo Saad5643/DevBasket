@@ -243,7 +243,7 @@ export default function Home() {
                   <Rocket className="h-10 w-10 text-primary" />
               </div>
               <h1 className="text-3xl font-extrabold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl animate-fade-in-up" style={{animationDelay: '0.1s', textShadow: '0 0 20px rgba(255, 255, 255, 0.5)'}}>
-                One Basket, All the Developer Tools
+                The Ultimate Developer Toolset
               </h1>
               <p className="max-w-[600px] text-muted-foreground md:text-xl animate-fade-in-up" style={{animationDelay: '0.2s', textShadow: '0 0 15px rgba(255, 255, 255, 0.3)'}}>
                 From thumbnail grabbers to AI-powered generators, find everything you need — fast, free, and open-source.
