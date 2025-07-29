@@ -7,8 +7,8 @@ import { Toaster } from '@/components/ui/toaster';
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
 
 export const metadata: Metadata = {
-  title: 'Thumbzilla - YouTube Thumbnail Downloader',
-  description: 'Easily download high-quality YouTube video thumbnails for free.',
+  title: 'DevBasket - Free Developer & Creator Tools',
+  description: 'A collection of free, open-source tools for developers and content creators.',
 };
 
 export default function RootLayout({

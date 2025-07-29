@@ -1,122 +1,81 @@
+
 'use client';
 
-import { useState, useCallback } from 'react';
-import Image from 'next/image';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Download, AlertCircle, RefreshCw, Youtube, ImageDown } from 'lucide-react';
-import { saveAs } from 'file-saver';
+import Link from 'next/link';
+import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { ArrowRight, Code, ImageIcon, FileText, Calculator, Hash, Youtube, ImageDown, FileImage } from 'lucide-react';
 
-export default function Thumbzilla() {
-  const [url, setUrl] = useState('');
-  const [videoId, setVideoId] = useState('');
-  const [error, setError] = useState('');
-  const [thumbnailUrl, setThumbnailUrl] = useState('');
+const tools = [
+  { href: '/ai-image-generator', title: 'AI Image Generator', description: 'Bring your ideas to life with AI-powered image creation.', icon: <ImageIcon /> },
+  { href: '/youtube-content-generator', title: 'YouTube Content Generator', description: 'Generate titles, descriptions, and tags for videos.', icon: <Youtube /> },
+  { href: '/image-caption-generator', title: 'Image Caption Generator', description: 'Create engaging captions for your images.', icon: <ImageIcon /> },
+  { href: '/hashtag-generator', title: 'Hashtag Generator', description: 'Find the best hashtags for your social media posts.', icon: <Hash /> },
+  { href: '/tax-calculator', title: 'Tax Calculator', description: 'Estimate income tax for various countries.', icon: <Calculator /> },
+  { href: '/thumbzilla', title: 'YouTube Thumbnail Downloader', description: 'Download high-quality YouTube thumbnails.', icon: <ImageDown /> },
+  { href: '/bill-splitter', title: 'Bill Splitter', description: 'Easily split bills with friends.', icon: <Calculator /> },
+  { href: '/budget-planner', title: 'Budget Planner', description: 'Plan your budget and track expenses.', icon: <Calculator /> },
+  { href: '/chat-generator', title: 'Chat Generator', description: 'Create mock chat screenshots.', icon: <Code /> },
+  { href: '/color-palette-generator', title: 'Color Palette Generator', description: 'Generate harmonious color palettes.', icon: <Code /> },
+  { href: '/css-loader-generator', title: 'CSS Loader Generator', description: 'Create custom CSS loaders.', icon: <Code /> },
+  { href: '/font-changer', title: 'Font Changer', description: 'Preview and test different fonts.', icon: <Code /> },
+  { href: '/html-previewer', title: 'HTML Previewer', description: 'Write and preview HTML code in real-time.', icon: <Code /> },
+  { href: '/image-filter', title: 'Image Filter', description: 'Apply filters to your images.', icon: <ImageIcon /> },
+  { href: '/image-to-pdf', title: 'Image to PDF Converter', description: 'Convert images to a single PDF file.', icon: <FileText /> },
+  { href: '/invoice-generator', title: 'Invoice Generator', description: 'Create and download professional invoices.', icon: <FileText /> },
+  { href: '/jpeg-to-png', title: 'JPEG to PNG Converter', description: 'Convert JPEG images to PNG format.', icon: <FileImage /> },
+  { href: '/loan-calculator', title: 'Loan Calculator', description: 'Calculate loan payments and amortization.', icon: <Calculator /> },
+  { href: '/meta-tag-generator', title: 'Meta Tag Generator', description: 'Generate meta tags for your website.', icon: <Code /> },
+  { href: '/pdf-to-html', title: 'PDF to HTML Converter', description: 'Convert PDF files to HTML.', icon: <FileText /> },
+  { href: '/pdf-to-png', title: 'PDF to PNG Converter', description: 'Convert PDF pages to PNG images.', icon: <FileText /> },
+  { href: '/pdf-to-word', title: 'PDF to Word Converter', description: 'Convert PDF files to Word documents.', icon: <FileText /> },
+  { href: '/roi-calculator', title: 'ROI Calculator', description: 'Calculate Return on Investment.', icon: <Calculator /> },
+  { href: '/tweet-generator', title: 'Tweet Generator', description: 'Create realistic tweet mockups.', icon: <Code /> },
+  { href: '/webp-to-png', title: 'WebP to PNG Converter', description: 'Convert WebP images to PNG format.', icon: <FileImage /> },
+  { href: '/word-counter', title: 'Word Counter', description: 'Count words and characters in your text.', icon: <Code /> },
+];
 
-  const extractVideoId = (inputUrl: string) => {
-    const youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
-    const match = inputUrl.match(youtubeRegex);
-    return match ? match[1] : null;
-  };
-
-  const handleShowThumbnail = () => {
-    setError('');
-    setThumbnailUrl('');
-    const id = extractVideoId(url);
-    if (id) {
-      setVideoId(id);
-      const maxResUrl = `https://img.youtube.com/vi/${id}/maxresdefault.jpg`;
-      
-      // We use an image element to check if it exists before displaying it
-      const img = document.createElement('img');
-      img.src = maxResUrl;
-      img.onload = () => {
-        setThumbnailUrl(maxResUrl);
-      };
-      img.onerror = () => {
-        // Fallback to standard definition if max-res is not available
-        setThumbnailUrl(`https://img.youtube.com/vi/${id}/sddefault.jpg`);
-      };
-
-    } else {
-      setError('Invalid YouTube URL. Please enter a valid video URL.');
-      setVideoId('');
-    }
-  };
-
-  const handleDownload = useCallback(() => {
-    if (!thumbnailUrl) return;
-    saveAs(thumbnailUrl, 'thumbnail.jpg');
-  }, [thumbnailUrl]);
-  
-  const handleReset = () => {
-    setUrl('');
-    setVideoId('');
-    setError('');
-    setThumbnailUrl('');
-  };
-
+export default function HomePage() {
   return (
-    <main className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-zinc-900 p-4">
-      <Card className="w-full max-w-lg shadow-2xl rounded-2xl bg-white dark:bg-zinc-800/50 backdrop-blur-sm">
-        <CardHeader className="text-center">
-           <div className="mx-auto bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 p-3 rounded-full inline-block mb-4">
-              <ImageDown className="h-8 w-8" />
-            </div>
-          <CardTitle className="text-3xl font-extrabold text-zinc-800 dark:text-white">
-            Thumbzilla
-          </CardTitle>
-          <CardDescription className="text-zinc-600 dark:text-zinc-400">
-            Enter a YouTube URL to grab the thumbnail.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col sm:flex-row gap-2 mb-4">
-             <div className="relative flex-grow">
-               <Youtube className="absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 text-zinc-500" />
-              <Input
-                type="text"
-                value={url}
-                onChange={(e) => setUrl(e.target.value)}
-                placeholder="https://www.youtube.com/watch?v=..."
-                className="pl-10 h-11 text-base dark:bg-zinc-700 dark:border-zinc-600"
-                onKeyDown={(e) => e.key === 'Enter' && handleShowThumbnail()}
-              />
-            </div>
-            <Button onClick={handleShowThumbnail} className="h-11 bg-purple-600 hover:bg-purple-700 text-white font-semibold text-base">
-              Show Thumbnail
-            </Button>
-          </div>
+    <main className="flex flex-col items-center justify-center min-h-screen bg-gray-100 dark:bg-zinc-900 p-4">
+      <div className="text-center mb-12">
+        <h1 className="text-5xl font-extrabold text-zinc-800 dark:text-white mb-4">
+          DevBasket
+        </h1>
+        <p className="text-xl text-zinc-600 dark:text-zinc-400">
+          Your one-stop collection of free developer and creator tools.
+        </p>
+      </div>
 
-          {error && (
-            <Alert variant="destructive" className="mb-4 bg-red-50 dark:bg-red-900/30 border-red-200 dark:border-red-500/30 text-red-700 dark:text-red-300">
-              <AlertCircle className="h-4 w-4" />
-              <AlertTitle>Error</AlertTitle>
-              <AlertDescription>{error}</AlertDescription>
-            </Alert>
-          )}
-
-          {thumbnailUrl && (
-            <div className="mt-6 space-y-4 animate-in fade-in-50 duration-500">
-              <div className="relative aspect-video w-full rounded-xl overflow-hidden shadow-lg transition-all duration-300 hover:shadow-2xl">
-                 <Image
-                    src={thumbnailUrl}
-                    alt="YouTube video thumbnail"
-                    fill
-                    className="object-cover"
-                    unoptimized
-                  />
+      <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {tools.map((tool) => (
+          <Link href={tool.href} key={tool.href} passHref>
+            <Card className="group flex flex-col h-full hover:border-primary transition-all duration-300 hover:shadow-lg hover:-translate-y-1">
+              <CardHeader className="flex-grow">
+                <div className="flex items-start justify-between">
+                    <div className="space-y-2">
+                        <CardTitle>{tool.title}</CardTitle>
+                        <CardDescription>{tool.description}</CardDescription>
+                    </div>
+                    <div className="p-2 bg-muted rounded-md text-muted-foreground">
+                        {tool.icon}
+                    </div>
+                </div>
+              </CardHeader>
+              <div className="p-6 pt-0 text-primary font-semibold flex items-center justify-end">
+                <span>Go to tool</span>
+                <ArrowRight className="ml-2 h-4 w-4 transform transition-transform duration-300 group-hover:translate-x-1" />
               </div>
-              <Button onClick={handleDownload} className="w-full h-12 bg-blue-600 hover:bg-blue-700 text-white text-lg font-bold">
-                <Download className="mr-2 h-5 w-5" />
-                Download Thumbnail
-              </Button>
+            </Card>
+          </Link>
+        ))}
+      </div>
+       <footer className="text-center mt-12 text-zinc-500 dark:text-zinc-600">
+            <p>Made with ❤️ by DevBasket</p>
+             <div className="flex justify-center gap-4 mt-2">
+                <Link href="/contact" className="hover:text-primary">Contact</Link>
+                <Link href="/pricing" className="hover:text-primary">Pricing</Link>
             </div>
-          )}
-        </CardContent>
-      </Card>
+        </footer>
     </main>
   );
 }
