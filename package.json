@@ -10,6 +10,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@genkit-ai/firebase": "^1.0.0",
+    "@opentelemetry/exporter-jaeger": "^1.25.1",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.5",
     "class-variance-authority": "^0.7.0",
