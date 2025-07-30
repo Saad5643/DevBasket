@@ -17,7 +17,7 @@ const GenerateYoutubeContentInputSchema = z.object({
   targetAudience: z.string().optional().describe('The intended audience for the video (e.g., beginner developers, fitness enthusiasts).'),
   tone: z.enum(['professional', 'casual', 'viral']).describe('The desired tone for the generated content.'),
 });
-type GenerateYoutubeContentInput = z.infer<typeof GenerateYoutubeContentInputSchema>;
+export type GenerateYoutubeContentInput = z.infer<typeof GenerateYoutubeContentInputSchema>;
 
 const GenerateYoutubeContentOutputSchema = z.object({
   title: z.string().describe('A catchy and SEO-optimized video title.'),
@@ -25,7 +25,7 @@ const GenerateYoutubeContentOutputSchema = z.object({
   hashtags: z.array(z.string()).describe('An array of 10-15 relevant hashtags, including the # symbol.'),
   keywords: z.array(z.string()).describe('A list of 5-10 SEO keywords or LSI terms related to the video topic.'),
 });
-type GenerateYoutubeContentOutput = z.infer<typeof GenerateYoutubeContentOutputSchema>;
+export type GenerateYoutubeContentOutput = z.infer<typeof GenerateYoutubeContentOutputSchema>;
 
 
 export async function generateYoutubeContent(input: GenerateYoutubeContentInput): Promise<GenerateYoutubeContentOutput> {
@@ -44,7 +44,7 @@ Video Topic: {{{topic}}}
 Tone: {{{tone}}}
 
 Instructions:
-1.  **Title**: Create a compelling, clickable, and SEO-friendly title under 70 characters. Use power words, numbers, and brackets/parentheses to maximize click-through rate.
+1.  **Title**: Create a compelling, clickable, and SEO-friendly title under 70 characters. Use power words, numbers, and brackets/parentheses to maximize click-through-rate.
 2.  **Description**: Write a detailed, engaging, and well-structured video description.
     - Start with a 2-3 sentence hook that summarizes the video's value.
     - Add a "In this video:" or "Timestamps:" section with at least 3-5 bullet points covering key topics.
@@ -67,7 +67,7 @@ const generateYoutubeContentFlow = ai.defineFlow(
     inputSchema: GenerateYoutubeContentInputSchema,
     outputSchema: GenerateYoutubeContentOutputSchema,
   },
-  async (input) => {
+  async (input: GenerateYoutubeContentInput) => {
     const { output } = await prompt(input);
     if (!output) {
       throw new Error('Failed to generate YouTube content');
